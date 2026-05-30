@@ -8,6 +8,7 @@ import {
   Trash2,
   BarChart3,
   Settings,
+  Building,
   LogOut,
 } from "lucide-react";
 
