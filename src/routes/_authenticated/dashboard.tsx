@@ -142,10 +142,10 @@ function Kpi({ label, value, delta, hint, icon: Icon, tone = "default" }: KpiPro
 // ---------- Recharts tooltip style ----------
 const tooltipStyle = {
   background: "hsl(var(--popover, 0 0% 100%))",
-  border: "1px solid hsl(var(--border))",
+  border: "1px solid var(--border)",
   borderRadius: 8,
   fontSize: 12,
-  color: "hsl(var(--popover-foreground))",
+  color: "var(--popover-foreground)",
 };
 
 function Dashboard() {
@@ -211,21 +211,21 @@ function Dashboard() {
               <AreaChart data={salesSeries} margin={{ left: -10, right: 8, top: 4 }}>
                 <defs>
                   <linearGradient id="gVendas" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity={0.45} />
-                    <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                    <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.45} />
+                    <stop offset="100%" stopColor="var(--primary)" stopOpacity={0} />
                   </linearGradient>
                   <linearGradient id="gDespesas" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="hsl(var(--accent))" stopOpacity={0.35} />
-                    <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity={0} />
+                    <stop offset="0%" stopColor="var(--accent)" stopOpacity={0.35} />
+                    <stop offset="100%" stopColor="var(--accent)" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
-                <XAxis dataKey="dia" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(v) => `R$${Math.round(v / 1000)}k`} />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+                <XAxis dataKey="dia" stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
+                <YAxis stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(v) => `R$${Math.round(v / 1000)}k`} />
                 <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => brl(v)} />
                 <Legend wrapperStyle={{ fontSize: 12 }} />
-                <Area type="monotone" dataKey="vendas" name="Vendas" stroke="hsl(var(--primary))" fill="url(#gVendas)" strokeWidth={2} />
-                <Area type="monotone" dataKey="despesas" name="Despesas" stroke="hsl(var(--accent))" fill="url(#gDespesas)" strokeWidth={2} />
+                <Area type="monotone" dataKey="vendas" name="Vendas" stroke="var(--primary)" fill="url(#gVendas)" strokeWidth={2} />
+                <Area type="monotone" dataKey="despesas" name="Despesas" stroke="var(--accent)" fill="url(#gDespesas)" strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>
           </CardContent>
@@ -239,11 +239,11 @@ function Dashboard() {
           <CardContent className="h-72">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={salesSeries} margin={{ left: -10, right: 8, top: 4 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
-                <XAxis dataKey="dia" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(v) => `R$${Math.round(v / 1000)}k`} />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+                <XAxis dataKey="dia" stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
+                <YAxis stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(v) => `R$${Math.round(v / 1000)}k`} />
                 <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => brl(v)} />
-                <Bar dataKey="lucro" name="Lucro" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="lucro" name="Lucro" fill="var(--primary)" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -260,11 +260,11 @@ function Dashboard() {
           <CardContent className="h-72">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={cmvSeries} margin={{ left: -10, right: 8, top: 4 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
-                <XAxis dataKey="mes" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} domain={[30, 40]} tickFormatter={(v) => `${v}%`} />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+                <XAxis dataKey="mes" stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
+                <YAxis stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} domain={[30, 40]} tickFormatter={(v) => `${v}%`} />
                 <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => pct(v)} />
-                <Line type="monotone" dataKey="cmv" name="CMV" stroke="hsl(var(--accent))" strokeWidth={2.5} dot={{ r: 4, fill: "hsl(var(--accent))" }} activeDot={{ r: 6 }} />
+                <Line type="monotone" dataKey="cmv" name="CMV" stroke="var(--accent)" strokeWidth={2.5} dot={{ r: 4, fill: "var(--accent)" }} activeDot={{ r: 6 }} />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
@@ -278,11 +278,11 @@ function Dashboard() {
           <CardContent className="h-72">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={producaoSeries} margin={{ left: -10, right: 8, top: 4 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
-                <XAxis dataKey="dia" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+                <XAxis dataKey="dia" stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
+                <YAxis stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
                 <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => `${num(v as number)} refeições`} />
-                <Bar dataKey="refeicoes" name="Refeições" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="refeicoes" name="Refeições" fill="var(--primary)" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
