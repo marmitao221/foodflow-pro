@@ -14,29 +14,100 @@ export type Database = {
   }
   public: {
     Tables: {
-      companies: {
+      branches: {
         Row: {
-          cnpj: string | null
+          address: string | null
+          city: string | null
+          company_id: string
           created_at: string
           id: string
+          is_active: boolean
+          manager_name: string | null
           name: string
-          owner_id: string
+          state: string | null
           updated_at: string
         }
         Insert: {
-          cnpj?: string | null
+          address?: string | null
+          city?: string | null
+          company_id: string
           created_at?: string
           id?: string
+          is_active?: boolean
+          manager_name?: string | null
           name: string
-          owner_id: string
+          state?: string | null
           updated_at?: string
         }
         Update: {
-          cnpj?: string | null
+          address?: string | null
+          city?: string | null
+          company_id?: string
           created_at?: string
           id?: string
+          is_active?: boolean
+          manager_name?: string | null
+          name?: string
+          state?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "branches_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      companies: {
+        Row: {
+          city: string | null
+          cmv_target: number | null
+          cnpj: string | null
+          created_at: string
+          email: string | null
+          id: string
+          logo_url: string | null
+          meals_per_day: number | null
+          name: string
+          owner_id: string
+          phone: string | null
+          profit_target: number | null
+          state: string | null
+          updated_at: string
+        }
+        Insert: {
+          city?: string | null
+          cmv_target?: number | null
+          cnpj?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          logo_url?: string | null
+          meals_per_day?: number | null
+          name: string
+          owner_id: string
+          phone?: string | null
+          profit_target?: number | null
+          state?: string | null
+          updated_at?: string
+        }
+        Update: {
+          city?: string | null
+          cmv_target?: number | null
+          cnpj?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          logo_url?: string | null
+          meals_per_day?: number | null
           name?: string
           owner_id?: string
+          phone?: string | null
+          profit_target?: number | null
+          state?: string | null
           updated_at?: string
         }
         Relationships: []
