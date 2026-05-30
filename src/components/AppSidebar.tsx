@@ -8,6 +8,7 @@ import {
   Trash2,
   BarChart3,
   Settings,
+  Building,
   LogOut,
 } from "lucide-react";
 
@@ -44,6 +45,7 @@ const negocio: NavItem[] = [
 
 const sistema: NavItem[] = [
   { title: "Empresa", url: "/configuracoes/empresa", icon: Settings },
+  { title: "Filiais", url: "/configuracoes/filiais", icon: Building },
 ];
 
 export function AppSidebar() {

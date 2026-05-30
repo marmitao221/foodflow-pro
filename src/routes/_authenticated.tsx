@@ -7,6 +7,8 @@ import { useAuth } from "@/lib/auth-context";
 import { supabase } from "@/integrations/supabase/client";
 import { AppSidebar } from "@/components/AppSidebar";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { BranchSwitcher } from "@/components/BranchSwitcher";
+import { CompanyProvider } from "@/lib/company-context";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -46,26 +48,31 @@ function AuthenticatedLayout() {
   if (!user) return <Navigate to="/login" />;
 
   return (
-    <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-background">
-        <AppSidebar />
-        <div className="flex flex-1 flex-col">
-          <header className="flex h-14 items-center justify-between border-b border-border bg-background/80 backdrop-blur px-4">
-            <div className="flex items-center gap-2">
-              <SidebarTrigger>
-                <Menu className="h-4 w-4" />
-              </SidebarTrigger>
-              <span className="text-sm font-medium text-muted-foreground">
-                {memberships?.[0]?.companies?.name ?? "CozinhaPro"}
-              </span>
-            </div>
-            <ThemeToggle />
-          </header>
-          <main className="flex-1">
-            <Outlet />
-          </main>
+    <CompanyProvider>
+      <SidebarProvider>
+        <div className="flex min-h-screen w-full bg-background">
+          <AppSidebar />
+          <div className="flex flex-1 flex-col">
+            <header className="flex h-14 items-center justify-between border-b border-border bg-background/80 backdrop-blur px-4">
+              <div className="flex items-center gap-2">
+                <SidebarTrigger>
+                  <Menu className="h-4 w-4" />
+                </SidebarTrigger>
+                <span className="text-sm font-medium text-muted-foreground">
+                  {memberships?.[0]?.companies?.name ?? "CozinhaPro"}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <BranchSwitcher />
+                <ThemeToggle />
+              </div>
+            </header>
+            <main className="flex-1">
+              <Outlet />
+            </main>
+          </div>
         </div>
-      </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </CompanyProvider>
   );
 }
