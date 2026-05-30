@@ -141,7 +141,7 @@ function Kpi({ label, value, delta, hint, icon: Icon, tone = "default" }: KpiPro
 
 // ---------- Recharts tooltip style ----------
 const tooltipStyle = {
-  background: "hsl(var(--popover, 0 0% 100%))",
+  background: "var(--popover)",
   border: "1px solid var(--border)",
   borderRadius: 8,
   fontSize: 12,
