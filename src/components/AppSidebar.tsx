@@ -43,7 +43,7 @@ const negocio: NavItem[] = [
 ];
 
 const sistema: NavItem[] = [
-  { title: "Configurações", url: "/configuracoes", icon: Settings, disabled: true },
+  { title: "Empresa", url: "/configuracoes/empresa", icon: Settings },
 ];
 
 export function AppSidebar() {
