@@ -36,9 +36,11 @@ function Onboarding() {
     if (!user) return;
     setSubmitting(true);
     try {
+      const companyId = crypto.randomUUID();
       const { data: company, error: cErr } = await supabase
         .from("companies")
         .insert({
+          id: companyId,
           name: form.name.trim(),
           cnpj: form.cnpj || null,
           phone: form.phone || null,
@@ -56,7 +58,7 @@ function Onboarding() {
 
       const { error: mErr } = await supabase
         .from("memberships")
-        .insert({ user_id: user.id, company_id: company.id, role: "owner" });
+        .insert({ user_id: user.id, company_id: companyId, role: "owner" });
       if (mErr) throw mErr;
 
       if (logoFile) {
