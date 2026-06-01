@@ -13,7 +13,13 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
+import { Route as AuthenticatedFinanceiroRouteImport } from './routes/_authenticated/financeiro'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedFinanceiroReceberRouteImport } from './routes/_authenticated/financeiro.receber'
+import { Route as AuthenticatedFinanceiroPagarRouteImport } from './routes/_authenticated/financeiro.pagar'
+import { Route as AuthenticatedFinanceiroFluxoRouteImport } from './routes/_authenticated/financeiro.fluxo'
+import { Route as AuthenticatedFinanceiroDreRouteImport } from './routes/_authenticated/financeiro.dre'
+import { Route as AuthenticatedFinanceiroCategoriasRouteImport } from './routes/_authenticated/financeiro.categorias'
 import { Route as AuthenticatedConfiguracoesFiliaisRouteImport } from './routes/_authenticated/configuracoes.filiais'
 import { Route as AuthenticatedConfiguracoesEmpresaRouteImport } from './routes/_authenticated/configuracoes.empresa'
 
@@ -36,11 +42,46 @@ const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
   path: '/onboarding',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedFinanceiroRoute = AuthenticatedFinanceiroRouteImport.update({
+  id: '/financeiro',
+  path: '/financeiro',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedFinanceiroReceberRoute =
+  AuthenticatedFinanceiroReceberRouteImport.update({
+    id: '/receber',
+    path: '/receber',
+    getParentRoute: () => AuthenticatedFinanceiroRoute,
+  } as any)
+const AuthenticatedFinanceiroPagarRoute =
+  AuthenticatedFinanceiroPagarRouteImport.update({
+    id: '/pagar',
+    path: '/pagar',
+    getParentRoute: () => AuthenticatedFinanceiroRoute,
+  } as any)
+const AuthenticatedFinanceiroFluxoRoute =
+  AuthenticatedFinanceiroFluxoRouteImport.update({
+    id: '/fluxo',
+    path: '/fluxo',
+    getParentRoute: () => AuthenticatedFinanceiroRoute,
+  } as any)
+const AuthenticatedFinanceiroDreRoute =
+  AuthenticatedFinanceiroDreRouteImport.update({
+    id: '/dre',
+    path: '/dre',
+    getParentRoute: () => AuthenticatedFinanceiroRoute,
+  } as any)
+const AuthenticatedFinanceiroCategoriasRoute =
+  AuthenticatedFinanceiroCategoriasRouteImport.update({
+    id: '/categorias',
+    path: '/categorias',
+    getParentRoute: () => AuthenticatedFinanceiroRoute,
+  } as any)
 const AuthenticatedConfiguracoesFiliaisRoute =
   AuthenticatedConfiguracoesFiliaisRouteImport.update({
     id: '/configuracoes/filiais',
@@ -58,17 +99,29 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
+  '/financeiro/categorias': typeof AuthenticatedFinanceiroCategoriasRoute
+  '/financeiro/dre': typeof AuthenticatedFinanceiroDreRoute
+  '/financeiro/fluxo': typeof AuthenticatedFinanceiroFluxoRoute
+  '/financeiro/pagar': typeof AuthenticatedFinanceiroPagarRoute
+  '/financeiro/receber': typeof AuthenticatedFinanceiroReceberRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
+  '/financeiro/categorias': typeof AuthenticatedFinanceiroCategoriasRoute
+  '/financeiro/dre': typeof AuthenticatedFinanceiroDreRoute
+  '/financeiro/fluxo': typeof AuthenticatedFinanceiroFluxoRoute
+  '/financeiro/pagar': typeof AuthenticatedFinanceiroPagarRoute
+  '/financeiro/receber': typeof AuthenticatedFinanceiroReceberRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -76,9 +129,15 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/_authenticated/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/_authenticated/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
+  '/_authenticated/financeiro/categorias': typeof AuthenticatedFinanceiroCategoriasRoute
+  '/_authenticated/financeiro/dre': typeof AuthenticatedFinanceiroDreRoute
+  '/_authenticated/financeiro/fluxo': typeof AuthenticatedFinanceiroFluxoRoute
+  '/_authenticated/financeiro/pagar': typeof AuthenticatedFinanceiroPagarRoute
+  '/_authenticated/financeiro/receber': typeof AuthenticatedFinanceiroReceberRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -86,26 +145,44 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/dashboard'
+    | '/financeiro'
     | '/onboarding'
     | '/configuracoes/empresa'
     | '/configuracoes/filiais'
+    | '/financeiro/categorias'
+    | '/financeiro/dre'
+    | '/financeiro/fluxo'
+    | '/financeiro/pagar'
+    | '/financeiro/receber'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
     | '/dashboard'
+    | '/financeiro'
     | '/onboarding'
     | '/configuracoes/empresa'
     | '/configuracoes/filiais'
+    | '/financeiro/categorias'
+    | '/financeiro/dre'
+    | '/financeiro/fluxo'
+    | '/financeiro/pagar'
+    | '/financeiro/receber'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/login'
     | '/_authenticated/dashboard'
+    | '/_authenticated/financeiro'
     | '/_authenticated/onboarding'
     | '/_authenticated/configuracoes/empresa'
     | '/_authenticated/configuracoes/filiais'
+    | '/_authenticated/financeiro/categorias'
+    | '/_authenticated/financeiro/dre'
+    | '/_authenticated/financeiro/fluxo'
+    | '/_authenticated/financeiro/pagar'
+    | '/_authenticated/financeiro/receber'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -144,12 +221,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOnboardingRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/financeiro': {
+      id: '/_authenticated/financeiro'
+      path: '/financeiro'
+      fullPath: '/financeiro'
+      preLoaderRoute: typeof AuthenticatedFinanceiroRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/financeiro/receber': {
+      id: '/_authenticated/financeiro/receber'
+      path: '/receber'
+      fullPath: '/financeiro/receber'
+      preLoaderRoute: typeof AuthenticatedFinanceiroReceberRouteImport
+      parentRoute: typeof AuthenticatedFinanceiroRoute
+    }
+    '/_authenticated/financeiro/pagar': {
+      id: '/_authenticated/financeiro/pagar'
+      path: '/pagar'
+      fullPath: '/financeiro/pagar'
+      preLoaderRoute: typeof AuthenticatedFinanceiroPagarRouteImport
+      parentRoute: typeof AuthenticatedFinanceiroRoute
+    }
+    '/_authenticated/financeiro/fluxo': {
+      id: '/_authenticated/financeiro/fluxo'
+      path: '/fluxo'
+      fullPath: '/financeiro/fluxo'
+      preLoaderRoute: typeof AuthenticatedFinanceiroFluxoRouteImport
+      parentRoute: typeof AuthenticatedFinanceiroRoute
+    }
+    '/_authenticated/financeiro/dre': {
+      id: '/_authenticated/financeiro/dre'
+      path: '/dre'
+      fullPath: '/financeiro/dre'
+      preLoaderRoute: typeof AuthenticatedFinanceiroDreRouteImport
+      parentRoute: typeof AuthenticatedFinanceiroRoute
+    }
+    '/_authenticated/financeiro/categorias': {
+      id: '/_authenticated/financeiro/categorias'
+      path: '/categorias'
+      fullPath: '/financeiro/categorias'
+      preLoaderRoute: typeof AuthenticatedFinanceiroCategoriasRouteImport
+      parentRoute: typeof AuthenticatedFinanceiroRoute
     }
     '/_authenticated/configuracoes/filiais': {
       id: '/_authenticated/configuracoes/filiais'
@@ -168,8 +287,32 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedFinanceiroRouteChildren {
+  AuthenticatedFinanceiroCategoriasRoute: typeof AuthenticatedFinanceiroCategoriasRoute
+  AuthenticatedFinanceiroDreRoute: typeof AuthenticatedFinanceiroDreRoute
+  AuthenticatedFinanceiroFluxoRoute: typeof AuthenticatedFinanceiroFluxoRoute
+  AuthenticatedFinanceiroPagarRoute: typeof AuthenticatedFinanceiroPagarRoute
+  AuthenticatedFinanceiroReceberRoute: typeof AuthenticatedFinanceiroReceberRoute
+}
+
+const AuthenticatedFinanceiroRouteChildren: AuthenticatedFinanceiroRouteChildren =
+  {
+    AuthenticatedFinanceiroCategoriasRoute:
+      AuthenticatedFinanceiroCategoriasRoute,
+    AuthenticatedFinanceiroDreRoute: AuthenticatedFinanceiroDreRoute,
+    AuthenticatedFinanceiroFluxoRoute: AuthenticatedFinanceiroFluxoRoute,
+    AuthenticatedFinanceiroPagarRoute: AuthenticatedFinanceiroPagarRoute,
+    AuthenticatedFinanceiroReceberRoute: AuthenticatedFinanceiroReceberRoute,
+  }
+
+const AuthenticatedFinanceiroRouteWithChildren =
+  AuthenticatedFinanceiroRoute._addFileChildren(
+    AuthenticatedFinanceiroRouteChildren,
+  )
+
 interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedFinanceiroRoute: typeof AuthenticatedFinanceiroRouteWithChildren
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
   AuthenticatedConfiguracoesEmpresaRoute: typeof AuthenticatedConfiguracoesEmpresaRoute
   AuthenticatedConfiguracoesFiliaisRoute: typeof AuthenticatedConfiguracoesFiliaisRoute
@@ -177,6 +320,7 @@ interface AuthenticatedRouteChildren {
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedFinanceiroRoute: AuthenticatedFinanceiroRouteWithChildren,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
   AuthenticatedConfiguracoesEmpresaRoute:
     AuthenticatedConfiguracoesEmpresaRoute,

@@ -10,6 +10,7 @@ import {
   Settings,
   Building,
   LogOut,
+  Wallet,
 } from "lucide-react";
 
 import {
@@ -38,6 +39,7 @@ const operacao: NavItem[] = [
 ];
 
 const negocio: NavItem[] = [
+  { title: "Financeiro", url: "/financeiro/fluxo", icon: Wallet },
   { title: "Contratos", url: "/contratos", icon: FileText, disabled: true },
   { title: "Desperdício", url: "/desperdicio", icon: Trash2, disabled: true },
   { title: "Indicadores", url: "/indicadores", icon: BarChart3, disabled: true },
@@ -60,7 +62,9 @@ export function AppSidebar() {
       <SidebarGroupContent>
         <SidebarMenu>
           {items.map((item) => {
-            const active = currentPath === item.url;
+            const active = item.url.startsWith("/financeiro")
+              ? currentPath.startsWith("/financeiro")
+              : currentPath === item.url;
             return (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild isActive={active} tooltip={item.title}>
