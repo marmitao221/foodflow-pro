@@ -112,6 +112,114 @@ export type Database = {
         }
         Relationships: []
       }
+      financial_categories: {
+        Row: {
+          color: string | null
+          company_id: string
+          created_at: string
+          id: string
+          name: string
+          type: Database["public"]["Enums"]["financial_type"]
+          updated_at: string
+        }
+        Insert: {
+          color?: string | null
+          company_id: string
+          created_at?: string
+          id?: string
+          name: string
+          type: Database["public"]["Enums"]["financial_type"]
+          updated_at?: string
+        }
+        Update: {
+          color?: string | null
+          company_id?: string
+          created_at?: string
+          id?: string
+          name?: string
+          type?: Database["public"]["Enums"]["financial_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "financial_categories_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      financial_transactions: {
+        Row: {
+          amount: number
+          branch_id: string | null
+          category_id: string | null
+          company_id: string
+          created_at: string
+          description: string
+          due_date: string
+          id: string
+          notes: string | null
+          payment_date: string | null
+          status: Database["public"]["Enums"]["financial_status"]
+          type: Database["public"]["Enums"]["financial_type"]
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          branch_id?: string | null
+          category_id?: string | null
+          company_id: string
+          created_at?: string
+          description: string
+          due_date: string
+          id?: string
+          notes?: string | null
+          payment_date?: string | null
+          status?: Database["public"]["Enums"]["financial_status"]
+          type: Database["public"]["Enums"]["financial_type"]
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          branch_id?: string | null
+          category_id?: string | null
+          company_id?: string
+          created_at?: string
+          description?: string
+          due_date?: string
+          id?: string
+          notes?: string | null
+          payment_date?: string | null
+          status?: Database["public"]["Enums"]["financial_status"]
+          type?: Database["public"]["Enums"]["financial_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "financial_transactions_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financial_transactions_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "financial_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financial_transactions_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       memberships: {
         Row: {
           company_id: string
@@ -188,6 +296,8 @@ export type Database = {
     }
     Enums: {
       app_role: "owner" | "admin" | "manager" | "operator" | "finance"
+      financial_status: "pendente" | "pago" | "recebido" | "cancelado"
+      financial_type: "receita" | "despesa"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -316,6 +426,8 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["owner", "admin", "manager", "operator", "finance"],
+      financial_status: ["pendente", "pago", "recebido", "cancelado"],
+      financial_type: ["receita", "despesa"],
     },
   },
 } as const
