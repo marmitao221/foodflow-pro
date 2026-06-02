@@ -11,7 +11,9 @@ import {
   Building,
   LogOut,
   Wallet,
+  UtensilsCrossed,
 } from "lucide-react";
+
 
 import {
   Sidebar,
@@ -33,10 +35,12 @@ type NavItem = { title: string; url: string; icon: typeof LayoutDashboard; disab
 
 const operacao: NavItem[] = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
+  { title: "Restaurante", url: "/restaurante/produtos", icon: UtensilsCrossed },
   { title: "Estoque", url: "/estoque", icon: Package, disabled: true },
   { title: "Produção", url: "/producao", icon: ChefHat, disabled: true },
   { title: "Fichas Técnicas", url: "/fichas", icon: ClipboardList, disabled: true },
 ];
+
 
 const negocio: NavItem[] = [
   { title: "Financeiro", url: "/financeiro/fluxo", icon: Wallet },
