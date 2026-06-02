@@ -252,6 +252,68 @@ export type Database = {
           },
         ]
       }
+      products: {
+        Row: {
+          category: Database["public"]["Enums"]["product_category"]
+          company_id: string
+          cost: number
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean
+          min_stock: number
+          name: string
+          price: number
+          sku: string | null
+          stock: number
+          unit: string
+          updated_at: string
+        }
+        Insert: {
+          category?: Database["public"]["Enums"]["product_category"]
+          company_id: string
+          cost?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          min_stock?: number
+          name: string
+          price?: number
+          sku?: string | null
+          stock?: number
+          unit?: string
+          updated_at?: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["product_category"]
+          company_id?: string
+          cost?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          min_stock?: number
+          name?: string
+          price?: number
+          sku?: string | null
+          stock?: number
+          unit?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -276,6 +338,57 @@ export type Database = {
         }
         Relationships: []
       }
+      restaurant_tables: {
+        Row: {
+          branch_id: string | null
+          capacity: number
+          company_id: string
+          created_at: string
+          id: string
+          name: string | null
+          number: number
+          status: Database["public"]["Enums"]["table_status"]
+          updated_at: string
+        }
+        Insert: {
+          branch_id?: string | null
+          capacity?: number
+          company_id: string
+          created_at?: string
+          id?: string
+          name?: string | null
+          number: number
+          status?: Database["public"]["Enums"]["table_status"]
+          updated_at?: string
+        }
+        Update: {
+          branch_id?: string | null
+          capacity?: number
+          company_id?: string
+          created_at?: string
+          id?: string
+          name?: string | null
+          number?: number
+          status?: Database["public"]["Enums"]["table_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "restaurant_tables_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "restaurant_tables_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -298,6 +411,15 @@ export type Database = {
       app_role: "owner" | "admin" | "manager" | "operator" | "finance"
       financial_status: "pendente" | "pago" | "recebido" | "cancelado"
       financial_type: "receita" | "despesa"
+      product_category:
+        | "refeicao"
+        | "marmita"
+        | "bebida"
+        | "sobremesa"
+        | "lanche"
+        | "porcao"
+        | "adicional"
+      table_status: "livre" | "ocupada" | "reservada" | "fechamento_pendente"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -428,6 +550,16 @@ export const Constants = {
       app_role: ["owner", "admin", "manager", "operator", "finance"],
       financial_status: ["pendente", "pago", "recebido", "cancelado"],
       financial_type: ["receita", "despesa"],
+      product_category: [
+        "refeicao",
+        "marmita",
+        "bebida",
+        "sobremesa",
+        "lanche",
+        "porcao",
+        "adicional",
+      ],
+      table_status: ["livre", "ocupada", "reservada", "fechamento_pendente"],
     },
   },
 } as const
