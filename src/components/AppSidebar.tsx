@@ -66,9 +66,12 @@ export function AppSidebar() {
       <SidebarGroupContent>
         <SidebarMenu>
           {items.map((item) => {
-            const active = item.url.startsWith("/financeiro")
-              ? currentPath.startsWith("/financeiro")
-              : currentPath === item.url;
+            const prefix = item.url.split("/").slice(0, 2).join("/");
+            const active =
+              prefix === "/financeiro" || prefix === "/restaurante" || prefix === "/configuracoes"
+                ? currentPath.startsWith(prefix)
+                : currentPath === item.url;
+
             return (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild isActive={active} tooltip={item.title}>
