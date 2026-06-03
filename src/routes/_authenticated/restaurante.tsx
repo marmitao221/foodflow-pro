@@ -1,19 +1,21 @@
 import { createFileRoute, Link, Outlet, useRouterState, redirect } from "@tanstack/react-router";
-import { UtensilsCrossed, Grid3x3, ShoppingBag } from "lucide-react";
+import { UtensilsCrossed, Grid3x3, ShoppingBag, ReceiptText, Wallet } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/restaurante")({
   head: () => ({ meta: [{ title: "Restaurante — CozinhaPro" }] }),
   beforeLoad: ({ location }) => {
     if (location.pathname === "/restaurante" || location.pathname === "/restaurante/") {
-      throw redirect({ to: "/restaurante/produtos" });
+      throw redirect({ to: "/restaurante/comandas" });
     }
   },
   component: RestauranteLayout,
 });
 
 const tabs = [
-  { to: "/restaurante/produtos", label: "Produtos", icon: ShoppingBag },
+  { to: "/restaurante/comandas", label: "Comandas", icon: ReceiptText },
   { to: "/restaurante/mesas", label: "Mesas", icon: Grid3x3 },
+  { to: "/restaurante/produtos", label: "Produtos", icon: ShoppingBag },
+  { to: "/restaurante/caixa", label: "Caixa", icon: Wallet },
 ] as const;
 
 function RestauranteLayout() {

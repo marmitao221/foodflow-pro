@@ -13,6 +13,33 @@ export type ProductCategory =
 
 export type TableStatus = "livre" | "ocupada" | "reservada" | "fechamento_pendente";
 
+export type OrderType = "mesa" | "balcao" | "delivery" | "retirada";
+export type OrderStatus = "aberta" | "fechada" | "cancelada";
+export type PaymentMethod = "dinheiro" | "pix" | "debito" | "credito";
+export type CashMovementType = "sangria" | "suprimento" | "retirada" | "ajuste";
+export type CashSessionStatus = "aberto" | "fechado";
+
+export const orderTypeLabel: Record<OrderType, string> = {
+  mesa: "Mesa",
+  balcao: "Balcão",
+  delivery: "Delivery",
+  retirada: "Retirada",
+};
+
+export const paymentMethodLabel: Record<PaymentMethod, string> = {
+  dinheiro: "Dinheiro",
+  pix: "Pix",
+  debito: "Cartão débito",
+  credito: "Cartão crédito",
+};
+
+export const cashMovementLabel: Record<CashMovementType, string> = {
+  sangria: "Sangria",
+  suprimento: "Suprimento",
+  retirada: "Retirada",
+  ajuste: "Ajuste",
+};
+
 export type Product = {
   id: string;
   company_id: string;
