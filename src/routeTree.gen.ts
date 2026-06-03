@@ -18,6 +18,7 @@ import { Route as AuthenticatedFinanceiroRouteImport } from './routes/_authentic
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedRestauranteProdutosRouteImport } from './routes/_authenticated/restaurante.produtos'
 import { Route as AuthenticatedRestauranteMesasRouteImport } from './routes/_authenticated/restaurante.mesas'
+import { Route as AuthenticatedRestauranteComandasRouteImport } from './routes/_authenticated/restaurante.comandas'
 import { Route as AuthenticatedFinanceiroReceberRouteImport } from './routes/_authenticated/financeiro.receber'
 import { Route as AuthenticatedFinanceiroPagarRouteImport } from './routes/_authenticated/financeiro.pagar'
 import { Route as AuthenticatedFinanceiroFluxoRouteImport } from './routes/_authenticated/financeiro.fluxo'
@@ -71,6 +72,12 @@ const AuthenticatedRestauranteMesasRoute =
   AuthenticatedRestauranteMesasRouteImport.update({
     id: '/mesas',
     path: '/mesas',
+    getParentRoute: () => AuthenticatedRestauranteRoute,
+  } as any)
+const AuthenticatedRestauranteComandasRoute =
+  AuthenticatedRestauranteComandasRouteImport.update({
+    id: '/comandas',
+    path: '/comandas',
     getParentRoute: () => AuthenticatedRestauranteRoute,
   } as any)
 const AuthenticatedFinanceiroReceberRoute =
@@ -130,6 +137,7 @@ export interface FileRoutesByFullPath {
   '/financeiro/fluxo': typeof AuthenticatedFinanceiroFluxoRoute
   '/financeiro/pagar': typeof AuthenticatedFinanceiroPagarRoute
   '/financeiro/receber': typeof AuthenticatedFinanceiroReceberRoute
+  '/restaurante/comandas': typeof AuthenticatedRestauranteComandasRoute
   '/restaurante/mesas': typeof AuthenticatedRestauranteMesasRoute
   '/restaurante/produtos': typeof AuthenticatedRestauranteProdutosRoute
 }
@@ -147,6 +155,7 @@ export interface FileRoutesByTo {
   '/financeiro/fluxo': typeof AuthenticatedFinanceiroFluxoRoute
   '/financeiro/pagar': typeof AuthenticatedFinanceiroPagarRoute
   '/financeiro/receber': typeof AuthenticatedFinanceiroReceberRoute
+  '/restaurante/comandas': typeof AuthenticatedRestauranteComandasRoute
   '/restaurante/mesas': typeof AuthenticatedRestauranteMesasRoute
   '/restaurante/produtos': typeof AuthenticatedRestauranteProdutosRoute
 }
@@ -166,6 +175,7 @@ export interface FileRoutesById {
   '/_authenticated/financeiro/fluxo': typeof AuthenticatedFinanceiroFluxoRoute
   '/_authenticated/financeiro/pagar': typeof AuthenticatedFinanceiroPagarRoute
   '/_authenticated/financeiro/receber': typeof AuthenticatedFinanceiroReceberRoute
+  '/_authenticated/restaurante/comandas': typeof AuthenticatedRestauranteComandasRoute
   '/_authenticated/restaurante/mesas': typeof AuthenticatedRestauranteMesasRoute
   '/_authenticated/restaurante/produtos': typeof AuthenticatedRestauranteProdutosRoute
 }
@@ -185,6 +195,7 @@ export interface FileRouteTypes {
     | '/financeiro/fluxo'
     | '/financeiro/pagar'
     | '/financeiro/receber'
+    | '/restaurante/comandas'
     | '/restaurante/mesas'
     | '/restaurante/produtos'
   fileRoutesByTo: FileRoutesByTo
@@ -202,6 +213,7 @@ export interface FileRouteTypes {
     | '/financeiro/fluxo'
     | '/financeiro/pagar'
     | '/financeiro/receber'
+    | '/restaurante/comandas'
     | '/restaurante/mesas'
     | '/restaurante/produtos'
   id:
@@ -220,6 +232,7 @@ export interface FileRouteTypes {
     | '/_authenticated/financeiro/fluxo'
     | '/_authenticated/financeiro/pagar'
     | '/_authenticated/financeiro/receber'
+    | '/_authenticated/restaurante/comandas'
     | '/_authenticated/restaurante/mesas'
     | '/_authenticated/restaurante/produtos'
   fileRoutesById: FileRoutesById
@@ -293,6 +306,13 @@ declare module '@tanstack/react-router' {
       path: '/mesas'
       fullPath: '/restaurante/mesas'
       preLoaderRoute: typeof AuthenticatedRestauranteMesasRouteImport
+      parentRoute: typeof AuthenticatedRestauranteRoute
+    }
+    '/_authenticated/restaurante/comandas': {
+      id: '/_authenticated/restaurante/comandas'
+      path: '/comandas'
+      fullPath: '/restaurante/comandas'
+      preLoaderRoute: typeof AuthenticatedRestauranteComandasRouteImport
       parentRoute: typeof AuthenticatedRestauranteRoute
     }
     '/_authenticated/financeiro/receber': {
@@ -371,12 +391,15 @@ const AuthenticatedFinanceiroRouteWithChildren =
   )
 
 interface AuthenticatedRestauranteRouteChildren {
+  AuthenticatedRestauranteComandasRoute: typeof AuthenticatedRestauranteComandasRoute
   AuthenticatedRestauranteMesasRoute: typeof AuthenticatedRestauranteMesasRoute
   AuthenticatedRestauranteProdutosRoute: typeof AuthenticatedRestauranteProdutosRoute
 }
 
 const AuthenticatedRestauranteRouteChildren: AuthenticatedRestauranteRouteChildren =
   {
+    AuthenticatedRestauranteComandasRoute:
+      AuthenticatedRestauranteComandasRoute,
     AuthenticatedRestauranteMesasRoute: AuthenticatedRestauranteMesasRoute,
     AuthenticatedRestauranteProdutosRoute:
       AuthenticatedRestauranteProdutosRoute,
@@ -419,3 +442,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
