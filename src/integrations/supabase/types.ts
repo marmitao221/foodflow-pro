@@ -61,6 +61,95 @@ export type Database = {
           },
         ]
       }
+      cash_movements: {
+        Row: {
+          amount: number
+          company_id: string
+          created_at: string
+          id: string
+          reason: string | null
+          session_id: string
+          type: Database["public"]["Enums"]["cash_movement_type"]
+        }
+        Insert: {
+          amount: number
+          company_id: string
+          created_at?: string
+          id?: string
+          reason?: string | null
+          session_id: string
+          type: Database["public"]["Enums"]["cash_movement_type"]
+        }
+        Update: {
+          amount?: number
+          company_id?: string
+          created_at?: string
+          id?: string
+          reason?: string | null
+          session_id?: string
+          type?: Database["public"]["Enums"]["cash_movement_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cash_movements_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "cash_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cash_sessions: {
+        Row: {
+          branch_id: string | null
+          closed_at: string | null
+          closing_balance_calculated: number | null
+          closing_balance_informed: number | null
+          company_id: string
+          created_at: string
+          id: string
+          notes: string | null
+          opened_at: string
+          opening_balance: number
+          operator_id: string
+          operator_name: string | null
+          status: Database["public"]["Enums"]["cash_session_status"]
+          updated_at: string
+        }
+        Insert: {
+          branch_id?: string | null
+          closed_at?: string | null
+          closing_balance_calculated?: number | null
+          closing_balance_informed?: number | null
+          company_id: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          opened_at?: string
+          opening_balance?: number
+          operator_id: string
+          operator_name?: string | null
+          status?: Database["public"]["Enums"]["cash_session_status"]
+          updated_at?: string
+        }
+        Update: {
+          branch_id?: string | null
+          closed_at?: string | null
+          closing_balance_calculated?: number | null
+          closing_balance_informed?: number | null
+          company_id?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          opened_at?: string
+          opening_balance?: number
+          operator_id?: string
+          operator_name?: string | null
+          status?: Database["public"]["Enums"]["cash_session_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       companies: {
         Row: {
           city: string | null
@@ -252,6 +341,191 @@ export type Database = {
           },
         ]
       }
+      order_counters: {
+        Row: {
+          company_id: string
+          last_number: number
+        }
+        Insert: {
+          company_id: string
+          last_number?: number
+        }
+        Update: {
+          company_id?: string
+          last_number?: number
+        }
+        Relationships: []
+      }
+      order_items: {
+        Row: {
+          company_id: string
+          created_at: string
+          id: string
+          notes: string | null
+          order_id: string
+          product_id: string | null
+          product_name: string
+          quantity: number
+          total: number
+          unit_price: number
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          order_id: string
+          product_id?: string | null
+          product_name: string
+          quantity?: number
+          total?: number
+          unit_price?: number
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          order_id?: string
+          product_id?: string | null
+          product_name?: string
+          quantity?: number
+          total?: number
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_payments: {
+        Row: {
+          amount: number
+          company_id: string
+          created_at: string
+          id: string
+          method: Database["public"]["Enums"]["payment_method"]
+          order_id: string
+          session_id: string | null
+        }
+        Insert: {
+          amount: number
+          company_id: string
+          created_at?: string
+          id?: string
+          method: Database["public"]["Enums"]["payment_method"]
+          order_id: string
+          session_id?: string | null
+        }
+        Update: {
+          amount?: number
+          company_id?: string
+          created_at?: string
+          id?: string
+          method?: Database["public"]["Enums"]["payment_method"]
+          order_id?: string
+          session_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_payments_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_payments_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "cash_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          branch_id: string | null
+          closed_at: string | null
+          company_id: string
+          created_at: string
+          customer_name: string | null
+          discount: number
+          id: string
+          notes: string | null
+          number: number
+          opened_at: string
+          service_fee: number
+          status: Database["public"]["Enums"]["order_status"]
+          subtotal: number
+          table_id: string | null
+          total: number
+          type: Database["public"]["Enums"]["order_type"]
+          updated_at: string
+          waiter_name: string | null
+        }
+        Insert: {
+          branch_id?: string | null
+          closed_at?: string | null
+          company_id: string
+          created_at?: string
+          customer_name?: string | null
+          discount?: number
+          id?: string
+          notes?: string | null
+          number: number
+          opened_at?: string
+          service_fee?: number
+          status?: Database["public"]["Enums"]["order_status"]
+          subtotal?: number
+          table_id?: string | null
+          total?: number
+          type?: Database["public"]["Enums"]["order_type"]
+          updated_at?: string
+          waiter_name?: string | null
+        }
+        Update: {
+          branch_id?: string | null
+          closed_at?: string | null
+          company_id?: string
+          created_at?: string
+          customer_name?: string | null
+          discount?: number
+          id?: string
+          notes?: string | null
+          number?: number
+          opened_at?: string
+          service_fee?: number
+          status?: Database["public"]["Enums"]["order_status"]
+          subtotal?: number
+          table_id?: string | null
+          total?: number
+          type?: Database["public"]["Enums"]["order_type"]
+          updated_at?: string
+          waiter_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_table_id_fkey"
+            columns: ["table_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant_tables"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           category: Database["public"]["Enums"]["product_category"]
@@ -406,11 +680,17 @@ export type Database = {
         Args: { _company_id: string; _user_id: string }
         Returns: boolean
       }
+      next_order_number: { Args: { _company_id: string }; Returns: number }
     }
     Enums: {
       app_role: "owner" | "admin" | "manager" | "operator" | "finance"
+      cash_movement_type: "sangria" | "suprimento" | "retirada" | "ajuste"
+      cash_session_status: "aberto" | "fechado"
       financial_status: "pendente" | "pago" | "recebido" | "cancelado"
       financial_type: "receita" | "despesa"
+      order_status: "aberta" | "fechada" | "cancelada"
+      order_type: "mesa" | "balcao" | "delivery" | "retirada"
+      payment_method: "dinheiro" | "pix" | "debito" | "credito"
       product_category:
         | "refeicao"
         | "marmita"
@@ -548,8 +828,13 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["owner", "admin", "manager", "operator", "finance"],
+      cash_movement_type: ["sangria", "suprimento", "retirada", "ajuste"],
+      cash_session_status: ["aberto", "fechado"],
       financial_status: ["pendente", "pago", "recebido", "cancelado"],
       financial_type: ["receita", "despesa"],
+      order_status: ["aberta", "fechada", "cancelada"],
+      order_type: ["mesa", "balcao", "delivery", "retirada"],
+      payment_method: ["dinheiro", "pix", "debito", "credito"],
       product_category: [
         "refeicao",
         "marmita",
