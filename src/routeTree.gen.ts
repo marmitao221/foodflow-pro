@@ -28,6 +28,7 @@ import { Route as AuthenticatedFinanceiroDreRouteImport } from './routes/_authen
 import { Route as AuthenticatedFinanceiroCategoriasRouteImport } from './routes/_authenticated/financeiro.categorias'
 import { Route as AuthenticatedEstoqueItensRouteImport } from './routes/_authenticated/estoque.itens'
 import { Route as AuthenticatedEstoqueFornecedoresRouteImport } from './routes/_authenticated/estoque.fornecedores'
+import { Route as AuthenticatedEstoqueEntradasRouteImport } from './routes/_authenticated/estoque.entradas'
 import { Route as AuthenticatedEstoqueDashboardRouteImport } from './routes/_authenticated/estoque.dashboard'
 import { Route as AuthenticatedEstoqueCategoriasRouteImport } from './routes/_authenticated/estoque.categorias'
 import { Route as AuthenticatedConfiguracoesFiliaisRouteImport } from './routes/_authenticated/configuracoes.filiais'
@@ -139,6 +140,12 @@ const AuthenticatedEstoqueFornecedoresRoute =
     path: '/fornecedores',
     getParentRoute: () => AuthenticatedEstoqueRoute,
   } as any)
+const AuthenticatedEstoqueEntradasRoute =
+  AuthenticatedEstoqueEntradasRouteImport.update({
+    id: '/entradas',
+    path: '/entradas',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
 const AuthenticatedEstoqueDashboardRoute =
   AuthenticatedEstoqueDashboardRouteImport.update({
     id: '/dashboard',
@@ -176,6 +183,7 @@ export interface FileRoutesByFullPath {
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
   '/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
   '/estoque/dashboard': typeof AuthenticatedEstoqueDashboardRoute
+  '/estoque/entradas': typeof AuthenticatedEstoqueEntradasRoute
   '/estoque/fornecedores': typeof AuthenticatedEstoqueFornecedoresRoute
   '/estoque/itens': typeof AuthenticatedEstoqueItensRoute
   '/financeiro/categorias': typeof AuthenticatedFinanceiroCategoriasRoute
@@ -200,6 +208,7 @@ export interface FileRoutesByTo {
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
   '/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
   '/estoque/dashboard': typeof AuthenticatedEstoqueDashboardRoute
+  '/estoque/entradas': typeof AuthenticatedEstoqueEntradasRoute
   '/estoque/fornecedores': typeof AuthenticatedEstoqueFornecedoresRoute
   '/estoque/itens': typeof AuthenticatedEstoqueItensRoute
   '/financeiro/categorias': typeof AuthenticatedFinanceiroCategoriasRoute
@@ -226,6 +235,7 @@ export interface FileRoutesById {
   '/_authenticated/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
   '/_authenticated/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
   '/_authenticated/estoque/dashboard': typeof AuthenticatedEstoqueDashboardRoute
+  '/_authenticated/estoque/entradas': typeof AuthenticatedEstoqueEntradasRoute
   '/_authenticated/estoque/fornecedores': typeof AuthenticatedEstoqueFornecedoresRoute
   '/_authenticated/estoque/itens': typeof AuthenticatedEstoqueItensRoute
   '/_authenticated/financeiro/categorias': typeof AuthenticatedFinanceiroCategoriasRoute
@@ -252,6 +262,7 @@ export interface FileRouteTypes {
     | '/configuracoes/filiais'
     | '/estoque/categorias'
     | '/estoque/dashboard'
+    | '/estoque/entradas'
     | '/estoque/fornecedores'
     | '/estoque/itens'
     | '/financeiro/categorias'
@@ -276,6 +287,7 @@ export interface FileRouteTypes {
     | '/configuracoes/filiais'
     | '/estoque/categorias'
     | '/estoque/dashboard'
+    | '/estoque/entradas'
     | '/estoque/fornecedores'
     | '/estoque/itens'
     | '/financeiro/categorias'
@@ -301,6 +313,7 @@ export interface FileRouteTypes {
     | '/_authenticated/configuracoes/filiais'
     | '/_authenticated/estoque/categorias'
     | '/_authenticated/estoque/dashboard'
+    | '/_authenticated/estoque/entradas'
     | '/_authenticated/estoque/fornecedores'
     | '/_authenticated/estoque/itens'
     | '/_authenticated/financeiro/categorias'
@@ -455,6 +468,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEstoqueFornecedoresRouteImport
       parentRoute: typeof AuthenticatedEstoqueRoute
     }
+    '/_authenticated/estoque/entradas': {
+      id: '/_authenticated/estoque/entradas'
+      path: '/entradas'
+      fullPath: '/estoque/entradas'
+      preLoaderRoute: typeof AuthenticatedEstoqueEntradasRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
     '/_authenticated/estoque/dashboard': {
       id: '/_authenticated/estoque/dashboard'
       path: '/dashboard'
@@ -489,6 +509,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedEstoqueRouteChildren {
   AuthenticatedEstoqueCategoriasRoute: typeof AuthenticatedEstoqueCategoriasRoute
   AuthenticatedEstoqueDashboardRoute: typeof AuthenticatedEstoqueDashboardRoute
+  AuthenticatedEstoqueEntradasRoute: typeof AuthenticatedEstoqueEntradasRoute
   AuthenticatedEstoqueFornecedoresRoute: typeof AuthenticatedEstoqueFornecedoresRoute
   AuthenticatedEstoqueItensRoute: typeof AuthenticatedEstoqueItensRoute
 }
@@ -496,6 +517,7 @@ interface AuthenticatedEstoqueRouteChildren {
 const AuthenticatedEstoqueRouteChildren: AuthenticatedEstoqueRouteChildren = {
   AuthenticatedEstoqueCategoriasRoute: AuthenticatedEstoqueCategoriasRoute,
   AuthenticatedEstoqueDashboardRoute: AuthenticatedEstoqueDashboardRoute,
+  AuthenticatedEstoqueEntradasRoute: AuthenticatedEstoqueEntradasRoute,
   AuthenticatedEstoqueFornecedoresRoute: AuthenticatedEstoqueFornecedoresRoute,
   AuthenticatedEstoqueItensRoute: AuthenticatedEstoqueItensRoute,
 }
@@ -582,3 +604,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
