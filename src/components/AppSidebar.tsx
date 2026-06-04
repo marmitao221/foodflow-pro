@@ -36,7 +36,7 @@ type NavItem = { title: string; url: string; icon: typeof LayoutDashboard; disab
 const operacao: NavItem[] = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
   { title: "Restaurante", url: "/restaurante/comandas", icon: UtensilsCrossed },
-  { title: "Estoque", url: "/estoque", icon: Package, disabled: true },
+  { title: "Estoque", url: "/estoque/dashboard", icon: Package },
   { title: "Produção", url: "/producao", icon: ChefHat, disabled: true },
   { title: "Fichas Técnicas", url: "/fichas", icon: ClipboardList, disabled: true },
 ];
