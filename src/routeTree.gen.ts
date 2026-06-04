@@ -26,6 +26,7 @@ import { Route as AuthenticatedFinanceiroPagarRouteImport } from './routes/_auth
 import { Route as AuthenticatedFinanceiroFluxoRouteImport } from './routes/_authenticated/financeiro.fluxo'
 import { Route as AuthenticatedFinanceiroDreRouteImport } from './routes/_authenticated/financeiro.dre'
 import { Route as AuthenticatedFinanceiroCategoriasRouteImport } from './routes/_authenticated/financeiro.categorias'
+import { Route as AuthenticatedEstoqueSaidasRouteImport } from './routes/_authenticated/estoque.saidas'
 import { Route as AuthenticatedEstoqueItensRouteImport } from './routes/_authenticated/estoque.itens'
 import { Route as AuthenticatedEstoqueFornecedoresRouteImport } from './routes/_authenticated/estoque.fornecedores'
 import { Route as AuthenticatedEstoqueEntradasRouteImport } from './routes/_authenticated/estoque.entradas'
@@ -128,6 +129,12 @@ const AuthenticatedFinanceiroCategoriasRoute =
     path: '/categorias',
     getParentRoute: () => AuthenticatedFinanceiroRoute,
   } as any)
+const AuthenticatedEstoqueSaidasRoute =
+  AuthenticatedEstoqueSaidasRouteImport.update({
+    id: '/saidas',
+    path: '/saidas',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
 const AuthenticatedEstoqueItensRoute =
   AuthenticatedEstoqueItensRouteImport.update({
     id: '/itens',
@@ -186,6 +193,7 @@ export interface FileRoutesByFullPath {
   '/estoque/entradas': typeof AuthenticatedEstoqueEntradasRoute
   '/estoque/fornecedores': typeof AuthenticatedEstoqueFornecedoresRoute
   '/estoque/itens': typeof AuthenticatedEstoqueItensRoute
+  '/estoque/saidas': typeof AuthenticatedEstoqueSaidasRoute
   '/financeiro/categorias': typeof AuthenticatedFinanceiroCategoriasRoute
   '/financeiro/dre': typeof AuthenticatedFinanceiroDreRoute
   '/financeiro/fluxo': typeof AuthenticatedFinanceiroFluxoRoute
@@ -211,6 +219,7 @@ export interface FileRoutesByTo {
   '/estoque/entradas': typeof AuthenticatedEstoqueEntradasRoute
   '/estoque/fornecedores': typeof AuthenticatedEstoqueFornecedoresRoute
   '/estoque/itens': typeof AuthenticatedEstoqueItensRoute
+  '/estoque/saidas': typeof AuthenticatedEstoqueSaidasRoute
   '/financeiro/categorias': typeof AuthenticatedFinanceiroCategoriasRoute
   '/financeiro/dre': typeof AuthenticatedFinanceiroDreRoute
   '/financeiro/fluxo': typeof AuthenticatedFinanceiroFluxoRoute
@@ -238,6 +247,7 @@ export interface FileRoutesById {
   '/_authenticated/estoque/entradas': typeof AuthenticatedEstoqueEntradasRoute
   '/_authenticated/estoque/fornecedores': typeof AuthenticatedEstoqueFornecedoresRoute
   '/_authenticated/estoque/itens': typeof AuthenticatedEstoqueItensRoute
+  '/_authenticated/estoque/saidas': typeof AuthenticatedEstoqueSaidasRoute
   '/_authenticated/financeiro/categorias': typeof AuthenticatedFinanceiroCategoriasRoute
   '/_authenticated/financeiro/dre': typeof AuthenticatedFinanceiroDreRoute
   '/_authenticated/financeiro/fluxo': typeof AuthenticatedFinanceiroFluxoRoute
@@ -265,6 +275,7 @@ export interface FileRouteTypes {
     | '/estoque/entradas'
     | '/estoque/fornecedores'
     | '/estoque/itens'
+    | '/estoque/saidas'
     | '/financeiro/categorias'
     | '/financeiro/dre'
     | '/financeiro/fluxo'
@@ -290,6 +301,7 @@ export interface FileRouteTypes {
     | '/estoque/entradas'
     | '/estoque/fornecedores'
     | '/estoque/itens'
+    | '/estoque/saidas'
     | '/financeiro/categorias'
     | '/financeiro/dre'
     | '/financeiro/fluxo'
@@ -316,6 +328,7 @@ export interface FileRouteTypes {
     | '/_authenticated/estoque/entradas'
     | '/_authenticated/estoque/fornecedores'
     | '/_authenticated/estoque/itens'
+    | '/_authenticated/estoque/saidas'
     | '/_authenticated/financeiro/categorias'
     | '/_authenticated/financeiro/dre'
     | '/_authenticated/financeiro/fluxo'
@@ -454,6 +467,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFinanceiroCategoriasRouteImport
       parentRoute: typeof AuthenticatedFinanceiroRoute
     }
+    '/_authenticated/estoque/saidas': {
+      id: '/_authenticated/estoque/saidas'
+      path: '/saidas'
+      fullPath: '/estoque/saidas'
+      preLoaderRoute: typeof AuthenticatedEstoqueSaidasRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
     '/_authenticated/estoque/itens': {
       id: '/_authenticated/estoque/itens'
       path: '/itens'
@@ -512,6 +532,7 @@ interface AuthenticatedEstoqueRouteChildren {
   AuthenticatedEstoqueEntradasRoute: typeof AuthenticatedEstoqueEntradasRoute
   AuthenticatedEstoqueFornecedoresRoute: typeof AuthenticatedEstoqueFornecedoresRoute
   AuthenticatedEstoqueItensRoute: typeof AuthenticatedEstoqueItensRoute
+  AuthenticatedEstoqueSaidasRoute: typeof AuthenticatedEstoqueSaidasRoute
 }
 
 const AuthenticatedEstoqueRouteChildren: AuthenticatedEstoqueRouteChildren = {
@@ -520,6 +541,7 @@ const AuthenticatedEstoqueRouteChildren: AuthenticatedEstoqueRouteChildren = {
   AuthenticatedEstoqueEntradasRoute: AuthenticatedEstoqueEntradasRoute,
   AuthenticatedEstoqueFornecedoresRoute: AuthenticatedEstoqueFornecedoresRoute,
   AuthenticatedEstoqueItensRoute: AuthenticatedEstoqueItensRoute,
+  AuthenticatedEstoqueSaidasRoute: AuthenticatedEstoqueSaidasRoute,
 }
 
 const AuthenticatedEstoqueRouteWithChildren =
