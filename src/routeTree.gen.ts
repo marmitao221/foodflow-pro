@@ -15,6 +15,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRestauranteRouteImport } from './routes/_authenticated/restaurante'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedFinanceiroRouteImport } from './routes/_authenticated/financeiro'
+import { Route as AuthenticatedEstoqueRouteImport } from './routes/_authenticated/estoque'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedRestauranteProdutosRouteImport } from './routes/_authenticated/restaurante.produtos'
 import { Route as AuthenticatedRestauranteMesasRouteImport } from './routes/_authenticated/restaurante.mesas'
@@ -25,6 +26,12 @@ import { Route as AuthenticatedFinanceiroPagarRouteImport } from './routes/_auth
 import { Route as AuthenticatedFinanceiroFluxoRouteImport } from './routes/_authenticated/financeiro.fluxo'
 import { Route as AuthenticatedFinanceiroDreRouteImport } from './routes/_authenticated/financeiro.dre'
 import { Route as AuthenticatedFinanceiroCategoriasRouteImport } from './routes/_authenticated/financeiro.categorias'
+import { Route as AuthenticatedEstoqueSaidasRouteImport } from './routes/_authenticated/estoque.saidas'
+import { Route as AuthenticatedEstoqueItensRouteImport } from './routes/_authenticated/estoque.itens'
+import { Route as AuthenticatedEstoqueFornecedoresRouteImport } from './routes/_authenticated/estoque.fornecedores'
+import { Route as AuthenticatedEstoqueEntradasRouteImport } from './routes/_authenticated/estoque.entradas'
+import { Route as AuthenticatedEstoqueDashboardRouteImport } from './routes/_authenticated/estoque.dashboard'
+import { Route as AuthenticatedEstoqueCategoriasRouteImport } from './routes/_authenticated/estoque.categorias'
 import { Route as AuthenticatedConfiguracoesFiliaisRouteImport } from './routes/_authenticated/configuracoes.filiais'
 import { Route as AuthenticatedConfiguracoesEmpresaRouteImport } from './routes/_authenticated/configuracoes.empresa'
 
@@ -56,6 +63,11 @@ const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
 const AuthenticatedFinanceiroRoute = AuthenticatedFinanceiroRouteImport.update({
   id: '/financeiro',
   path: '/financeiro',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedEstoqueRoute = AuthenticatedEstoqueRouteImport.update({
+  id: '/estoque',
+  path: '/estoque',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
@@ -117,6 +129,42 @@ const AuthenticatedFinanceiroCategoriasRoute =
     path: '/categorias',
     getParentRoute: () => AuthenticatedFinanceiroRoute,
   } as any)
+const AuthenticatedEstoqueSaidasRoute =
+  AuthenticatedEstoqueSaidasRouteImport.update({
+    id: '/saidas',
+    path: '/saidas',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueItensRoute =
+  AuthenticatedEstoqueItensRouteImport.update({
+    id: '/itens',
+    path: '/itens',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueFornecedoresRoute =
+  AuthenticatedEstoqueFornecedoresRouteImport.update({
+    id: '/fornecedores',
+    path: '/fornecedores',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueEntradasRoute =
+  AuthenticatedEstoqueEntradasRouteImport.update({
+    id: '/entradas',
+    path: '/entradas',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueDashboardRoute =
+  AuthenticatedEstoqueDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueCategoriasRoute =
+  AuthenticatedEstoqueCategoriasRouteImport.update({
+    id: '/categorias',
+    path: '/categorias',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
 const AuthenticatedConfiguracoesFiliaisRoute =
   AuthenticatedConfiguracoesFiliaisRouteImport.update({
     id: '/configuracoes/filiais',
@@ -134,11 +182,18 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/estoque': typeof AuthenticatedEstoqueRouteWithChildren
   '/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/restaurante': typeof AuthenticatedRestauranteRouteWithChildren
   '/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
+  '/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
+  '/estoque/dashboard': typeof AuthenticatedEstoqueDashboardRoute
+  '/estoque/entradas': typeof AuthenticatedEstoqueEntradasRoute
+  '/estoque/fornecedores': typeof AuthenticatedEstoqueFornecedoresRoute
+  '/estoque/itens': typeof AuthenticatedEstoqueItensRoute
+  '/estoque/saidas': typeof AuthenticatedEstoqueSaidasRoute
   '/financeiro/categorias': typeof AuthenticatedFinanceiroCategoriasRoute
   '/financeiro/dre': typeof AuthenticatedFinanceiroDreRoute
   '/financeiro/fluxo': typeof AuthenticatedFinanceiroFluxoRoute
@@ -153,11 +208,18 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/estoque': typeof AuthenticatedEstoqueRouteWithChildren
   '/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/restaurante': typeof AuthenticatedRestauranteRouteWithChildren
   '/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
+  '/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
+  '/estoque/dashboard': typeof AuthenticatedEstoqueDashboardRoute
+  '/estoque/entradas': typeof AuthenticatedEstoqueEntradasRoute
+  '/estoque/fornecedores': typeof AuthenticatedEstoqueFornecedoresRoute
+  '/estoque/itens': typeof AuthenticatedEstoqueItensRoute
+  '/estoque/saidas': typeof AuthenticatedEstoqueSaidasRoute
   '/financeiro/categorias': typeof AuthenticatedFinanceiroCategoriasRoute
   '/financeiro/dre': typeof AuthenticatedFinanceiroDreRoute
   '/financeiro/fluxo': typeof AuthenticatedFinanceiroFluxoRoute
@@ -174,11 +236,18 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/estoque': typeof AuthenticatedEstoqueRouteWithChildren
   '/_authenticated/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/_authenticated/restaurante': typeof AuthenticatedRestauranteRouteWithChildren
   '/_authenticated/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/_authenticated/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
+  '/_authenticated/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
+  '/_authenticated/estoque/dashboard': typeof AuthenticatedEstoqueDashboardRoute
+  '/_authenticated/estoque/entradas': typeof AuthenticatedEstoqueEntradasRoute
+  '/_authenticated/estoque/fornecedores': typeof AuthenticatedEstoqueFornecedoresRoute
+  '/_authenticated/estoque/itens': typeof AuthenticatedEstoqueItensRoute
+  '/_authenticated/estoque/saidas': typeof AuthenticatedEstoqueSaidasRoute
   '/_authenticated/financeiro/categorias': typeof AuthenticatedFinanceiroCategoriasRoute
   '/_authenticated/financeiro/dre': typeof AuthenticatedFinanceiroDreRoute
   '/_authenticated/financeiro/fluxo': typeof AuthenticatedFinanceiroFluxoRoute
@@ -195,11 +264,18 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/dashboard'
+    | '/estoque'
     | '/financeiro'
     | '/onboarding'
     | '/restaurante'
     | '/configuracoes/empresa'
     | '/configuracoes/filiais'
+    | '/estoque/categorias'
+    | '/estoque/dashboard'
+    | '/estoque/entradas'
+    | '/estoque/fornecedores'
+    | '/estoque/itens'
+    | '/estoque/saidas'
     | '/financeiro/categorias'
     | '/financeiro/dre'
     | '/financeiro/fluxo'
@@ -214,11 +290,18 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/dashboard'
+    | '/estoque'
     | '/financeiro'
     | '/onboarding'
     | '/restaurante'
     | '/configuracoes/empresa'
     | '/configuracoes/filiais'
+    | '/estoque/categorias'
+    | '/estoque/dashboard'
+    | '/estoque/entradas'
+    | '/estoque/fornecedores'
+    | '/estoque/itens'
+    | '/estoque/saidas'
     | '/financeiro/categorias'
     | '/financeiro/dre'
     | '/financeiro/fluxo'
@@ -234,11 +317,18 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/login'
     | '/_authenticated/dashboard'
+    | '/_authenticated/estoque'
     | '/_authenticated/financeiro'
     | '/_authenticated/onboarding'
     | '/_authenticated/restaurante'
     | '/_authenticated/configuracoes/empresa'
     | '/_authenticated/configuracoes/filiais'
+    | '/_authenticated/estoque/categorias'
+    | '/_authenticated/estoque/dashboard'
+    | '/_authenticated/estoque/entradas'
+    | '/_authenticated/estoque/fornecedores'
+    | '/_authenticated/estoque/itens'
+    | '/_authenticated/estoque/saidas'
     | '/_authenticated/financeiro/categorias'
     | '/_authenticated/financeiro/dre'
     | '/_authenticated/financeiro/fluxo'
@@ -298,6 +388,13 @@ declare module '@tanstack/react-router' {
       path: '/financeiro'
       fullPath: '/financeiro'
       preLoaderRoute: typeof AuthenticatedFinanceiroRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/estoque': {
+      id: '/_authenticated/estoque'
+      path: '/estoque'
+      fullPath: '/estoque'
+      preLoaderRoute: typeof AuthenticatedEstoqueRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/dashboard': {
@@ -370,6 +467,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFinanceiroCategoriasRouteImport
       parentRoute: typeof AuthenticatedFinanceiroRoute
     }
+    '/_authenticated/estoque/saidas': {
+      id: '/_authenticated/estoque/saidas'
+      path: '/saidas'
+      fullPath: '/estoque/saidas'
+      preLoaderRoute: typeof AuthenticatedEstoqueSaidasRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/itens': {
+      id: '/_authenticated/estoque/itens'
+      path: '/itens'
+      fullPath: '/estoque/itens'
+      preLoaderRoute: typeof AuthenticatedEstoqueItensRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/fornecedores': {
+      id: '/_authenticated/estoque/fornecedores'
+      path: '/fornecedores'
+      fullPath: '/estoque/fornecedores'
+      preLoaderRoute: typeof AuthenticatedEstoqueFornecedoresRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/entradas': {
+      id: '/_authenticated/estoque/entradas'
+      path: '/entradas'
+      fullPath: '/estoque/entradas'
+      preLoaderRoute: typeof AuthenticatedEstoqueEntradasRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/dashboard': {
+      id: '/_authenticated/estoque/dashboard'
+      path: '/dashboard'
+      fullPath: '/estoque/dashboard'
+      preLoaderRoute: typeof AuthenticatedEstoqueDashboardRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/categorias': {
+      id: '/_authenticated/estoque/categorias'
+      path: '/categorias'
+      fullPath: '/estoque/categorias'
+      preLoaderRoute: typeof AuthenticatedEstoqueCategoriasRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
     '/_authenticated/configuracoes/filiais': {
       id: '/_authenticated/configuracoes/filiais'
       path: '/configuracoes/filiais'
@@ -386,6 +525,27 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AuthenticatedEstoqueRouteChildren {
+  AuthenticatedEstoqueCategoriasRoute: typeof AuthenticatedEstoqueCategoriasRoute
+  AuthenticatedEstoqueDashboardRoute: typeof AuthenticatedEstoqueDashboardRoute
+  AuthenticatedEstoqueEntradasRoute: typeof AuthenticatedEstoqueEntradasRoute
+  AuthenticatedEstoqueFornecedoresRoute: typeof AuthenticatedEstoqueFornecedoresRoute
+  AuthenticatedEstoqueItensRoute: typeof AuthenticatedEstoqueItensRoute
+  AuthenticatedEstoqueSaidasRoute: typeof AuthenticatedEstoqueSaidasRoute
+}
+
+const AuthenticatedEstoqueRouteChildren: AuthenticatedEstoqueRouteChildren = {
+  AuthenticatedEstoqueCategoriasRoute: AuthenticatedEstoqueCategoriasRoute,
+  AuthenticatedEstoqueDashboardRoute: AuthenticatedEstoqueDashboardRoute,
+  AuthenticatedEstoqueEntradasRoute: AuthenticatedEstoqueEntradasRoute,
+  AuthenticatedEstoqueFornecedoresRoute: AuthenticatedEstoqueFornecedoresRoute,
+  AuthenticatedEstoqueItensRoute: AuthenticatedEstoqueItensRoute,
+  AuthenticatedEstoqueSaidasRoute: AuthenticatedEstoqueSaidasRoute,
+}
+
+const AuthenticatedEstoqueRouteWithChildren =
+  AuthenticatedEstoqueRoute._addFileChildren(AuthenticatedEstoqueRouteChildren)
 
 interface AuthenticatedFinanceiroRouteChildren {
   AuthenticatedFinanceiroCategoriasRoute: typeof AuthenticatedFinanceiroCategoriasRoute
@@ -434,6 +594,7 @@ const AuthenticatedRestauranteRouteWithChildren =
 
 interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedEstoqueRoute: typeof AuthenticatedEstoqueRouteWithChildren
   AuthenticatedFinanceiroRoute: typeof AuthenticatedFinanceiroRouteWithChildren
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
   AuthenticatedRestauranteRoute: typeof AuthenticatedRestauranteRouteWithChildren
@@ -443,6 +604,7 @@ interface AuthenticatedRouteChildren {
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedEstoqueRoute: AuthenticatedEstoqueRouteWithChildren,
   AuthenticatedFinanceiroRoute: AuthenticatedFinanceiroRouteWithChildren,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
   AuthenticatedRestauranteRoute: AuthenticatedRestauranteRouteWithChildren,
