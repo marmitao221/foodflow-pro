@@ -663,6 +663,240 @@ export type Database = {
           },
         ]
       }
+      stock_categories: {
+        Row: {
+          company_id: string
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stock_categories_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      stock_items: {
+        Row: {
+          category_id: string | null
+          company_id: string
+          created_at: string
+          expiry_date: string | null
+          id: string
+          is_active: boolean
+          min_stock: number
+          name: string
+          notes: string | null
+          quantity: number
+          sku: string | null
+          supplier_id: string | null
+          unit: string
+          unit_value: number
+          updated_at: string
+        }
+        Insert: {
+          category_id?: string | null
+          company_id: string
+          created_at?: string
+          expiry_date?: string | null
+          id?: string
+          is_active?: boolean
+          min_stock?: number
+          name: string
+          notes?: string | null
+          quantity?: number
+          sku?: string | null
+          supplier_id?: string | null
+          unit?: string
+          unit_value?: number
+          updated_at?: string
+        }
+        Update: {
+          category_id?: string | null
+          company_id?: string
+          created_at?: string
+          expiry_date?: string | null
+          id?: string
+          is_active?: boolean
+          min_stock?: number
+          name?: string
+          notes?: string | null
+          quantity?: number
+          sku?: string | null
+          supplier_id?: string | null
+          unit?: string
+          unit_value?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stock_items_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "stock_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stock_items_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stock_items_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      stock_movements: {
+        Row: {
+          company_id: string
+          created_at: string
+          id: string
+          item_id: string
+          movement_date: string
+          quantity: number
+          reason: string | null
+          reference: string | null
+          supplier_id: string | null
+          total_value: number
+          type: Database["public"]["Enums"]["stock_movement_type"]
+          unit_value: number
+          user_id: string | null
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          id?: string
+          item_id: string
+          movement_date?: string
+          quantity: number
+          reason?: string | null
+          reference?: string | null
+          supplier_id?: string | null
+          total_value?: number
+          type: Database["public"]["Enums"]["stock_movement_type"]
+          unit_value?: number
+          user_id?: string | null
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          id?: string
+          item_id?: string
+          movement_date?: string
+          quantity?: number
+          reason?: string | null
+          reference?: string | null
+          supplier_id?: string | null
+          total_value?: number
+          type?: Database["public"]["Enums"]["stock_movement_type"]
+          unit_value?: number
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stock_movements_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stock_movements_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "stock_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stock_movements_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      suppliers: {
+        Row: {
+          address: string | null
+          cnpj: string | null
+          company_id: string
+          contact_name: string | null
+          created_at: string
+          email: string | null
+          id: string
+          is_active: boolean
+          name: string
+          notes: string | null
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          cnpj?: string | null
+          company_id: string
+          contact_name?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          notes?: string | null
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          cnpj?: string | null
+          company_id?: string
+          contact_name?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "suppliers_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -699,6 +933,7 @@ export type Database = {
         | "lanche"
         | "porcao"
         | "adicional"
+      stock_movement_type: "entrada" | "saida" | "ajuste"
       table_status: "livre" | "ocupada" | "reservada" | "fechamento_pendente"
     }
     CompositeTypes: {
@@ -844,6 +1079,7 @@ export const Constants = {
         "porcao",
         "adicional",
       ],
+      stock_movement_type: ["entrada", "saida", "ajuste"],
       table_status: ["livre", "ocupada", "reservada", "fechamento_pendente"],
     },
   },
