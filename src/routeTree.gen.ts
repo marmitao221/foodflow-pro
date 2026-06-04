@@ -15,6 +15,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRestauranteRouteImport } from './routes/_authenticated/restaurante'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedFinanceiroRouteImport } from './routes/_authenticated/financeiro'
+import { Route as AuthenticatedEstoqueRouteImport } from './routes/_authenticated/estoque'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedRestauranteProdutosRouteImport } from './routes/_authenticated/restaurante.produtos'
 import { Route as AuthenticatedRestauranteMesasRouteImport } from './routes/_authenticated/restaurante.mesas'
@@ -56,6 +57,11 @@ const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
 const AuthenticatedFinanceiroRoute = AuthenticatedFinanceiroRouteImport.update({
   id: '/financeiro',
   path: '/financeiro',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedEstoqueRoute = AuthenticatedEstoqueRouteImport.update({
+  id: '/estoque',
+  path: '/estoque',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
@@ -134,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/estoque': typeof AuthenticatedEstoqueRoute
   '/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/restaurante': typeof AuthenticatedRestauranteRouteWithChildren
@@ -153,6 +160,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/estoque': typeof AuthenticatedEstoqueRoute
   '/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/restaurante': typeof AuthenticatedRestauranteRouteWithChildren
@@ -174,6 +182,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/estoque': typeof AuthenticatedEstoqueRoute
   '/_authenticated/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/_authenticated/restaurante': typeof AuthenticatedRestauranteRouteWithChildren
@@ -195,6 +204,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/dashboard'
+    | '/estoque'
     | '/financeiro'
     | '/onboarding'
     | '/restaurante'
@@ -214,6 +224,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/dashboard'
+    | '/estoque'
     | '/financeiro'
     | '/onboarding'
     | '/restaurante'
@@ -234,6 +245,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/login'
     | '/_authenticated/dashboard'
+    | '/_authenticated/estoque'
     | '/_authenticated/financeiro'
     | '/_authenticated/onboarding'
     | '/_authenticated/restaurante'
@@ -298,6 +310,13 @@ declare module '@tanstack/react-router' {
       path: '/financeiro'
       fullPath: '/financeiro'
       preLoaderRoute: typeof AuthenticatedFinanceiroRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/estoque': {
+      id: '/_authenticated/estoque'
+      path: '/estoque'
+      fullPath: '/estoque'
+      preLoaderRoute: typeof AuthenticatedEstoqueRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/dashboard': {
@@ -434,6 +453,7 @@ const AuthenticatedRestauranteRouteWithChildren =
 
 interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedEstoqueRoute: typeof AuthenticatedEstoqueRoute
   AuthenticatedFinanceiroRoute: typeof AuthenticatedFinanceiroRouteWithChildren
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
   AuthenticatedRestauranteRoute: typeof AuthenticatedRestauranteRouteWithChildren
@@ -443,6 +463,7 @@ interface AuthenticatedRouteChildren {
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedEstoqueRoute: AuthenticatedEstoqueRoute,
   AuthenticatedFinanceiroRoute: AuthenticatedFinanceiroRouteWithChildren,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
   AuthenticatedRestauranteRoute: AuthenticatedRestauranteRouteWithChildren,
@@ -464,3 +485,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
