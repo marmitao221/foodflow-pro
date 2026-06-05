@@ -38,7 +38,7 @@ const operacao: NavItem[] = [
   { title: "Restaurante", url: "/restaurante/comandas", icon: UtensilsCrossed },
   { title: "Estoque", url: "/estoque/dashboard", icon: Package },
   { title: "Produção", url: "/producao", icon: ChefHat, disabled: true },
-  { title: "Fichas Técnicas", url: "/fichas", icon: ClipboardList, disabled: true },
+  { title: "Fichas Técnicas", url: "/fichas", icon: ClipboardList },
 ];
 
 
