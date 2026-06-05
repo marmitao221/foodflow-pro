@@ -620,7 +620,7 @@ function RecipeDetailDialog({
     if (item) {
       setIname(item.name);
       setIunit(item.unit);
-      setIcost(String(item.unit_cost ?? 0));
+      setIcost(String(item.unit_value ?? 0));
     }
   }
 
