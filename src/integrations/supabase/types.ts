@@ -612,6 +612,141 @@ export type Database = {
         }
         Relationships: []
       }
+      recipe_ingredients: {
+        Row: {
+          created_at: string
+          id: string
+          item_id: string | null
+          name: string
+          notes: string | null
+          quantity: number
+          recipe_id: string
+          total_cost: number
+          unit: string
+          unit_cost: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          item_id?: string | null
+          name: string
+          notes?: string | null
+          quantity?: number
+          recipe_id: string
+          total_cost?: number
+          unit?: string
+          unit_cost?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          item_id?: string | null
+          name?: string
+          notes?: string | null
+          quantity?: number
+          recipe_id?: string
+          total_cost?: number
+          unit?: string
+          unit_cost?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recipe_ingredients_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "stock_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recipe_ingredients_recipe_id_fkey"
+            columns: ["recipe_id"]
+            isOneToOne: false
+            referencedRelation: "recipes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      recipes: {
+        Row: {
+          cmv_pct: number
+          company_id: string
+          cost_per_portion: number
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          margin_pct: number
+          name: string
+          notes: string | null
+          product_id: string | null
+          sale_price: number
+          suggested_price: number
+          target_margin_pct: number
+          total_cost: number
+          updated_at: string
+          yield_qty: number
+          yield_unit: string
+        }
+        Insert: {
+          cmv_pct?: number
+          company_id: string
+          cost_per_portion?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          margin_pct?: number
+          name: string
+          notes?: string | null
+          product_id?: string | null
+          sale_price?: number
+          suggested_price?: number
+          target_margin_pct?: number
+          total_cost?: number
+          updated_at?: string
+          yield_qty?: number
+          yield_unit?: string
+        }
+        Update: {
+          cmv_pct?: number
+          company_id?: string
+          cost_per_portion?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          margin_pct?: number
+          name?: string
+          notes?: string | null
+          product_id?: string | null
+          sale_price?: number
+          suggested_price?: number
+          target_margin_pct?: number
+          total_cost?: number
+          updated_at?: string
+          yield_qty?: number
+          yield_unit?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recipes_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recipes_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       restaurant_tables: {
         Row: {
           branch_id: string | null
