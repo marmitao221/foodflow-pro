@@ -59,7 +59,7 @@ export const Route = createFileRoute("/_authenticated/fichas")({
   component: FichasPage,
 });
 
-type StockItemLite = { id: string; name: string; unit: string; unit_cost: number };
+type StockItemLite = { id: string; name: string; unit: string; unit_value: number };
 type ProductLite = { id: string; name: string; price: number };
 
 function FichasPage() {
@@ -545,7 +545,7 @@ function RecipeDetailDialog({
     queryFn: async () => {
       const { data } = await supabase
         .from("stock_items")
-        .select("id, name, unit, unit_cost")
+        .select("id, name, unit, unit_value")
         .eq("company_id", companyId!)
         .order("name");
       return (data ?? []) as StockItemLite[];
