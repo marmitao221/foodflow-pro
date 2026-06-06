@@ -12,6 +12,7 @@ import {
   LogOut,
   Wallet,
   UtensilsCrossed,
+  Users,
 } from "lucide-react";
 
 
@@ -39,6 +40,7 @@ const operacao: NavItem[] = [
   { title: "Estoque", url: "/estoque/dashboard", icon: Package },
   { title: "Produção", url: "/producao", icon: ChefHat, disabled: true },
   { title: "Fichas Técnicas", url: "/fichas", icon: ClipboardList },
+  { title: "RH", url: "/rh/dashboard", icon: Users },
 ];
 
 
@@ -68,7 +70,7 @@ export function AppSidebar() {
           {items.map((item) => {
             const prefix = item.url.split("/").slice(0, 2).join("/");
             const active =
-              prefix === "/financeiro" || prefix === "/restaurante" || prefix === "/estoque" || prefix === "/configuracoes"
+              prefix === "/financeiro" || prefix === "/restaurante" || prefix === "/estoque" || prefix === "/rh" || prefix === "/configuracoes"
                 ? currentPath.startsWith(prefix)
                 : currentPath === item.url;
 
