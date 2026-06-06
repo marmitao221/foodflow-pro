@@ -70,7 +70,7 @@ export function AppSidebar() {
           {items.map((item) => {
             const prefix = item.url.split("/").slice(0, 2).join("/");
             const active =
-              prefix === "/financeiro" || prefix === "/restaurante" || prefix === "/estoque" || prefix === "/configuracoes"
+              prefix === "/financeiro" || prefix === "/restaurante" || prefix === "/estoque" || prefix === "/rh" || prefix === "/configuracoes"
                 ? currentPath.startsWith(prefix)
                 : currentPath === item.url;
 
