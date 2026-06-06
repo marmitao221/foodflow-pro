@@ -12,12 +12,18 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRhRouteImport } from './routes/_authenticated/rh'
 import { Route as AuthenticatedRestauranteRouteImport } from './routes/_authenticated/restaurante'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedFinanceiroRouteImport } from './routes/_authenticated/financeiro'
 import { Route as AuthenticatedFichasRouteImport } from './routes/_authenticated/fichas'
 import { Route as AuthenticatedEstoqueRouteImport } from './routes/_authenticated/estoque'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedRhPontoRouteImport } from './routes/_authenticated/rh.ponto'
+import { Route as AuthenticatedRhFuncionariosRouteImport } from './routes/_authenticated/rh.funcionarios'
+import { Route as AuthenticatedRhEscalasRouteImport } from './routes/_authenticated/rh.escalas'
+import { Route as AuthenticatedRhDashboardRouteImport } from './routes/_authenticated/rh.dashboard'
+import { Route as AuthenticatedRhCargosRouteImport } from './routes/_authenticated/rh.cargos'
 import { Route as AuthenticatedRestauranteProdutosRouteImport } from './routes/_authenticated/restaurante.produtos'
 import { Route as AuthenticatedRestauranteMesasRouteImport } from './routes/_authenticated/restaurante.mesas'
 import { Route as AuthenticatedRestauranteComandasRouteImport } from './routes/_authenticated/restaurante.comandas'
@@ -50,6 +56,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRhRoute = AuthenticatedRhRouteImport.update({
+  id: '/rh',
+  path: '/rh',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedRestauranteRoute =
   AuthenticatedRestauranteRouteImport.update({
     id: '/restaurante',
@@ -80,6 +91,33 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedRhPontoRoute = AuthenticatedRhPontoRouteImport.update({
+  id: '/ponto',
+  path: '/ponto',
+  getParentRoute: () => AuthenticatedRhRoute,
+} as any)
+const AuthenticatedRhFuncionariosRoute =
+  AuthenticatedRhFuncionariosRouteImport.update({
+    id: '/funcionarios',
+    path: '/funcionarios',
+    getParentRoute: () => AuthenticatedRhRoute,
+  } as any)
+const AuthenticatedRhEscalasRoute = AuthenticatedRhEscalasRouteImport.update({
+  id: '/escalas',
+  path: '/escalas',
+  getParentRoute: () => AuthenticatedRhRoute,
+} as any)
+const AuthenticatedRhDashboardRoute =
+  AuthenticatedRhDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => AuthenticatedRhRoute,
+  } as any)
+const AuthenticatedRhCargosRoute = AuthenticatedRhCargosRouteImport.update({
+  id: '/cargos',
+  path: '/cargos',
+  getParentRoute: () => AuthenticatedRhRoute,
 } as any)
 const AuthenticatedRestauranteProdutosRoute =
   AuthenticatedRestauranteProdutosRouteImport.update({
@@ -193,6 +231,7 @@ export interface FileRoutesByFullPath {
   '/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/restaurante': typeof AuthenticatedRestauranteRouteWithChildren
+  '/rh': typeof AuthenticatedRhRouteWithChildren
   '/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
   '/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
@@ -210,6 +249,11 @@ export interface FileRoutesByFullPath {
   '/restaurante/comandas': typeof AuthenticatedRestauranteComandasRoute
   '/restaurante/mesas': typeof AuthenticatedRestauranteMesasRoute
   '/restaurante/produtos': typeof AuthenticatedRestauranteProdutosRoute
+  '/rh/cargos': typeof AuthenticatedRhCargosRoute
+  '/rh/dashboard': typeof AuthenticatedRhDashboardRoute
+  '/rh/escalas': typeof AuthenticatedRhEscalasRoute
+  '/rh/funcionarios': typeof AuthenticatedRhFuncionariosRoute
+  '/rh/ponto': typeof AuthenticatedRhPontoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -220,6 +264,7 @@ export interface FileRoutesByTo {
   '/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/restaurante': typeof AuthenticatedRestauranteRouteWithChildren
+  '/rh': typeof AuthenticatedRhRouteWithChildren
   '/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
   '/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
@@ -237,6 +282,11 @@ export interface FileRoutesByTo {
   '/restaurante/comandas': typeof AuthenticatedRestauranteComandasRoute
   '/restaurante/mesas': typeof AuthenticatedRestauranteMesasRoute
   '/restaurante/produtos': typeof AuthenticatedRestauranteProdutosRoute
+  '/rh/cargos': typeof AuthenticatedRhCargosRoute
+  '/rh/dashboard': typeof AuthenticatedRhDashboardRoute
+  '/rh/escalas': typeof AuthenticatedRhEscalasRoute
+  '/rh/funcionarios': typeof AuthenticatedRhFuncionariosRoute
+  '/rh/ponto': typeof AuthenticatedRhPontoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -249,6 +299,7 @@ export interface FileRoutesById {
   '/_authenticated/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/_authenticated/restaurante': typeof AuthenticatedRestauranteRouteWithChildren
+  '/_authenticated/rh': typeof AuthenticatedRhRouteWithChildren
   '/_authenticated/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/_authenticated/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
   '/_authenticated/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
@@ -266,6 +317,11 @@ export interface FileRoutesById {
   '/_authenticated/restaurante/comandas': typeof AuthenticatedRestauranteComandasRoute
   '/_authenticated/restaurante/mesas': typeof AuthenticatedRestauranteMesasRoute
   '/_authenticated/restaurante/produtos': typeof AuthenticatedRestauranteProdutosRoute
+  '/_authenticated/rh/cargos': typeof AuthenticatedRhCargosRoute
+  '/_authenticated/rh/dashboard': typeof AuthenticatedRhDashboardRoute
+  '/_authenticated/rh/escalas': typeof AuthenticatedRhEscalasRoute
+  '/_authenticated/rh/funcionarios': typeof AuthenticatedRhFuncionariosRoute
+  '/_authenticated/rh/ponto': typeof AuthenticatedRhPontoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -278,6 +334,7 @@ export interface FileRouteTypes {
     | '/financeiro'
     | '/onboarding'
     | '/restaurante'
+    | '/rh'
     | '/configuracoes/empresa'
     | '/configuracoes/filiais'
     | '/estoque/categorias'
@@ -295,6 +352,11 @@ export interface FileRouteTypes {
     | '/restaurante/comandas'
     | '/restaurante/mesas'
     | '/restaurante/produtos'
+    | '/rh/cargos'
+    | '/rh/dashboard'
+    | '/rh/escalas'
+    | '/rh/funcionarios'
+    | '/rh/ponto'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -305,6 +367,7 @@ export interface FileRouteTypes {
     | '/financeiro'
     | '/onboarding'
     | '/restaurante'
+    | '/rh'
     | '/configuracoes/empresa'
     | '/configuracoes/filiais'
     | '/estoque/categorias'
@@ -322,6 +385,11 @@ export interface FileRouteTypes {
     | '/restaurante/comandas'
     | '/restaurante/mesas'
     | '/restaurante/produtos'
+    | '/rh/cargos'
+    | '/rh/dashboard'
+    | '/rh/escalas'
+    | '/rh/funcionarios'
+    | '/rh/ponto'
   id:
     | '__root__'
     | '/'
@@ -333,6 +401,7 @@ export interface FileRouteTypes {
     | '/_authenticated/financeiro'
     | '/_authenticated/onboarding'
     | '/_authenticated/restaurante'
+    | '/_authenticated/rh'
     | '/_authenticated/configuracoes/empresa'
     | '/_authenticated/configuracoes/filiais'
     | '/_authenticated/estoque/categorias'
@@ -350,6 +419,11 @@ export interface FileRouteTypes {
     | '/_authenticated/restaurante/comandas'
     | '/_authenticated/restaurante/mesas'
     | '/_authenticated/restaurante/produtos'
+    | '/_authenticated/rh/cargos'
+    | '/_authenticated/rh/dashboard'
+    | '/_authenticated/rh/escalas'
+    | '/_authenticated/rh/funcionarios'
+    | '/_authenticated/rh/ponto'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -380,6 +454,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/rh': {
+      id: '/_authenticated/rh'
+      path: '/rh'
+      fullPath: '/rh'
+      preLoaderRoute: typeof AuthenticatedRhRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/restaurante': {
       id: '/_authenticated/restaurante'
@@ -422,6 +503,41 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/rh/ponto': {
+      id: '/_authenticated/rh/ponto'
+      path: '/ponto'
+      fullPath: '/rh/ponto'
+      preLoaderRoute: typeof AuthenticatedRhPontoRouteImport
+      parentRoute: typeof AuthenticatedRhRoute
+    }
+    '/_authenticated/rh/funcionarios': {
+      id: '/_authenticated/rh/funcionarios'
+      path: '/funcionarios'
+      fullPath: '/rh/funcionarios'
+      preLoaderRoute: typeof AuthenticatedRhFuncionariosRouteImport
+      parentRoute: typeof AuthenticatedRhRoute
+    }
+    '/_authenticated/rh/escalas': {
+      id: '/_authenticated/rh/escalas'
+      path: '/escalas'
+      fullPath: '/rh/escalas'
+      preLoaderRoute: typeof AuthenticatedRhEscalasRouteImport
+      parentRoute: typeof AuthenticatedRhRoute
+    }
+    '/_authenticated/rh/dashboard': {
+      id: '/_authenticated/rh/dashboard'
+      path: '/dashboard'
+      fullPath: '/rh/dashboard'
+      preLoaderRoute: typeof AuthenticatedRhDashboardRouteImport
+      parentRoute: typeof AuthenticatedRhRoute
+    }
+    '/_authenticated/rh/cargos': {
+      id: '/_authenticated/rh/cargos'
+      path: '/cargos'
+      fullPath: '/rh/cargos'
+      preLoaderRoute: typeof AuthenticatedRhCargosRouteImport
+      parentRoute: typeof AuthenticatedRhRoute
     }
     '/_authenticated/restaurante/produtos': {
       id: '/_authenticated/restaurante/produtos'
@@ -611,6 +727,26 @@ const AuthenticatedRestauranteRouteWithChildren =
     AuthenticatedRestauranteRouteChildren,
   )
 
+interface AuthenticatedRhRouteChildren {
+  AuthenticatedRhCargosRoute: typeof AuthenticatedRhCargosRoute
+  AuthenticatedRhDashboardRoute: typeof AuthenticatedRhDashboardRoute
+  AuthenticatedRhEscalasRoute: typeof AuthenticatedRhEscalasRoute
+  AuthenticatedRhFuncionariosRoute: typeof AuthenticatedRhFuncionariosRoute
+  AuthenticatedRhPontoRoute: typeof AuthenticatedRhPontoRoute
+}
+
+const AuthenticatedRhRouteChildren: AuthenticatedRhRouteChildren = {
+  AuthenticatedRhCargosRoute: AuthenticatedRhCargosRoute,
+  AuthenticatedRhDashboardRoute: AuthenticatedRhDashboardRoute,
+  AuthenticatedRhEscalasRoute: AuthenticatedRhEscalasRoute,
+  AuthenticatedRhFuncionariosRoute: AuthenticatedRhFuncionariosRoute,
+  AuthenticatedRhPontoRoute: AuthenticatedRhPontoRoute,
+}
+
+const AuthenticatedRhRouteWithChildren = AuthenticatedRhRoute._addFileChildren(
+  AuthenticatedRhRouteChildren,
+)
+
 interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedEstoqueRoute: typeof AuthenticatedEstoqueRouteWithChildren
@@ -618,6 +754,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedFinanceiroRoute: typeof AuthenticatedFinanceiroRouteWithChildren
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
   AuthenticatedRestauranteRoute: typeof AuthenticatedRestauranteRouteWithChildren
+  AuthenticatedRhRoute: typeof AuthenticatedRhRouteWithChildren
   AuthenticatedConfiguracoesEmpresaRoute: typeof AuthenticatedConfiguracoesEmpresaRoute
   AuthenticatedConfiguracoesFiliaisRoute: typeof AuthenticatedConfiguracoesFiliaisRoute
 }
@@ -629,6 +766,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedFinanceiroRoute: AuthenticatedFinanceiroRouteWithChildren,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
   AuthenticatedRestauranteRoute: AuthenticatedRestauranteRouteWithChildren,
+  AuthenticatedRhRoute: AuthenticatedRhRouteWithChildren,
   AuthenticatedConfiguracoesEmpresaRoute:
     AuthenticatedConfiguracoesEmpresaRoute,
   AuthenticatedConfiguracoesFiliaisRoute:
