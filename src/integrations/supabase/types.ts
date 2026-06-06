@@ -201,6 +201,132 @@ export type Database = {
         }
         Relationships: []
       }
+      employee_roles: {
+        Row: {
+          base_salary: number
+          company_id: string
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          updated_at: string
+          weekly_hours: number
+        }
+        Insert: {
+          base_salary?: number
+          company_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          updated_at?: string
+          weekly_hours?: number
+        }
+        Update: {
+          base_salary?: number
+          company_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          updated_at?: string
+          weekly_hours?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_roles_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      employees: {
+        Row: {
+          branch_id: string | null
+          company_id: string
+          cpf: string | null
+          created_at: string
+          email: string | null
+          full_name: string
+          hire_date: string
+          hour_rate: number
+          id: string
+          notes: string | null
+          phone: string | null
+          registration: string | null
+          role_id: string | null
+          salary: number
+          schedule_type: Database["public"]["Enums"]["schedule_type"]
+          status: Database["public"]["Enums"]["employee_status"]
+          termination_date: string | null
+          updated_at: string
+        }
+        Insert: {
+          branch_id?: string | null
+          company_id: string
+          cpf?: string | null
+          created_at?: string
+          email?: string | null
+          full_name: string
+          hire_date?: string
+          hour_rate?: number
+          id?: string
+          notes?: string | null
+          phone?: string | null
+          registration?: string | null
+          role_id?: string | null
+          salary?: number
+          schedule_type?: Database["public"]["Enums"]["schedule_type"]
+          status?: Database["public"]["Enums"]["employee_status"]
+          termination_date?: string | null
+          updated_at?: string
+        }
+        Update: {
+          branch_id?: string | null
+          company_id?: string
+          cpf?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          hire_date?: string
+          hour_rate?: number
+          id?: string
+          notes?: string | null
+          phone?: string | null
+          registration?: string | null
+          role_id?: string | null
+          salary?: number
+          schedule_type?: Database["public"]["Enums"]["schedule_type"]
+          status?: Database["public"]["Enums"]["employee_status"]
+          termination_date?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employees_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employees_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employees_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "employee_roles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       financial_categories: {
         Row: {
           color: string | null
@@ -798,6 +924,58 @@ export type Database = {
           },
         ]
       }
+      schedule_assignments: {
+        Row: {
+          company_id: string
+          created_at: string
+          employee_id: string
+          ends_on: string | null
+          id: string
+          schedule_id: string
+          starts_on: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          employee_id: string
+          ends_on?: string | null
+          id?: string
+          schedule_id: string
+          starts_on?: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          employee_id?: string
+          ends_on?: string | null
+          id?: string
+          schedule_id?: string
+          starts_on?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "schedule_assignments_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "schedule_assignments_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "schedule_assignments_schedule_id_fkey"
+            columns: ["schedule_id"]
+            isOneToOne: false
+            referencedRelation: "work_schedules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       stock_categories: {
         Row: {
           company_id: string
@@ -1032,6 +1210,125 @@ export type Database = {
           },
         ]
       }
+      time_entries: {
+        Row: {
+          bank_balance_hours: number
+          break_minutes: number
+          check_in: string | null
+          check_out: string | null
+          company_id: string
+          created_at: string
+          employee_id: string
+          expected_hours: number
+          id: string
+          night_hours: number
+          notes: string | null
+          overtime_hours: number
+          updated_at: string
+          work_date: string
+          worked_hours: number
+        }
+        Insert: {
+          bank_balance_hours?: number
+          break_minutes?: number
+          check_in?: string | null
+          check_out?: string | null
+          company_id: string
+          created_at?: string
+          employee_id: string
+          expected_hours?: number
+          id?: string
+          night_hours?: number
+          notes?: string | null
+          overtime_hours?: number
+          updated_at?: string
+          work_date: string
+          worked_hours?: number
+        }
+        Update: {
+          bank_balance_hours?: number
+          break_minutes?: number
+          check_in?: string | null
+          check_out?: string | null
+          company_id?: string
+          created_at?: string
+          employee_id?: string
+          expected_hours?: number
+          id?: string
+          night_hours?: number
+          notes?: string | null
+          overtime_hours?: number
+          updated_at?: string
+          work_date?: string
+          worked_hours?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "time_entries_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "time_entries_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      work_schedules: {
+        Row: {
+          break_minutes: number
+          company_id: string
+          created_at: string
+          end_time: string
+          id: string
+          name: string
+          notes: string | null
+          start_time: string
+          type: Database["public"]["Enums"]["schedule_type"]
+          updated_at: string
+          weekdays: number[]
+        }
+        Insert: {
+          break_minutes?: number
+          company_id: string
+          created_at?: string
+          end_time?: string
+          id?: string
+          name: string
+          notes?: string | null
+          start_time?: string
+          type?: Database["public"]["Enums"]["schedule_type"]
+          updated_at?: string
+          weekdays?: number[]
+        }
+        Update: {
+          break_minutes?: number
+          company_id?: string
+          created_at?: string
+          end_time?: string
+          id?: string
+          name?: string
+          notes?: string | null
+          start_time?: string
+          type?: Database["public"]["Enums"]["schedule_type"]
+          updated_at?: string
+          weekdays?: number[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "work_schedules_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -1055,6 +1352,7 @@ export type Database = {
       app_role: "owner" | "admin" | "manager" | "operator" | "finance"
       cash_movement_type: "sangria" | "suprimento" | "retirada" | "ajuste"
       cash_session_status: "aberto" | "fechado"
+      employee_status: "ativo" | "ferias" | "afastado" | "desligado"
       financial_status: "pendente" | "pago" | "recebido" | "cancelado"
       financial_type: "receita" | "despesa"
       order_status: "aberta" | "fechada" | "cancelada"
@@ -1068,6 +1366,7 @@ export type Database = {
         | "lanche"
         | "porcao"
         | "adicional"
+      schedule_type: "12x36" | "6x1" | "5x2" | "4x2" | "custom"
       stock_movement_type: "entrada" | "saida" | "ajuste"
       table_status: "livre" | "ocupada" | "reservada" | "fechamento_pendente"
     }
@@ -1200,6 +1499,7 @@ export const Constants = {
       app_role: ["owner", "admin", "manager", "operator", "finance"],
       cash_movement_type: ["sangria", "suprimento", "retirada", "ajuste"],
       cash_session_status: ["aberto", "fechado"],
+      employee_status: ["ativo", "ferias", "afastado", "desligado"],
       financial_status: ["pendente", "pago", "recebido", "cancelado"],
       financial_type: ["receita", "despesa"],
       order_status: ["aberta", "fechada", "cancelada"],
@@ -1214,6 +1514,7 @@ export const Constants = {
         "porcao",
         "adicional",
       ],
+      schedule_type: ["12x36", "6x1", "5x2", "4x2", "custom"],
       stock_movement_type: ["entrada", "saida", "ajuste"],
       table_status: ["livre", "ocupada", "reservada", "fechamento_pendente"],
     },
