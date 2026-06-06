@@ -12,6 +12,7 @@ import {
   LogOut,
   Wallet,
   UtensilsCrossed,
+  Users,
 } from "lucide-react";
 
 
@@ -39,6 +40,7 @@ const operacao: NavItem[] = [
   { title: "Estoque", url: "/estoque/dashboard", icon: Package },
   { title: "Produção", url: "/producao", icon: ChefHat, disabled: true },
   { title: "Fichas Técnicas", url: "/fichas", icon: ClipboardList },
+  { title: "RH", url: "/rh/dashboard", icon: Users },
 ];
 
 
