@@ -49,6 +49,7 @@ const emptyForm = {
 
 function FuncionariosPage() {
   const { data: companyId } = useMyCompanyId();
+  const { activeBranchId } = useCompany();
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Emp | null>(null);
@@ -57,12 +58,12 @@ function FuncionariosPage() {
   const [filter, setFilter] = useState("");
 
   const { data: employees = [] } = useQuery({
-    queryKey: ["employees", companyId],
+    queryKey: ["employees", companyId, activeBranchId],
     enabled: !!companyId,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("employees").select("*").eq("company_id", companyId!)
-        .order("full_name");
+      let q = supabase.from("employees").select("*").eq("company_id", companyId!);
+      if (activeBranchId) q = q.eq("branch_id", activeBranchId);
+      const { data, error } = await q.order("full_name");
       if (error) throw error;
       return (data ?? []) as Emp[];
     },
