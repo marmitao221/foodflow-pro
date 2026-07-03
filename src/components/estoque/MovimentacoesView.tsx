@@ -5,6 +5,7 @@ import { Plus, Trash2 } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { useMyCompanyId, formatBRL } from "@/lib/restaurante";
+import { useCompany } from "@/lib/company-context";
 import { formatQty, type StockMovementType } from "@/lib/estoque";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
@@ -36,6 +37,7 @@ type Mov = {
 
 export function MovimentacoesView({ type }: { type: "entrada" | "saida" }) {
   const { data: companyId } = useMyCompanyId();
+  const { activeBranchId } = useCompany();
   const { user } = useAuth();
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
@@ -53,14 +55,16 @@ export function MovimentacoesView({ type }: { type: "entrada" | "saida" }) {
   });
 
   const { data: movs = [] } = useQuery({
-    queryKey: ["stock-movements", companyId, type],
+    queryKey: ["stock-movements", companyId, activeBranchId, type],
     enabled: !!companyId,
     queryFn: async () => {
-      const { data, error } = await supabase
+      let q = supabase
         .from("stock_movements")
         .select("*,stock_items(name,unit),suppliers(name)")
         .eq("company_id", companyId!)
-        .eq("type", type)
+        .eq("type", type);
+      if (activeBranchId) q = q.eq("branch_id", activeBranchId);
+      const { data, error } = await q
         .order("movement_date", { ascending: false })
         .order("created_at", { ascending: false })
         .limit(200);
@@ -70,12 +74,14 @@ export function MovimentacoesView({ type }: { type: "entrada" | "saida" }) {
   });
 
   const { data: items = [] } = useQuery({
-    queryKey: ["stock-items-select", companyId],
+    queryKey: ["stock-items-select", companyId, activeBranchId],
     enabled: !!companyId,
     queryFn: async () => {
-      const { data, error } = await supabase
+      let q = supabase
         .from("stock_items").select("id,name,unit,unit_value,quantity")
-        .eq("company_id", companyId!).eq("is_active", true).order("name");
+        .eq("company_id", companyId!).eq("is_active", true);
+      if (activeBranchId) q = q.eq("branch_id", activeBranchId);
+      const { data, error } = await q.order("name");
       if (error) throw error;
       return data ?? [];
     },
@@ -102,6 +108,7 @@ export function MovimentacoesView({ type }: { type: "entrada" | "saida" }) {
       if (!form.quantity || form.quantity <= 0) throw new Error("Quantidade inválida");
       const { error } = await supabase.from("stock_movements").insert({
         company_id: companyId,
+        branch_id: activeBranchId ?? null,
         item_id: form.item_id,
         type,
         quantity: form.quantity,

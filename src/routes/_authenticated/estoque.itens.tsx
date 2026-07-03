@@ -6,6 +6,7 @@ import { Plus, Trash2, Pencil, AlertTriangle, CalendarClock, Search } from "luci
 
 import { supabase } from "@/integrations/supabase/client";
 import { useMyCompanyId, formatBRL } from "@/lib/restaurante";
+import { useCompany } from "@/lib/company-context";
 import { formatQty, daysUntil, stockUnits } from "@/lib/estoque";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -50,6 +51,7 @@ const EMPTY: Omit<Item, "id"> = {
 
 function ItensPage() {
   const { data: companyId } = useMyCompanyId();
+  const { activeBranchId } = useCompany();
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Item | null>(null);
@@ -59,11 +61,12 @@ function ItensPage() {
   const [filterCat, setFilterCat] = useState<string>("all");
 
   const { data: items = [] } = useQuery({
-    queryKey: ["stock-items", companyId],
+    queryKey: ["stock-items", companyId, activeBranchId],
     enabled: !!companyId,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("stock_items").select("*").eq("company_id", companyId!).order("name");
+      let q = supabase.from("stock_items").select("*").eq("company_id", companyId!);
+      if (activeBranchId) q = q.eq("branch_id", activeBranchId);
+      const { data, error } = await q.order("name");
       if (error) throw error;
       return (data ?? []) as Item[];
     },
@@ -128,7 +131,7 @@ function ItensPage() {
         if (error) throw error;
       } else {
         const { error } = await supabase.from("stock_items")
-          .insert({ ...payload, company_id: companyId, quantity: Number(form.quantity) || 0 });
+          .insert({ ...payload, company_id: companyId, branch_id: activeBranchId ?? null, quantity: Number(form.quantity) || 0 });
         if (error) throw error;
       }
     },
