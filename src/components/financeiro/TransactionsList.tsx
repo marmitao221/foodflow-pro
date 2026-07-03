@@ -15,19 +15,20 @@ import {
 } from "@/lib/financeiro";
 import { TransactionDialog } from "./TransactionDialog";
 
-type Props = { companyId: string; type: FinType };
+type Props = { companyId: string; branchId: string | null; type: FinType };
 
-export function TransactionsList({ companyId, type }: Props) {
+export function TransactionsList({ companyId, branchId, type }: Props) {
   const qc = useQueryClient();
 
   const { data: txs, isLoading } = useQuery({
-    queryKey: ["fin-tx", companyId, type],
+    queryKey: ["fin-tx", companyId, branchId, type],
     enabled: !!companyId,
     queryFn: async () => {
-      const { data, error } = await supabase
+      let q = supabase
         .from("financial_transactions").select("*")
-        .eq("company_id", companyId).eq("type", type)
-        .order("due_date", { ascending: false });
+        .eq("company_id", companyId).eq("type", type);
+      if (branchId) q = q.eq("branch_id", branchId);
+      const { data, error } = await q.order("due_date", { ascending: false });
       if (error) throw error;
       return (data ?? []) as FinTransaction[];
     },
@@ -121,7 +122,7 @@ export function TransactionsList({ companyId, type }: Props) {
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <TransactionDialog companyId={companyId} type={type} onSaved={refetch} />
+        <TransactionDialog companyId={companyId} branchId={branchId} type={type} onSaved={refetch} />
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={handleExcel}>
             <Download className="h-4 w-4" /> Excel
@@ -181,7 +182,7 @@ export function TransactionsList({ companyId, type }: Props) {
                               <CheckCircle2 className="h-4 w-4 text-primary" />
                             </Button>
                           )}
-                          <TransactionDialog companyId={companyId} type={type} tx={t} onSaved={refetch}>
+                          <TransactionDialog companyId={companyId} branchId={branchId} type={type} tx={t} onSaved={refetch}>
                             <Button size="sm" variant="ghost"><Pencil className="h-4 w-4" /></Button>
                           </TransactionDialog>
                           <Button size="sm" variant="ghost" onClick={() => remove(t)}>

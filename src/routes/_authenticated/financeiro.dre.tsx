@@ -8,6 +8,7 @@ import {
   useMyCompanyId, type FinTransaction, type FinCategory,
   formatBRL, exportToExcel, exportToPDF,
 } from "@/lib/financeiro";
+import { useCompany } from "@/lib/company-context";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,6 +20,7 @@ export const Route = createFileRoute("/_authenticated/financeiro/dre")({
 
 function DRE() {
   const { data: companyId } = useMyCompanyId();
+  const { activeBranchId } = useCompany();
   const today = new Date();
   const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().slice(0, 10);
   const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0).toISOString().slice(0, 10);
@@ -26,12 +28,14 @@ function DRE() {
   const [to, setTo] = useState(lastDay);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["fin-dre", companyId, from, to],
+    queryKey: ["fin-dre", companyId, activeBranchId, from, to],
     enabled: !!companyId,
     queryFn: async () => {
+      let txQ = supabase.from("financial_transactions").select("*")
+        .eq("company_id", companyId!).gte("due_date", from).lte("due_date", to);
+      if (activeBranchId) txQ = txQ.eq("branch_id", activeBranchId);
       const [{ data: txs }, { data: cats }] = await Promise.all([
-        supabase.from("financial_transactions").select("*")
-          .eq("company_id", companyId!).gte("due_date", from).lte("due_date", to),
+        txQ,
         supabase.from("financial_categories").select("*").eq("company_id", companyId!),
       ]);
       return {

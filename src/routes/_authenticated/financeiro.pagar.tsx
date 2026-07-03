@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMyCompanyId } from "@/lib/financeiro";
+import { useCompany } from "@/lib/company-context";
 import { TransactionsList } from "@/components/financeiro/TransactionsList";
 
 export const Route = createFileRoute("/_authenticated/financeiro/pagar")({
@@ -8,6 +9,7 @@ export const Route = createFileRoute("/_authenticated/financeiro/pagar")({
 
 function Pagar() {
   const { data: companyId } = useMyCompanyId();
+  const { activeBranchId } = useCompany();
   if (!companyId) return null;
-  return <TransactionsList companyId={companyId} type="despesa" />;
+  return <TransactionsList companyId={companyId} branchId={activeBranchId} type="despesa" />;
 }

@@ -6,6 +6,7 @@ import { Plus, Trash2 } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { useMyCompanyId } from "@/lib/restaurante";
+import { useCompany } from "@/lib/company-context";
 import { fmtHours } from "@/lib/rh";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,6 +39,7 @@ const emptyForm = {
 
 function PontoPage() {
   const { data: companyId } = useMyCompanyId();
+  const { activeBranchId } = useCompany();
   const qc = useQueryClient();
   const [from, setFrom] = useState(monthStart());
   const [to, setTo] = useState(today());
@@ -46,23 +48,26 @@ function PontoPage() {
   const [form, setForm] = useState(emptyForm);
 
   const { data: employees = [] } = useQuery({
-    queryKey: ["employees-min", companyId],
+    queryKey: ["employees-min", companyId, activeBranchId],
     enabled: !!companyId,
     queryFn: async () => {
-      const { data } = await supabase.from("employees")
-        .select("id,full_name,hour_rate,salary").eq("company_id", companyId!).order("full_name");
+      let q = supabase.from("employees")
+        .select("id,full_name,hour_rate,salary").eq("company_id", companyId!);
+      if (activeBranchId) q = q.eq("branch_id", activeBranchId);
+      const { data } = await q.order("full_name");
       return (data ?? []) as { id: string; full_name: string; hour_rate: number; salary: number }[];
     },
   });
 
   const { data: entries = [] } = useQuery({
-    queryKey: ["time_entries", companyId, from, to, employeeFilter],
+    queryKey: ["time_entries", companyId, activeBranchId, from, to, employeeFilter],
     enabled: !!companyId,
     queryFn: async () => {
       let q = supabase.from("time_entries").select("*")
         .eq("company_id", companyId!)
         .gte("work_date", from).lte("work_date", to)
         .order("work_date", { ascending: false });
+      if (activeBranchId) q = q.eq("branch_id", activeBranchId);
       if (employeeFilter !== "all") q = q.eq("employee_id", employeeFilter);
       const { data, error } = await q;
       if (error) throw error;
@@ -76,6 +81,7 @@ function PontoPage() {
       if (!form.employee_id) throw new Error("Selecione um funcionário");
       const { error } = await supabase.from("time_entries").insert({
         company_id: companyId,
+        branch_id: activeBranchId ?? null,
         employee_id: form.employee_id,
         work_date: form.work_date,
         check_in: form.check_in || null,

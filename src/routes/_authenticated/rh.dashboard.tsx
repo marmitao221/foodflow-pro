@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { supabase } from "@/integrations/supabase/client";
 import { useMyCompanyId } from "@/lib/restaurante";
+import { useCompany } from "@/lib/company-context";
 import { fmtBRL, fmtHours } from "@/lib/rh";
 import { Card, CardContent } from "@/components/ui/card";
 import { Users, DollarSign, TrendingUp, Clock } from "lucide-react";
@@ -16,25 +17,30 @@ const today = () => new Date().toISOString().slice(0, 10);
 
 function RhDashboard() {
   const { data: companyId } = useMyCompanyId();
+  const { activeBranchId } = useCompany();
 
   const { data: employees = [] } = useQuery({
-    queryKey: ["rh-emp", companyId],
+    queryKey: ["rh-emp", companyId, activeBranchId],
     enabled: !!companyId,
     queryFn: async () => {
-      const { data } = await supabase.from("employees")
+      let q = supabase.from("employees")
         .select("id,full_name,status,salary,hour_rate").eq("company_id", companyId!);
+      if (activeBranchId) q = q.eq("branch_id", activeBranchId);
+      const { data } = await q;
       return (data ?? []) as { id: string; full_name: string; status: string; salary: number; hour_rate: number }[];
     },
   });
 
   const { data: entries = [] } = useQuery({
-    queryKey: ["rh-entries", companyId, monthStart(), today()],
+    queryKey: ["rh-entries", companyId, activeBranchId, monthStart(), today()],
     enabled: !!companyId,
     queryFn: async () => {
-      const { data } = await supabase.from("time_entries")
+      let q = supabase.from("time_entries")
         .select("employee_id,worked_hours,overtime_hours,night_hours,bank_balance_hours")
         .eq("company_id", companyId!)
         .gte("work_date", monthStart()).lte("work_date", today());
+      if (activeBranchId) q = q.eq("branch_id", activeBranchId);
+      const { data } = await q;
       return (data ?? []) as { employee_id: string; worked_hours: number; overtime_hours: number; night_hours: number; bank_balance_hours: number }[];
     },
   });

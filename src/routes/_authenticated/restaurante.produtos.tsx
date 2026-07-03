@@ -12,6 +12,7 @@ import {
   type Product,
   type ProductCategory,
 } from "@/lib/restaurante";
+import { useCompany } from "@/lib/company-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -85,6 +86,7 @@ const emptyForm: FormState = {
 
 function ProdutosPage() {
   const { data: companyId } = useMyCompanyId();
+  const { activeBranchId } = useCompany();
   const qc = useQueryClient();
   const [search, setSearch] = useState("");
   const [catFilter, setCatFilter] = useState<ProductCategory | "all">("all");
@@ -93,14 +95,12 @@ function ProdutosPage() {
   const [form, setForm] = useState<FormState>(emptyForm);
 
   const { data: products = [], isLoading } = useQuery({
-    queryKey: ["products", companyId],
+    queryKey: ["products", companyId, activeBranchId],
     enabled: !!companyId,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("products")
-        .select("*")
-        .eq("company_id", companyId!)
-        .order("name");
+      let q = supabase.from("products").select("*").eq("company_id", companyId!);
+      if (activeBranchId) q = q.eq("branch_id", activeBranchId);
+      const { data, error } = await q.order("name");
       if (error) throw error;
       return data as Product[];
     },
@@ -122,6 +122,7 @@ function ProdutosPage() {
       if (!companyId) throw new Error("Empresa não encontrada");
       const row = {
         company_id: companyId,
+        branch_id: activeBranchId ?? null,
         name: payload.name?.trim() ?? "",
         category: (payload.category ?? "refeicao") as ProductCategory,
         sku: payload.sku?.trim() || null,

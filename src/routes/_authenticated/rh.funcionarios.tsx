@@ -6,6 +6,7 @@ import { Plus, Trash2, Pencil } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { useMyCompanyId } from "@/lib/restaurante";
+import { useCompany } from "@/lib/company-context";
 import { fmtBRL, SCHEDULE_TYPES, EMPLOYEE_STATUS } from "@/lib/rh";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

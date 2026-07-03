@@ -12,6 +12,7 @@ import {
   useMyCompanyId, type FinTransaction,
   formatBRL, formatDate, exportToExcel, exportToPDF, statusLabel,
 } from "@/lib/financeiro";
+import { useCompany } from "@/lib/company-context";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,6 +24,7 @@ export const Route = createFileRoute("/_authenticated/financeiro/fluxo")({
 
 function Fluxo() {
   const { data: companyId } = useMyCompanyId();
+  const { activeBranchId } = useCompany();
   const today = new Date();
   const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().slice(0, 10);
   const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0).toISOString().slice(0, 10);
@@ -30,14 +32,15 @@ function Fluxo() {
   const [to, setTo] = useState(lastDay);
 
   const { data: txs, isLoading } = useQuery({
-    queryKey: ["fin-fluxo", companyId, from, to],
+    queryKey: ["fin-fluxo", companyId, activeBranchId, from, to],
     enabled: !!companyId,
     queryFn: async () => {
-      const { data, error } = await supabase
+      let q = supabase
         .from("financial_transactions").select("*")
         .eq("company_id", companyId!)
-        .gte("due_date", from).lte("due_date", to)
-        .order("due_date");
+        .gte("due_date", from).lte("due_date", to);
+      if (activeBranchId) q = q.eq("branch_id", activeBranchId);
+      const { data, error } = await q.order("due_date");
       if (error) throw error;
       return (data ?? []) as FinTransaction[];
     },
