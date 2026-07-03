@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import { supabase } from "@/integrations/supabase/client";
 import { useMyCompanyId } from "@/lib/restaurante";
+import { useCompany } from "@/lib/company-context";
 import {
   formatBRL,
   formatPct,
@@ -65,6 +66,7 @@ type ProductLite = { id: string; name: string; price: number };
 function FichasPage() {
   const qc = useQueryClient();
   const { data: companyId } = useMyCompanyId();
+  const { activeBranchId } = useCompany();
   const [search, setSearch] = useState("");
   const [editing, setEditing] = useState<Recipe | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -72,28 +74,30 @@ function FichasPage() {
   const [confirmDelete, setConfirmDelete] = useState<Recipe | null>(null);
 
   const recipesQ = useQuery({
-    queryKey: ["recipes", companyId],
+    queryKey: ["recipes", companyId, activeBranchId],
     enabled: !!companyId,
     queryFn: async () => {
-      const { data, error } = await supabase
+      let q = supabase
         .from("recipes")
         .select("*")
-        .eq("company_id", companyId!)
-        .order("name");
+        .eq("company_id", companyId!);
+      if (activeBranchId) q = q.eq("branch_id", activeBranchId);
+      const { data, error } = await q.order("name");
       if (error) throw error;
       return (data ?? []) as Recipe[];
     },
   });
 
   const productsQ = useQuery({
-    queryKey: ["recipes-products", companyId],
+    queryKey: ["recipes-products", companyId, activeBranchId],
     enabled: !!companyId,
     queryFn: async () => {
-      const { data } = await supabase
+      let q = supabase
         .from("products")
         .select("id, name, price")
-        .eq("company_id", companyId!)
-        .order("name");
+        .eq("company_id", companyId!);
+      if (activeBranchId) q = q.eq("branch_id", activeBranchId);
+      const { data } = await q.order("name");
       return (data ?? []) as ProductLite[];
     },
   });
@@ -294,6 +298,7 @@ function FichasPage() {
         onOpenChange={setDialogOpen}
         recipe={editing}
         companyId={companyId ?? null}
+        branchId={activeBranchId}
         products={productsQ.data ?? []}
       />
 
@@ -352,12 +357,14 @@ function RecipeDialog({
   onOpenChange,
   recipe,
   companyId,
+  branchId,
   products,
 }: {
   open: boolean;
   onOpenChange: (o: boolean) => void;
   recipe: Recipe | null;
   companyId: string | null;
+  branchId: string | null;
   products: ProductLite[];
 }) {
   const qc = useQueryClient();
@@ -390,6 +397,7 @@ function RecipeDialog({
       if (!name.trim()) throw new Error("Informe o nome da receita");
       const payload = {
         company_id: companyId,
+        branch_id: branchId ?? null,
         name: name.trim(),
         description: description.trim() || null,
         yield_qty: Number(yieldQty) || 1,

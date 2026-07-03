@@ -153,11 +153,13 @@ export async function getDashboardData(
   }
 
   // --- Stock ---
-  const { data: stock = [] } = await supabase
+  let stockQ = supabase
     .from("stock_items")
-    .select("id,quantity,min_stock")
+    .select("id,quantity,min_stock,branch_id")
     .eq("company_id", companyId)
     .eq("is_active", true);
+  if (branchId) stockQ = stockQ.eq("branch_id", branchId);
+  const { data: stock = [] } = await stockQ;
   const estoqueCritico = (stock ?? []).filter(
     (s) => Number(s.quantity) < Number(s.min_stock) && Number(s.min_stock) > 0,
   ).length;

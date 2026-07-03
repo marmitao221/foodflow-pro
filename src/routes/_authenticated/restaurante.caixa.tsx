@@ -438,6 +438,7 @@ function MovementDialog({
   onDone: () => void;
 }) {
   const { data: companyId } = useMyCompanyId();
+  const { activeBranchId } = useCompany();
   const [type, setType] = useState<CashMovementType>("suprimento");
   const [amount, setAmount] = useState(0);
   const [reason, setReason] = useState("");
@@ -447,6 +448,7 @@ function MovementDialog({
       if (!companyId) throw new Error("Empresa não encontrada");
       const { error } = await supabase.from("cash_movements").insert({
         company_id: companyId,
+        branch_id: activeBranchId ?? null,
         session_id: sessionId,
         type,
         amount: Number(amount),

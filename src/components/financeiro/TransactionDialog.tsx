@@ -14,13 +14,14 @@ import type { FinTransaction, FinType, FinStatus, FinCategory } from "@/lib/fina
 
 type Props = {
   companyId: string;
+  branchId: string | null;
   type: FinType;
   tx?: FinTransaction;
   onSaved: () => void;
   children?: ReactNode;
 };
 
-export function TransactionDialog({ companyId, type, tx, onSaved, children }: Props) {
+export function TransactionDialog({ companyId, branchId, type, tx, onSaved, children }: Props) {
   const [open, setOpen] = useState(false);
   const today = new Date().toISOString().slice(0, 10);
   const [form, setForm] = useState({
@@ -82,7 +83,7 @@ export function TransactionDialog({ companyId, type, tx, onSaved, children }: Pr
         toast.success("Lançamento atualizado");
       } else {
         const { error } = await supabase
-          .from("financial_transactions").insert({ ...payload, company_id: companyId });
+          .from("financial_transactions").insert({ ...payload, company_id: companyId, branch_id: branchId ?? null });
         if (error) throw error;
         toast.success("Lançamento criado");
       }

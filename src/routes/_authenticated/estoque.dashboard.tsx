@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useMyCompanyId, formatBRL } from "@/lib/restaurante";
+import { useCompany } from "@/lib/company-context";
 import { formatQty, daysUntil } from "@/lib/estoque";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,16 +14,19 @@ export const Route = createFileRoute("/_authenticated/estoque/dashboard")({
 
 function EstoqueDashboard() {
   const { data: companyId } = useMyCompanyId();
+  const { activeBranchId } = useCompany();
 
   const { data: items = [] } = useQuery({
-    queryKey: ["stock-items-dash", companyId],
+    queryKey: ["stock-items-dash", companyId, activeBranchId],
     enabled: !!companyId,
     queryFn: async () => {
-      const { data, error } = await supabase
+      let q = supabase
         .from("stock_items")
         .select("id,name,unit,quantity,unit_value,min_stock,expiry_date,is_active")
         .eq("company_id", companyId!)
         .eq("is_active", true);
+      if (activeBranchId) q = q.eq("branch_id", activeBranchId);
+      const { data, error } = await q;
       if (error) throw error;
       return data ?? [];
     },
