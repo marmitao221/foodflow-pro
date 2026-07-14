@@ -1,5 +1,5 @@
 import { createFileRoute, Link, Outlet, useRouterState, redirect } from "@tanstack/react-router";
-import { Users, LayoutDashboard, Briefcase, CalendarDays, Clock } from "lucide-react";
+import { Users, LayoutDashboard, Briefcase, CalendarDays, Clock, Wallet } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/rh")({
   head: () => ({ meta: [{ title: "RH — CozinhaPro" }] }),
