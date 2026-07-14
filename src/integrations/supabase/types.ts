@@ -14,6 +14,150 @@ export type Database = {
   }
   public: {
     Tables: {
+      benefit_payments: {
+        Row: {
+          amount: number
+          benefit_type_id: string
+          branch_id: string | null
+          company_id: string
+          created_at: string
+          employee_benefit_id: string | null
+          employee_id: string
+          financial_transaction_id: string | null
+          id: string
+          notes: string | null
+          payment_date: string
+          reference_month: number
+          reference_year: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount?: number
+          benefit_type_id: string
+          branch_id?: string | null
+          company_id: string
+          created_at?: string
+          employee_benefit_id?: string | null
+          employee_id: string
+          financial_transaction_id?: string | null
+          id?: string
+          notes?: string | null
+          payment_date?: string
+          reference_month: number
+          reference_year: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          benefit_type_id?: string
+          branch_id?: string | null
+          company_id?: string
+          created_at?: string
+          employee_benefit_id?: string | null
+          employee_id?: string
+          financial_transaction_id?: string | null
+          id?: string
+          notes?: string | null
+          payment_date?: string
+          reference_month?: number
+          reference_year?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "benefit_payments_benefit_type_id_fkey"
+            columns: ["benefit_type_id"]
+            isOneToOne: false
+            referencedRelation: "benefit_types"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "benefit_payments_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "benefit_payments_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "benefit_payments_employee_benefit_id_fkey"
+            columns: ["employee_benefit_id"]
+            isOneToOne: false
+            referencedRelation: "employee_benefits"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "benefit_payments_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "benefit_payments_financial_transaction_id_fkey"
+            columns: ["financial_transaction_id"]
+            isOneToOne: false
+            referencedRelation: "financial_transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      benefit_types: {
+        Row: {
+          active: boolean
+          company_id: string
+          created_at: string
+          default_value: number
+          id: string
+          name: string
+          notes: string | null
+          payment_day: number
+          payment_type: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          company_id: string
+          created_at?: string
+          default_value?: number
+          id?: string
+          name: string
+          notes?: string | null
+          payment_day?: number
+          payment_type?: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          company_id?: string
+          created_at?: string
+          default_value?: number
+          id?: string
+          name?: string
+          notes?: string | null
+          payment_day?: number
+          payment_type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "benefit_types_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       branches: {
         Row: {
           address: string | null
@@ -210,6 +354,80 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      employee_benefits: {
+        Row: {
+          active: boolean
+          benefit_type_id: string
+          branch_id: string | null
+          company_id: string
+          created_at: string
+          employee_id: string
+          end_date: string | null
+          id: string
+          monthly_value: number
+          notes: string | null
+          start_date: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          benefit_type_id: string
+          branch_id?: string | null
+          company_id: string
+          created_at?: string
+          employee_id: string
+          end_date?: string | null
+          id?: string
+          monthly_value?: number
+          notes?: string | null
+          start_date?: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          benefit_type_id?: string
+          branch_id?: string | null
+          company_id?: string
+          created_at?: string
+          employee_id?: string
+          end_date?: string | null
+          id?: string
+          monthly_value?: number
+          notes?: string | null
+          start_date?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_benefits_benefit_type_id_fkey"
+            columns: ["benefit_type_id"]
+            isOneToOne: false
+            referencedRelation: "benefit_types"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_benefits_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_benefits_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_benefits_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       employee_roles: {
         Row: {
