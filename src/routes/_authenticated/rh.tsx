@@ -17,6 +17,7 @@ const tabs = [
   { to: "/rh/cargos", label: "Cargos", icon: Briefcase },
   { to: "/rh/escalas", label: "Escalas", icon: CalendarDays },
   { to: "/rh/ponto", label: "Ponto e Horas", icon: Clock },
+  { to: "/rh/beneficios", label: "Benefícios", icon: Wallet },
 ] as const;
 
 function RhLayout() {
