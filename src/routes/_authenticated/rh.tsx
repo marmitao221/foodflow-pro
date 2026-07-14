@@ -1,5 +1,5 @@
 import { createFileRoute, Link, Outlet, useRouterState, redirect } from "@tanstack/react-router";
-import { Users, LayoutDashboard, Briefcase, CalendarDays, Clock } from "lucide-react";
+import { Users, LayoutDashboard, Briefcase, CalendarDays, Clock, Wallet } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/rh")({
   head: () => ({ meta: [{ title: "RH — CozinhaPro" }] }),
@@ -17,6 +17,7 @@ const tabs = [
   { to: "/rh/cargos", label: "Cargos", icon: Briefcase },
   { to: "/rh/escalas", label: "Escalas", icon: CalendarDays },
   { to: "/rh/ponto", label: "Ponto e Horas", icon: Clock },
+  { to: "/rh/beneficios", label: "Benefícios", icon: Wallet },
 ] as const;
 
 function RhLayout() {
