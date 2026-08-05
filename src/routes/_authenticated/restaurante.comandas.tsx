@@ -38,6 +38,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { DecimalInput } from "@/components/ui/decimal-input";
 
 export const Route = createFileRoute("/_authenticated/restaurante/comandas")({
   component: ComandasPage,
@@ -535,15 +536,10 @@ function OrderDialog({
                           {formatBRL(Number(it.unit_price))} un.
                         </p>
                       </div>
-                      <Input
-                        type="number"
+                      <DecimalInput
                         value={Number(it.quantity)}
-                        onChange={(e) =>
-                          updateQty.mutate({ item: it, qty: Number(e.target.value) })
-                        }
+                        onValueChange={(v) => updateQty.mutate({ item: it, qty: v })}
                         className="h-7 w-16 text-xs"
-                        min={0.001}
-                        step={1}
                       />
                       <span className="w-20 text-right text-xs font-semibold">
                         {formatBRL(Number(it.total))}
@@ -566,22 +562,18 @@ function OrderDialog({
           <div className="grid grid-cols-3 gap-3">
             <div>
               <Label>Taxa serviço (R$)</Label>
-              <Input
-                type="number"
+              <DecimalInput
+                decimals={2}
                 value={Number(order?.service_fee ?? 0)}
-                onChange={(e) =>
-                  updateOrderField.mutate({ service_fee: Number(e.target.value) })
-                }
+                onValueChange={(v) => updateOrderField.mutate({ service_fee: v })}
               />
             </div>
             <div>
               <Label>Desconto (R$)</Label>
-              <Input
-                type="number"
+              <DecimalInput
+                decimals={2}
                 value={Number(order?.discount ?? 0)}
-                onChange={(e) =>
-                  updateOrderField.mutate({ discount: Number(e.target.value) })
-                }
+                onValueChange={(v) => updateOrderField.mutate({ discount: v })}
               />
             </div>
             <div className="flex flex-col justify-end">
@@ -734,12 +726,12 @@ function ClosePaymentDialog({
               </div>
               <div className="w-32">
                 <Label>Valor</Label>
-                <Input
-                  type="number"
+                <DecimalInput
+                  decimals={2}
                   value={p.amount}
-                  onChange={(e) => {
+                  onValueChange={(v) => {
                     const arr = [...pays];
-                    arr[idx] = { ...arr[idx], amount: Number(e.target.value) };
+                    arr[idx] = { ...arr[idx], amount: v };
                     setPays(arr);
                   }}
                 />
