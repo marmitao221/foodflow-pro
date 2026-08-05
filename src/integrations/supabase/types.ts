@@ -1635,7 +1635,14 @@ export type Database = {
       financial_type: "receita" | "despesa"
       order_status: "aberta" | "fechada" | "cancelada"
       order_type: "mesa" | "balcao" | "delivery" | "retirada"
-      payment_method: "dinheiro" | "pix" | "debito" | "credito"
+      payment_method:
+        | "dinheiro"
+        | "pix"
+        | "debito"
+        | "credito"
+        | "ifood_online"
+        | "keeta_online"
+        | "aiqfome_online"
       product_category:
         | "refeicao"
         | "marmita"
@@ -1782,7 +1789,15 @@ export const Constants = {
       financial_type: ["receita", "despesa"],
       order_status: ["aberta", "fechada", "cancelada"],
       order_type: ["mesa", "balcao", "delivery", "retirada"],
-      payment_method: ["dinheiro", "pix", "debito", "credito"],
+      payment_method: [
+        "dinheiro",
+        "pix",
+        "debito",
+        "credito",
+        "ifood_online",
+        "keeta_online",
+        "aiqfome_online",
+      ],
       product_category: [
         "refeicao",
         "marmita",
