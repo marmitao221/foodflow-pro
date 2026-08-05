@@ -15,6 +15,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { DecimalInput } from "@/components/ui/decimal-input";
 
 export const Route = createFileRoute("/_authenticated/rh/ponto")({
   component: PontoPage,
@@ -255,8 +256,8 @@ function PontoPage() {
             </div>
             <div>
               <Label>Carga prevista (h)</Label>
-              <Input type="number" step="0.25" value={form.expected_hours}
-                onChange={(e) => setForm({ ...form, expected_hours: Number(e.target.value) })} />
+              <DecimalInput decimals={2} value={form.expected_hours}
+                onValueChange={(v) => setForm({ ...form, expected_hours: v })} />
             </div>
             <div className="col-span-2">
               <Label>Observação</Label>

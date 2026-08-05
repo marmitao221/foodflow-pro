@@ -17,6 +17,7 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { DecimalInput } from "@/components/ui/decimal-input";
 
 export const Route = createFileRoute("/_authenticated/rh/cargos")({
   component: CargosPage,
@@ -145,13 +146,13 @@ function CargosPage() {
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <Label>Salário base (R$)</Label>
-                <Input type="number" step="0.01" value={form.base_salary}
-                  onChange={(e) => setForm({ ...form, base_salary: Number(e.target.value) })} />
+                <DecimalInput decimals={2} value={form.base_salary}
+                  onValueChange={(v) => setForm({ ...form, base_salary: v })} />
               </div>
               <div>
                 <Label>Horas/semana</Label>
-                <Input type="number" step="0.5" value={form.weekly_hours}
-                  onChange={(e) => setForm({ ...form, weekly_hours: Number(e.target.value) })} />
+                <DecimalInput decimals={2} value={form.weekly_hours}
+                  onValueChange={(v) => setForm({ ...form, weekly_hours: v })} />
               </div>
             </div>
             <div>

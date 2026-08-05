@@ -23,6 +23,7 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { DecimalInput } from "@/components/ui/decimal-input";
 
 export const Route = createFileRoute("/_authenticated/rh/beneficios")({
   component: BeneficiosPage,
@@ -149,7 +150,7 @@ function TiposTab() {
           <div className="space-y-3">
             <div><Label>Nome</Label><Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Ex: Vale Alimentação" /></div>
             <div className="grid grid-cols-2 gap-3">
-              <div><Label>Valor padrão (R$)</Label><Input type="number" step="0.01" value={form.default_value} onChange={(e) => setForm({ ...form, default_value: Number(e.target.value) })} /></div>
+              <div><Label>Valor padrão (R$)</Label><DecimalInput decimals={2} value={form.default_value} onValueChange={(v) => setForm({ ...form, default_value: v })} /></div>
               <div>
                 <Label>Tipo de pagamento</Label>
                 <Select value={form.payment_type} onValueChange={(v) => setForm({ ...form, payment_type: v })}>
@@ -335,7 +336,7 @@ function VinculosTab() {
               </Select>
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <div><Label>Valor mensal (R$)</Label><Input type="number" step="0.01" value={form.monthly_value} onChange={(e) => setForm({ ...form, monthly_value: Number(e.target.value) })} /></div>
+              <div><Label>Valor mensal (R$)</Label><DecimalInput decimals={2} value={form.monthly_value} onValueChange={(v) => setForm({ ...form, monthly_value: v })} /></div>
               <div className="flex items-end gap-2"><Switch checked={form.active} onCheckedChange={(v) => setForm({ ...form, active: v })} /><Label>Ativo</Label></div>
               <div><Label>Início</Label><Input type="date" value={form.start_date} onChange={(e) => setForm({ ...form, start_date: e.target.value })} /></div>
               <div><Label>Fim</Label><Input type="date" value={form.end_date} onChange={(e) => setForm({ ...form, end_date: e.target.value })} /></div>
