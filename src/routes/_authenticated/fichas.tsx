@@ -54,6 +54,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent } from "@/components/ui/card";
+import { DecimalInput } from "@/components/ui/decimal-input";
 
 export const Route = createFileRoute("/_authenticated/fichas")({
   head: () => ({ meta: [{ title: "Fichas Técnicas — CozinhaPro" }] }),
@@ -449,11 +450,9 @@ function RecipeDialog({
           </div>
           <div className="space-y-1.5">
             <Label>Rendimento</Label>
-            <Input
-              type="number"
-              step="0.01"
+            <DecimalInput
               value={yieldQty}
-              onChange={(e) => setYieldQty(e.target.value)}
+              onValueChange={(v) => setYieldQty(String(v))}
             />
           </div>
           <div className="space-y-1.5">
@@ -466,20 +465,18 @@ function RecipeDialog({
           </div>
           <div className="space-y-1.5">
             <Label>Preço de venda (R$)</Label>
-            <Input
-              type="number"
-              step="0.01"
+            <DecimalInput
+              decimals={2}
               value={salePrice}
-              onChange={(e) => setSalePrice(e.target.value)}
+              onValueChange={(v) => setSalePrice(String(v))}
             />
           </div>
           <div className="space-y-1.5">
             <Label>Margem alvo (%)</Label>
-            <Input
-              type="number"
-              step="1"
+            <DecimalInput
+              decimals={2}
               value={margin}
-              onChange={(e) => setMargin(e.target.value)}
+              onValueChange={(v) => setMargin(String(v))}
             />
           </div>
           <div className="space-y-1.5 sm:col-span-2">
@@ -683,11 +680,9 @@ function RecipeDetailDialog({
             </div>
             <div className="sm:col-span-1">
               <Label className="text-xs">Qtd</Label>
-              <Input
-                type="number"
-                step="0.001"
+              <DecimalInput
                 value={iqty}
-                onChange={(e) => setIqty(e.target.value)}
+                onValueChange={(v) => setIqty(String(v))}
               />
             </div>
             <div className="sm:col-span-2">
@@ -707,11 +702,10 @@ function RecipeDetailDialog({
             </div>
             <div className="sm:col-span-2">
               <Label className="text-xs">Custo unit. (R$)</Label>
-              <Input
-                type="number"
-                step="0.0001"
+              <DecimalInput
+                decimals={4}
                 value={icost}
-                onChange={(e) => setIcost(e.target.value)}
+                onValueChange={(v) => setIcost(String(v))}
               />
             </div>
             <div className="sm:col-span-12 flex justify-end">

@@ -19,6 +19,7 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { DecimalInput } from "@/components/ui/decimal-input";
 
 type Mov = {
   id: string;
@@ -234,18 +235,17 @@ export function MovimentacoesView({ type }: { type: "entrada" | "saida" }) {
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <Label>Quantidade *</Label>
-                <Input
-                  type="number" step="0.001"
+                <DecimalInput
                   value={form.quantity}
-                  onChange={(e) => setForm((f) => ({ ...f, quantity: Number(e.target.value) }))}
+                  onValueChange={(v) => setForm((f) => ({ ...f, quantity: v }))}
                 />
               </div>
               <div>
                 <Label>Valor unitário</Label>
-                <Input
-                  type="number" step="0.01"
+                <DecimalInput
+                  decimals={4}
                   value={form.unit_value}
-                  onChange={(e) => setForm((f) => ({ ...f, unit_value: Number(e.target.value) }))}
+                  onValueChange={(v) => setForm((f) => ({ ...f, unit_value: v }))}
                 />
               </div>
               <div>

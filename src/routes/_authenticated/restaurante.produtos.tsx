@@ -53,6 +53,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { DecimalInput } from "@/components/ui/decimal-input";
 
 export const Route = createFileRoute("/_authenticated/restaurante/produtos")({
   component: ProdutosPage,
@@ -258,20 +259,18 @@ function ProdutosPage() {
               </div>
               <div>
                 <Label>Preço de venda (R$)</Label>
-                <Input
-                  type="number"
-                  step="0.01"
+                <DecimalInput
+                  decimals={2}
                   value={form.price ?? 0}
-                  onChange={(e) => setForm({ ...form, price: Number(e.target.value) })}
+                  onValueChange={(v) => setForm({ ...form, price: v })}
                 />
               </div>
               <div>
                 <Label>Custo (R$)</Label>
-                <Input
-                  type="number"
-                  step="0.01"
+                <DecimalInput
+                  decimals={4}
                   value={form.cost ?? 0}
-                  onChange={(e) => setForm({ ...form, cost: Number(e.target.value) })}
+                  onValueChange={(v) => setForm({ ...form, cost: v })}
                 />
               </div>
               <div>
@@ -284,20 +283,16 @@ function ProdutosPage() {
               </div>
               <div>
                 <Label>Estoque atual</Label>
-                <Input
-                  type="number"
-                  step="0.001"
+                <DecimalInput
                   value={form.stock ?? 0}
-                  onChange={(e) => setForm({ ...form, stock: Number(e.target.value) })}
+                  onValueChange={(v) => setForm({ ...form, stock: v })}
                 />
               </div>
               <div>
                 <Label>Estoque mínimo</Label>
-                <Input
-                  type="number"
-                  step="0.001"
+                <DecimalInput
                   value={form.min_stock ?? 0}
-                  onChange={(e) => setForm({ ...form, min_stock: Number(e.target.value) })}
+                  onValueChange={(v) => setForm({ ...form, min_stock: v })}
                 />
               </div>
               <div className="col-span-2">

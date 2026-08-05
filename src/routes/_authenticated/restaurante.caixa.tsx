@@ -36,6 +36,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { DecimalInput } from "@/components/ui/decimal-input";
 
 export const Route = createFileRoute("/_authenticated/restaurante/caixa")({
   component: CaixaPage,
@@ -226,10 +227,10 @@ function OpenCashCard({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl">
         <div>
           <Label>Saldo inicial (R$)</Label>
-          <Input
-            type="number"
+          <DecimalInput
+            decimals={2}
             value={opening}
-            onChange={(e) => setOpening(Number(e.target.value))}
+            onValueChange={setOpening}
           />
         </div>
         <div>
@@ -483,10 +484,10 @@ function MovementDialog({
         </div>
         <div>
           <Label>Valor (R$)</Label>
-          <Input
-            type="number"
+          <DecimalInput
+            decimals={2}
             value={amount}
-            onChange={(e) => setAmount(Number(e.target.value))}
+            onValueChange={setAmount}
           />
         </div>
         <div>
@@ -552,10 +553,10 @@ function CloseSessionDialog({
             </div>
             <div>
               <Label>Saldo contado (R$)</Label>
-              <Input
-                type="number"
+              <DecimalInput
+                decimals={2}
                 value={informed}
-                onChange={(e) => setInformed(Number(e.target.value))}
+                onValueChange={setInformed}
               />
             </div>
           </div>
