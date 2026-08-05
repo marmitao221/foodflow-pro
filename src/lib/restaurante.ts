@@ -15,7 +15,14 @@ export type TableStatus = "livre" | "ocupada" | "reservada" | "fechamento_penden
 
 export type OrderType = "mesa" | "balcao" | "delivery" | "retirada";
 export type OrderStatus = "aberta" | "fechada" | "cancelada";
-export type PaymentMethod = "dinheiro" | "pix" | "debito" | "credito";
+export type PaymentMethod =
+  | "dinheiro"
+  | "pix"
+  | "debito"
+  | "credito"
+  | "ifood_online"
+  | "keeta_online"
+  | "aiqfome_online";
 export type CashMovementType = "sangria" | "suprimento" | "retirada" | "ajuste";
 export type CashSessionStatus = "aberto" | "fechado";
 
@@ -31,6 +38,9 @@ export const paymentMethodLabel: Record<PaymentMethod, string> = {
   pix: "Pix",
   debito: "Cartão débito",
   credito: "Cartão crédito",
+  ifood_online: "iFood Online",
+  keeta_online: "Keeta Online",
+  aiqfome_online: "Aiqfome Online",
 };
 
 export const cashMovementLabel: Record<CashMovementType, string> = {
