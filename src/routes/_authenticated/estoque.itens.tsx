@@ -21,6 +21,7 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 import {
+import { DecimalInput } from "@/components/ui/decimal-input";
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
@@ -308,7 +309,7 @@ function ItensPage() {
             </div>
             <div>
               <Label>Quantidade {editing && "(use entradas/saídas para alterar)"}</Label>
-              <Input
+              <DecimalInput
                 disabled={!!editing}
                 value={form.quantity}
                 onValueChange={(v) => set("quantity", v)}
@@ -316,7 +317,7 @@ function ItensPage() {
             </div>
             <div>
               <Label>Valor unitário</Label>
-              <Input
+              <DecimalInput
                 decimals={4}
                 value={form.unit_value}
                 onValueChange={(v) => set("unit_value", v)}
@@ -324,7 +325,7 @@ function ItensPage() {
             </div>
             <div>
               <Label>Estoque mínimo</Label>
-              <Input
+              <DecimalInput
                 value={form.min_stock}
                 onValueChange={(v) => set("min_stock", v)}
               />
