@@ -71,7 +71,15 @@ type OrderItem = {
 };
 
 const orderTypes: OrderType[] = ["mesa", "balcao", "delivery", "retirada"];
-const methods: PaymentMethod[] = ["dinheiro", "pix", "debito", "credito"];
+const methods: PaymentMethod[] = [
+  "dinheiro",
+  "pix",
+  "debito",
+  "credito",
+  "ifood_online",
+  "keeta_online",
+  "aiqfome_online",
+];
 
 function ComandasPage() {
   const { data: companyId } = useMyCompanyId();
