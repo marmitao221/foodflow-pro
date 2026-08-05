@@ -309,27 +309,24 @@ function ItensPage() {
             <div>
               <Label>Quantidade {editing && "(use entradas/saídas para alterar)"}</Label>
               <Input
-                type="number"
-                step="0.001"
                 disabled={!!editing}
                 value={form.quantity}
-                onChange={(e) => set("quantity", Number(e.target.value))}
+                onValueChange={(v) => set("quantity", v)}
               />
             </div>
             <div>
               <Label>Valor unitário</Label>
               <Input
-                type="number" step="0.01"
+                decimals={4}
                 value={form.unit_value}
-                onChange={(e) => set("unit_value", Number(e.target.value))}
+                onValueChange={(v) => set("unit_value", v)}
               />
             </div>
             <div>
               <Label>Estoque mínimo</Label>
               <Input
-                type="number" step="0.001"
                 value={form.min_stock}
-                onChange={(e) => set("min_stock", Number(e.target.value))}
+                onValueChange={(v) => set("min_stock", v)}
               />
             </div>
             <div>
