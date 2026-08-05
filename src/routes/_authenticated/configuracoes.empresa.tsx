@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { DecimalInput } from "@/components/ui/decimal-input";
 
 export const Route = createFileRoute("/_authenticated/configuracoes/empresa")({
   head: () => ({ meta: [{ title: "Configurações da Empresa — CozinhaPro" }] }),
@@ -183,11 +184,11 @@ function ConfigEmpresa() {
                   </div>
                   <div className="space-y-1.5">
                     <Label htmlFor="cmv">Meta de CMV (%)</Label>
-                    <Input id="cmv" type="number" step="0.01" min={0} max={100} value={form.cmv_target} onChange={set("cmv_target")} />
+                    <DecimalInput id="cmv" decimals={2} value={form.cmv_target} onValueChange={(v) => setForm((f) => ({ ...f, cmv_target: String(v) }))} />
                   </div>
                   <div className="space-y-1.5">
                     <Label htmlFor="profit">Meta de lucro (%)</Label>
-                    <Input id="profit" type="number" step="0.01" min={0} max={100} value={form.profit_target} onChange={set("profit_target")} />
+                    <DecimalInput id="profit" decimals={2} value={form.profit_target} onValueChange={(v) => setForm((f) => ({ ...f, profit_target: String(v) }))} />
                   </div>
                 </div>
               </div>
