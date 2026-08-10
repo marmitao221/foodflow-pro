@@ -1,0 +1,1 @@
+REVOKE ALL ON FUNCTION public.generate_task_instances(uuid, date) FROM anon;
