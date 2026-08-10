@@ -13,6 +13,7 @@ import {
   Wallet,
   UtensilsCrossed,
   Users,
+  ClipboardCheck,
 } from "lucide-react";
 
 
@@ -40,6 +41,7 @@ const operacao: NavItem[] = [
   { title: "Estoque", url: "/estoque/dashboard", icon: Package },
   { title: "Produção", url: "/producao", icon: ChefHat, disabled: true },
   { title: "Fichas Técnicas", url: "/fichas", icon: ClipboardList },
+  { title: "Equipe", url: "/equipe/dashboard", icon: ClipboardCheck },
   { title: "RH", url: "/rh/dashboard", icon: Users },
 ];
 
@@ -70,7 +72,7 @@ export function AppSidebar() {
           {items.map((item) => {
             const prefix = item.url.split("/").slice(0, 2).join("/");
             const active =
-              prefix === "/financeiro" || prefix === "/restaurante" || prefix === "/estoque" || prefix === "/rh" || prefix === "/configuracoes"
+              prefix === "/financeiro" || prefix === "/restaurante" || prefix === "/estoque" || prefix === "/rh" || prefix === "/equipe" || prefix === "/configuracoes"
                 ? currentPath.startsWith(prefix)
                 : currentPath === item.url;
 

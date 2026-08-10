@@ -18,6 +18,7 @@ import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authentic
 import { Route as AuthenticatedFinanceiroRouteImport } from './routes/_authenticated/financeiro'
 import { Route as AuthenticatedFichasRouteImport } from './routes/_authenticated/fichas'
 import { Route as AuthenticatedEstoqueRouteImport } from './routes/_authenticated/estoque'
+import { Route as AuthenticatedEquipeRouteImport } from './routes/_authenticated/equipe'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedRhPontoRouteImport } from './routes/_authenticated/rh.ponto'
 import { Route as AuthenticatedRhFuncionariosRouteImport } from './routes/_authenticated/rh.funcionarios'
@@ -40,6 +41,14 @@ import { Route as AuthenticatedEstoqueFornecedoresRouteImport } from './routes/_
 import { Route as AuthenticatedEstoqueEntradasRouteImport } from './routes/_authenticated/estoque.entradas'
 import { Route as AuthenticatedEstoqueDashboardRouteImport } from './routes/_authenticated/estoque.dashboard'
 import { Route as AuthenticatedEstoqueCategoriasRouteImport } from './routes/_authenticated/estoque.categorias'
+import { Route as AuthenticatedEquipeTarefasRouteImport } from './routes/_authenticated/equipe.tarefas'
+import { Route as AuthenticatedEquipeRotinaRouteImport } from './routes/_authenticated/equipe.rotina'
+import { Route as AuthenticatedEquipeModelosRouteImport } from './routes/_authenticated/equipe.modelos'
+import { Route as AuthenticatedEquipeHistoricoRouteImport } from './routes/_authenticated/equipe.historico'
+import { Route as AuthenticatedEquipeGestaoRouteImport } from './routes/_authenticated/equipe.gestao'
+import { Route as AuthenticatedEquipeFuncoesRouteImport } from './routes/_authenticated/equipe.funcoes'
+import { Route as AuthenticatedEquipeFuncionariosRouteImport } from './routes/_authenticated/equipe.funcionarios'
+import { Route as AuthenticatedEquipeDashboardRouteImport } from './routes/_authenticated/equipe.dashboard'
 import { Route as AuthenticatedConfiguracoesFiliaisRouteImport } from './routes/_authenticated/configuracoes.filiais'
 import { Route as AuthenticatedConfiguracoesEmpresaRouteImport } from './routes/_authenticated/configuracoes.empresa'
 
@@ -86,6 +95,11 @@ const AuthenticatedFichasRoute = AuthenticatedFichasRouteImport.update({
 const AuthenticatedEstoqueRoute = AuthenticatedEstoqueRouteImport.update({
   id: '/estoque',
   path: '/estoque',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedEquipeRoute = AuthenticatedEquipeRouteImport.update({
+  id: '/equipe',
+  path: '/equipe',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
@@ -216,6 +230,54 @@ const AuthenticatedEstoqueCategoriasRoute =
     path: '/categorias',
     getParentRoute: () => AuthenticatedEstoqueRoute,
   } as any)
+const AuthenticatedEquipeTarefasRoute =
+  AuthenticatedEquipeTarefasRouteImport.update({
+    id: '/tarefas',
+    path: '/tarefas',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
+const AuthenticatedEquipeRotinaRoute =
+  AuthenticatedEquipeRotinaRouteImport.update({
+    id: '/rotina',
+    path: '/rotina',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
+const AuthenticatedEquipeModelosRoute =
+  AuthenticatedEquipeModelosRouteImport.update({
+    id: '/modelos',
+    path: '/modelos',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
+const AuthenticatedEquipeHistoricoRoute =
+  AuthenticatedEquipeHistoricoRouteImport.update({
+    id: '/historico',
+    path: '/historico',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
+const AuthenticatedEquipeGestaoRoute =
+  AuthenticatedEquipeGestaoRouteImport.update({
+    id: '/gestao',
+    path: '/gestao',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
+const AuthenticatedEquipeFuncoesRoute =
+  AuthenticatedEquipeFuncoesRouteImport.update({
+    id: '/funcoes',
+    path: '/funcoes',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
+const AuthenticatedEquipeFuncionariosRoute =
+  AuthenticatedEquipeFuncionariosRouteImport.update({
+    id: '/funcionarios',
+    path: '/funcionarios',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
+const AuthenticatedEquipeDashboardRoute =
+  AuthenticatedEquipeDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
 const AuthenticatedConfiguracoesFiliaisRoute =
   AuthenticatedConfiguracoesFiliaisRouteImport.update({
     id: '/configuracoes/filiais',
@@ -233,6 +295,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/equipe': typeof AuthenticatedEquipeRouteWithChildren
   '/estoque': typeof AuthenticatedEstoqueRouteWithChildren
   '/fichas': typeof AuthenticatedFichasRoute
   '/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
@@ -241,6 +304,14 @@ export interface FileRoutesByFullPath {
   '/rh': typeof AuthenticatedRhRouteWithChildren
   '/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
+  '/equipe/dashboard': typeof AuthenticatedEquipeDashboardRoute
+  '/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
+  '/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
+  '/equipe/gestao': typeof AuthenticatedEquipeGestaoRoute
+  '/equipe/historico': typeof AuthenticatedEquipeHistoricoRoute
+  '/equipe/modelos': typeof AuthenticatedEquipeModelosRoute
+  '/equipe/rotina': typeof AuthenticatedEquipeRotinaRoute
+  '/equipe/tarefas': typeof AuthenticatedEquipeTarefasRoute
   '/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
   '/estoque/dashboard': typeof AuthenticatedEstoqueDashboardRoute
   '/estoque/entradas': typeof AuthenticatedEstoqueEntradasRoute
@@ -267,6 +338,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/equipe': typeof AuthenticatedEquipeRouteWithChildren
   '/estoque': typeof AuthenticatedEstoqueRouteWithChildren
   '/fichas': typeof AuthenticatedFichasRoute
   '/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
@@ -275,6 +347,14 @@ export interface FileRoutesByTo {
   '/rh': typeof AuthenticatedRhRouteWithChildren
   '/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
+  '/equipe/dashboard': typeof AuthenticatedEquipeDashboardRoute
+  '/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
+  '/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
+  '/equipe/gestao': typeof AuthenticatedEquipeGestaoRoute
+  '/equipe/historico': typeof AuthenticatedEquipeHistoricoRoute
+  '/equipe/modelos': typeof AuthenticatedEquipeModelosRoute
+  '/equipe/rotina': typeof AuthenticatedEquipeRotinaRoute
+  '/equipe/tarefas': typeof AuthenticatedEquipeTarefasRoute
   '/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
   '/estoque/dashboard': typeof AuthenticatedEstoqueDashboardRoute
   '/estoque/entradas': typeof AuthenticatedEstoqueEntradasRoute
@@ -303,6 +383,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/equipe': typeof AuthenticatedEquipeRouteWithChildren
   '/_authenticated/estoque': typeof AuthenticatedEstoqueRouteWithChildren
   '/_authenticated/fichas': typeof AuthenticatedFichasRoute
   '/_authenticated/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
@@ -311,6 +392,14 @@ export interface FileRoutesById {
   '/_authenticated/rh': typeof AuthenticatedRhRouteWithChildren
   '/_authenticated/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/_authenticated/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
+  '/_authenticated/equipe/dashboard': typeof AuthenticatedEquipeDashboardRoute
+  '/_authenticated/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
+  '/_authenticated/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
+  '/_authenticated/equipe/gestao': typeof AuthenticatedEquipeGestaoRoute
+  '/_authenticated/equipe/historico': typeof AuthenticatedEquipeHistoricoRoute
+  '/_authenticated/equipe/modelos': typeof AuthenticatedEquipeModelosRoute
+  '/_authenticated/equipe/rotina': typeof AuthenticatedEquipeRotinaRoute
+  '/_authenticated/equipe/tarefas': typeof AuthenticatedEquipeTarefasRoute
   '/_authenticated/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
   '/_authenticated/estoque/dashboard': typeof AuthenticatedEstoqueDashboardRoute
   '/_authenticated/estoque/entradas': typeof AuthenticatedEstoqueEntradasRoute
@@ -339,6 +428,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/dashboard'
+    | '/equipe'
     | '/estoque'
     | '/fichas'
     | '/financeiro'
@@ -347,6 +437,14 @@ export interface FileRouteTypes {
     | '/rh'
     | '/configuracoes/empresa'
     | '/configuracoes/filiais'
+    | '/equipe/dashboard'
+    | '/equipe/funcionarios'
+    | '/equipe/funcoes'
+    | '/equipe/gestao'
+    | '/equipe/historico'
+    | '/equipe/modelos'
+    | '/equipe/rotina'
+    | '/equipe/tarefas'
     | '/estoque/categorias'
     | '/estoque/dashboard'
     | '/estoque/entradas'
@@ -373,6 +471,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/dashboard'
+    | '/equipe'
     | '/estoque'
     | '/fichas'
     | '/financeiro'
@@ -381,6 +480,14 @@ export interface FileRouteTypes {
     | '/rh'
     | '/configuracoes/empresa'
     | '/configuracoes/filiais'
+    | '/equipe/dashboard'
+    | '/equipe/funcionarios'
+    | '/equipe/funcoes'
+    | '/equipe/gestao'
+    | '/equipe/historico'
+    | '/equipe/modelos'
+    | '/equipe/rotina'
+    | '/equipe/tarefas'
     | '/estoque/categorias'
     | '/estoque/dashboard'
     | '/estoque/entradas'
@@ -408,6 +515,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/login'
     | '/_authenticated/dashboard'
+    | '/_authenticated/equipe'
     | '/_authenticated/estoque'
     | '/_authenticated/fichas'
     | '/_authenticated/financeiro'
@@ -416,6 +524,14 @@ export interface FileRouteTypes {
     | '/_authenticated/rh'
     | '/_authenticated/configuracoes/empresa'
     | '/_authenticated/configuracoes/filiais'
+    | '/_authenticated/equipe/dashboard'
+    | '/_authenticated/equipe/funcionarios'
+    | '/_authenticated/equipe/funcoes'
+    | '/_authenticated/equipe/gestao'
+    | '/_authenticated/equipe/historico'
+    | '/_authenticated/equipe/modelos'
+    | '/_authenticated/equipe/rotina'
+    | '/_authenticated/equipe/tarefas'
     | '/_authenticated/estoque/categorias'
     | '/_authenticated/estoque/dashboard'
     | '/_authenticated/estoque/entradas'
@@ -508,6 +624,13 @@ declare module '@tanstack/react-router' {
       path: '/estoque'
       fullPath: '/estoque'
       preLoaderRoute: typeof AuthenticatedEstoqueRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/equipe': {
+      id: '/_authenticated/equipe'
+      path: '/equipe'
+      fullPath: '/equipe'
+      preLoaderRoute: typeof AuthenticatedEquipeRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/dashboard': {
@@ -664,6 +787,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEstoqueCategoriasRouteImport
       parentRoute: typeof AuthenticatedEstoqueRoute
     }
+    '/_authenticated/equipe/tarefas': {
+      id: '/_authenticated/equipe/tarefas'
+      path: '/tarefas'
+      fullPath: '/equipe/tarefas'
+      preLoaderRoute: typeof AuthenticatedEquipeTarefasRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
+    '/_authenticated/equipe/rotina': {
+      id: '/_authenticated/equipe/rotina'
+      path: '/rotina'
+      fullPath: '/equipe/rotina'
+      preLoaderRoute: typeof AuthenticatedEquipeRotinaRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
+    '/_authenticated/equipe/modelos': {
+      id: '/_authenticated/equipe/modelos'
+      path: '/modelos'
+      fullPath: '/equipe/modelos'
+      preLoaderRoute: typeof AuthenticatedEquipeModelosRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
+    '/_authenticated/equipe/historico': {
+      id: '/_authenticated/equipe/historico'
+      path: '/historico'
+      fullPath: '/equipe/historico'
+      preLoaderRoute: typeof AuthenticatedEquipeHistoricoRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
+    '/_authenticated/equipe/gestao': {
+      id: '/_authenticated/equipe/gestao'
+      path: '/gestao'
+      fullPath: '/equipe/gestao'
+      preLoaderRoute: typeof AuthenticatedEquipeGestaoRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
+    '/_authenticated/equipe/funcoes': {
+      id: '/_authenticated/equipe/funcoes'
+      path: '/funcoes'
+      fullPath: '/equipe/funcoes'
+      preLoaderRoute: typeof AuthenticatedEquipeFuncoesRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
+    '/_authenticated/equipe/funcionarios': {
+      id: '/_authenticated/equipe/funcionarios'
+      path: '/funcionarios'
+      fullPath: '/equipe/funcionarios'
+      preLoaderRoute: typeof AuthenticatedEquipeFuncionariosRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
+    '/_authenticated/equipe/dashboard': {
+      id: '/_authenticated/equipe/dashboard'
+      path: '/dashboard'
+      fullPath: '/equipe/dashboard'
+      preLoaderRoute: typeof AuthenticatedEquipeDashboardRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
     '/_authenticated/configuracoes/filiais': {
       id: '/_authenticated/configuracoes/filiais'
       path: '/configuracoes/filiais'
@@ -680,6 +859,31 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AuthenticatedEquipeRouteChildren {
+  AuthenticatedEquipeDashboardRoute: typeof AuthenticatedEquipeDashboardRoute
+  AuthenticatedEquipeFuncionariosRoute: typeof AuthenticatedEquipeFuncionariosRoute
+  AuthenticatedEquipeFuncoesRoute: typeof AuthenticatedEquipeFuncoesRoute
+  AuthenticatedEquipeGestaoRoute: typeof AuthenticatedEquipeGestaoRoute
+  AuthenticatedEquipeHistoricoRoute: typeof AuthenticatedEquipeHistoricoRoute
+  AuthenticatedEquipeModelosRoute: typeof AuthenticatedEquipeModelosRoute
+  AuthenticatedEquipeRotinaRoute: typeof AuthenticatedEquipeRotinaRoute
+  AuthenticatedEquipeTarefasRoute: typeof AuthenticatedEquipeTarefasRoute
+}
+
+const AuthenticatedEquipeRouteChildren: AuthenticatedEquipeRouteChildren = {
+  AuthenticatedEquipeDashboardRoute: AuthenticatedEquipeDashboardRoute,
+  AuthenticatedEquipeFuncionariosRoute: AuthenticatedEquipeFuncionariosRoute,
+  AuthenticatedEquipeFuncoesRoute: AuthenticatedEquipeFuncoesRoute,
+  AuthenticatedEquipeGestaoRoute: AuthenticatedEquipeGestaoRoute,
+  AuthenticatedEquipeHistoricoRoute: AuthenticatedEquipeHistoricoRoute,
+  AuthenticatedEquipeModelosRoute: AuthenticatedEquipeModelosRoute,
+  AuthenticatedEquipeRotinaRoute: AuthenticatedEquipeRotinaRoute,
+  AuthenticatedEquipeTarefasRoute: AuthenticatedEquipeTarefasRoute,
+}
+
+const AuthenticatedEquipeRouteWithChildren =
+  AuthenticatedEquipeRoute._addFileChildren(AuthenticatedEquipeRouteChildren)
 
 interface AuthenticatedEstoqueRouteChildren {
   AuthenticatedEstoqueCategoriasRoute: typeof AuthenticatedEstoqueCategoriasRoute
@@ -771,6 +975,7 @@ const AuthenticatedRhRouteWithChildren = AuthenticatedRhRoute._addFileChildren(
 
 interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedEquipeRoute: typeof AuthenticatedEquipeRouteWithChildren
   AuthenticatedEstoqueRoute: typeof AuthenticatedEstoqueRouteWithChildren
   AuthenticatedFichasRoute: typeof AuthenticatedFichasRoute
   AuthenticatedFinanceiroRoute: typeof AuthenticatedFinanceiroRouteWithChildren
@@ -783,6 +988,7 @@ interface AuthenticatedRouteChildren {
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedEquipeRoute: AuthenticatedEquipeRouteWithChildren,
   AuthenticatedEstoqueRoute: AuthenticatedEstoqueRouteWithChildren,
   AuthenticatedFichasRoute: AuthenticatedFichasRoute,
   AuthenticatedFinanceiroRoute: AuthenticatedFinanceiroRouteWithChildren,
