@@ -48,6 +48,7 @@ import { Route as AuthenticatedEquipeHistoricoRouteImport } from './routes/_auth
 import { Route as AuthenticatedEquipeGestaoRouteImport } from './routes/_authenticated/equipe.gestao'
 import { Route as AuthenticatedEquipeFuncoesRouteImport } from './routes/_authenticated/equipe.funcoes'
 import { Route as AuthenticatedEquipeFuncionariosRouteImport } from './routes/_authenticated/equipe.funcionarios'
+import { Route as AuthenticatedEquipeDashboardRouteImport } from './routes/_authenticated/equipe.dashboard'
 import { Route as AuthenticatedConfiguracoesFiliaisRouteImport } from './routes/_authenticated/configuracoes.filiais'
 import { Route as AuthenticatedConfiguracoesEmpresaRouteImport } from './routes/_authenticated/configuracoes.empresa'
 
@@ -271,6 +272,12 @@ const AuthenticatedEquipeFuncionariosRoute =
     path: '/funcionarios',
     getParentRoute: () => AuthenticatedEquipeRoute,
   } as any)
+const AuthenticatedEquipeDashboardRoute =
+  AuthenticatedEquipeDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
 const AuthenticatedConfiguracoesFiliaisRoute =
   AuthenticatedConfiguracoesFiliaisRouteImport.update({
     id: '/configuracoes/filiais',
@@ -297,6 +304,7 @@ export interface FileRoutesByFullPath {
   '/rh': typeof AuthenticatedRhRouteWithChildren
   '/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
+  '/equipe/dashboard': typeof AuthenticatedEquipeDashboardRoute
   '/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
   '/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
   '/equipe/gestao': typeof AuthenticatedEquipeGestaoRoute
@@ -339,6 +347,7 @@ export interface FileRoutesByTo {
   '/rh': typeof AuthenticatedRhRouteWithChildren
   '/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
+  '/equipe/dashboard': typeof AuthenticatedEquipeDashboardRoute
   '/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
   '/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
   '/equipe/gestao': typeof AuthenticatedEquipeGestaoRoute
@@ -383,6 +392,7 @@ export interface FileRoutesById {
   '/_authenticated/rh': typeof AuthenticatedRhRouteWithChildren
   '/_authenticated/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/_authenticated/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
+  '/_authenticated/equipe/dashboard': typeof AuthenticatedEquipeDashboardRoute
   '/_authenticated/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
   '/_authenticated/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
   '/_authenticated/equipe/gestao': typeof AuthenticatedEquipeGestaoRoute
@@ -427,6 +437,7 @@ export interface FileRouteTypes {
     | '/rh'
     | '/configuracoes/empresa'
     | '/configuracoes/filiais'
+    | '/equipe/dashboard'
     | '/equipe/funcionarios'
     | '/equipe/funcoes'
     | '/equipe/gestao'
@@ -469,6 +480,7 @@ export interface FileRouteTypes {
     | '/rh'
     | '/configuracoes/empresa'
     | '/configuracoes/filiais'
+    | '/equipe/dashboard'
     | '/equipe/funcionarios'
     | '/equipe/funcoes'
     | '/equipe/gestao'
@@ -512,6 +524,7 @@ export interface FileRouteTypes {
     | '/_authenticated/rh'
     | '/_authenticated/configuracoes/empresa'
     | '/_authenticated/configuracoes/filiais'
+    | '/_authenticated/equipe/dashboard'
     | '/_authenticated/equipe/funcionarios'
     | '/_authenticated/equipe/funcoes'
     | '/_authenticated/equipe/gestao'
@@ -823,6 +836,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEquipeFuncionariosRouteImport
       parentRoute: typeof AuthenticatedEquipeRoute
     }
+    '/_authenticated/equipe/dashboard': {
+      id: '/_authenticated/equipe/dashboard'
+      path: '/dashboard'
+      fullPath: '/equipe/dashboard'
+      preLoaderRoute: typeof AuthenticatedEquipeDashboardRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
     '/_authenticated/configuracoes/filiais': {
       id: '/_authenticated/configuracoes/filiais'
       path: '/configuracoes/filiais'
@@ -841,6 +861,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedEquipeRouteChildren {
+  AuthenticatedEquipeDashboardRoute: typeof AuthenticatedEquipeDashboardRoute
   AuthenticatedEquipeFuncionariosRoute: typeof AuthenticatedEquipeFuncionariosRoute
   AuthenticatedEquipeFuncoesRoute: typeof AuthenticatedEquipeFuncoesRoute
   AuthenticatedEquipeGestaoRoute: typeof AuthenticatedEquipeGestaoRoute
@@ -851,6 +872,7 @@ interface AuthenticatedEquipeRouteChildren {
 }
 
 const AuthenticatedEquipeRouteChildren: AuthenticatedEquipeRouteChildren = {
+  AuthenticatedEquipeDashboardRoute: AuthenticatedEquipeDashboardRoute,
   AuthenticatedEquipeFuncionariosRoute: AuthenticatedEquipeFuncionariosRoute,
   AuthenticatedEquipeFuncoesRoute: AuthenticatedEquipeFuncoesRoute,
   AuthenticatedEquipeGestaoRoute: AuthenticatedEquipeGestaoRoute,

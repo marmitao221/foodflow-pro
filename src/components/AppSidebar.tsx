@@ -40,6 +40,7 @@ const operacao: NavItem[] = [
   { title: "Estoque", url: "/estoque/dashboard", icon: Package },
   { title: "Produção", url: "/producao", icon: ChefHat, disabled: true },
   { title: "Fichas Técnicas", url: "/fichas", icon: ClipboardList },
+  { title: "Equipe", url: "/equipe/dashboard", icon: ClipboardCheck },
   { title: "RH", url: "/rh/dashboard", icon: Users },
 ];
 
