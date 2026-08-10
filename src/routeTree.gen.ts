@@ -43,6 +43,7 @@ import { Route as AuthenticatedEstoqueDashboardRouteImport } from './routes/_aut
 import { Route as AuthenticatedEstoqueCategoriasRouteImport } from './routes/_authenticated/estoque.categorias'
 import { Route as AuthenticatedEquipeTarefasRouteImport } from './routes/_authenticated/equipe.tarefas'
 import { Route as AuthenticatedEquipeRotinaRouteImport } from './routes/_authenticated/equipe.rotina'
+import { Route as AuthenticatedEquipeGestaoRouteImport } from './routes/_authenticated/equipe.gestao'
 import { Route as AuthenticatedEquipeFuncoesRouteImport } from './routes/_authenticated/equipe.funcoes'
 import { Route as AuthenticatedEquipeFuncionariosRouteImport } from './routes/_authenticated/equipe.funcionarios'
 import { Route as AuthenticatedConfiguracoesFiliaisRouteImport } from './routes/_authenticated/configuracoes.filiais'
@@ -238,6 +239,12 @@ const AuthenticatedEquipeRotinaRoute =
     path: '/rotina',
     getParentRoute: () => AuthenticatedEquipeRoute,
   } as any)
+const AuthenticatedEquipeGestaoRoute =
+  AuthenticatedEquipeGestaoRouteImport.update({
+    id: '/gestao',
+    path: '/gestao',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
 const AuthenticatedEquipeFuncoesRoute =
   AuthenticatedEquipeFuncoesRouteImport.update({
     id: '/funcoes',
@@ -278,6 +285,7 @@ export interface FileRoutesByFullPath {
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
   '/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
   '/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
+  '/equipe/gestao': typeof AuthenticatedEquipeGestaoRoute
   '/equipe/rotina': typeof AuthenticatedEquipeRotinaRoute
   '/equipe/tarefas': typeof AuthenticatedEquipeTarefasRoute
   '/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
@@ -317,6 +325,7 @@ export interface FileRoutesByTo {
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
   '/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
   '/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
+  '/equipe/gestao': typeof AuthenticatedEquipeGestaoRoute
   '/equipe/rotina': typeof AuthenticatedEquipeRotinaRoute
   '/equipe/tarefas': typeof AuthenticatedEquipeTarefasRoute
   '/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
@@ -358,6 +367,7 @@ export interface FileRoutesById {
   '/_authenticated/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
   '/_authenticated/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
   '/_authenticated/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
+  '/_authenticated/equipe/gestao': typeof AuthenticatedEquipeGestaoRoute
   '/_authenticated/equipe/rotina': typeof AuthenticatedEquipeRotinaRoute
   '/_authenticated/equipe/tarefas': typeof AuthenticatedEquipeTarefasRoute
   '/_authenticated/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
@@ -399,6 +409,7 @@ export interface FileRouteTypes {
     | '/configuracoes/filiais'
     | '/equipe/funcionarios'
     | '/equipe/funcoes'
+    | '/equipe/gestao'
     | '/equipe/rotina'
     | '/equipe/tarefas'
     | '/estoque/categorias'
@@ -438,6 +449,7 @@ export interface FileRouteTypes {
     | '/configuracoes/filiais'
     | '/equipe/funcionarios'
     | '/equipe/funcoes'
+    | '/equipe/gestao'
     | '/equipe/rotina'
     | '/equipe/tarefas'
     | '/estoque/categorias'
@@ -478,6 +490,7 @@ export interface FileRouteTypes {
     | '/_authenticated/configuracoes/filiais'
     | '/_authenticated/equipe/funcionarios'
     | '/_authenticated/equipe/funcoes'
+    | '/_authenticated/equipe/gestao'
     | '/_authenticated/equipe/rotina'
     | '/_authenticated/equipe/tarefas'
     | '/_authenticated/estoque/categorias'
@@ -749,6 +762,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEquipeRotinaRouteImport
       parentRoute: typeof AuthenticatedEquipeRoute
     }
+    '/_authenticated/equipe/gestao': {
+      id: '/_authenticated/equipe/gestao'
+      path: '/gestao'
+      fullPath: '/equipe/gestao'
+      preLoaderRoute: typeof AuthenticatedEquipeGestaoRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
     '/_authenticated/equipe/funcoes': {
       id: '/_authenticated/equipe/funcoes'
       path: '/funcoes'
@@ -783,6 +803,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedEquipeRouteChildren {
   AuthenticatedEquipeFuncionariosRoute: typeof AuthenticatedEquipeFuncionariosRoute
   AuthenticatedEquipeFuncoesRoute: typeof AuthenticatedEquipeFuncoesRoute
+  AuthenticatedEquipeGestaoRoute: typeof AuthenticatedEquipeGestaoRoute
   AuthenticatedEquipeRotinaRoute: typeof AuthenticatedEquipeRotinaRoute
   AuthenticatedEquipeTarefasRoute: typeof AuthenticatedEquipeTarefasRoute
 }
@@ -790,6 +811,7 @@ interface AuthenticatedEquipeRouteChildren {
 const AuthenticatedEquipeRouteChildren: AuthenticatedEquipeRouteChildren = {
   AuthenticatedEquipeFuncionariosRoute: AuthenticatedEquipeFuncionariosRoute,
   AuthenticatedEquipeFuncoesRoute: AuthenticatedEquipeFuncoesRoute,
+  AuthenticatedEquipeGestaoRoute: AuthenticatedEquipeGestaoRoute,
   AuthenticatedEquipeRotinaRoute: AuthenticatedEquipeRotinaRoute,
   AuthenticatedEquipeTarefasRoute: AuthenticatedEquipeTarefasRoute,
 }
