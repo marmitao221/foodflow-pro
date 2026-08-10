@@ -41,6 +41,7 @@ import { Route as AuthenticatedEstoqueFornecedoresRouteImport } from './routes/_
 import { Route as AuthenticatedEstoqueEntradasRouteImport } from './routes/_authenticated/estoque.entradas'
 import { Route as AuthenticatedEstoqueDashboardRouteImport } from './routes/_authenticated/estoque.dashboard'
 import { Route as AuthenticatedEstoqueCategoriasRouteImport } from './routes/_authenticated/estoque.categorias'
+import { Route as AuthenticatedEquipeFuncoesRouteImport } from './routes/_authenticated/equipe.funcoes'
 import { Route as AuthenticatedEquipeFuncionariosRouteImport } from './routes/_authenticated/equipe.funcionarios'
 import { Route as AuthenticatedConfiguracoesFiliaisRouteImport } from './routes/_authenticated/configuracoes.filiais'
 import { Route as AuthenticatedConfiguracoesEmpresaRouteImport } from './routes/_authenticated/configuracoes.empresa'
@@ -223,6 +224,12 @@ const AuthenticatedEstoqueCategoriasRoute =
     path: '/categorias',
     getParentRoute: () => AuthenticatedEstoqueRoute,
   } as any)
+const AuthenticatedEquipeFuncoesRoute =
+  AuthenticatedEquipeFuncoesRouteImport.update({
+    id: '/funcoes',
+    path: '/funcoes',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
 const AuthenticatedEquipeFuncionariosRoute =
   AuthenticatedEquipeFuncionariosRouteImport.update({
     id: '/funcionarios',
@@ -256,6 +263,7 @@ export interface FileRoutesByFullPath {
   '/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
   '/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
+  '/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
   '/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
   '/estoque/dashboard': typeof AuthenticatedEstoqueDashboardRoute
   '/estoque/entradas': typeof AuthenticatedEstoqueEntradasRoute
@@ -292,6 +300,7 @@ export interface FileRoutesByTo {
   '/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
   '/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
+  '/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
   '/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
   '/estoque/dashboard': typeof AuthenticatedEstoqueDashboardRoute
   '/estoque/entradas': typeof AuthenticatedEstoqueEntradasRoute
@@ -330,6 +339,7 @@ export interface FileRoutesById {
   '/_authenticated/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/_authenticated/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
   '/_authenticated/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
+  '/_authenticated/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
   '/_authenticated/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
   '/_authenticated/estoque/dashboard': typeof AuthenticatedEstoqueDashboardRoute
   '/_authenticated/estoque/entradas': typeof AuthenticatedEstoqueEntradasRoute
@@ -368,6 +378,7 @@ export interface FileRouteTypes {
     | '/configuracoes/empresa'
     | '/configuracoes/filiais'
     | '/equipe/funcionarios'
+    | '/equipe/funcoes'
     | '/estoque/categorias'
     | '/estoque/dashboard'
     | '/estoque/entradas'
@@ -404,6 +415,7 @@ export interface FileRouteTypes {
     | '/configuracoes/empresa'
     | '/configuracoes/filiais'
     | '/equipe/funcionarios'
+    | '/equipe/funcoes'
     | '/estoque/categorias'
     | '/estoque/dashboard'
     | '/estoque/entradas'
@@ -441,6 +453,7 @@ export interface FileRouteTypes {
     | '/_authenticated/configuracoes/empresa'
     | '/_authenticated/configuracoes/filiais'
     | '/_authenticated/equipe/funcionarios'
+    | '/_authenticated/equipe/funcoes'
     | '/_authenticated/estoque/categorias'
     | '/_authenticated/estoque/dashboard'
     | '/_authenticated/estoque/entradas'
@@ -696,6 +709,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEstoqueCategoriasRouteImport
       parentRoute: typeof AuthenticatedEstoqueRoute
     }
+    '/_authenticated/equipe/funcoes': {
+      id: '/_authenticated/equipe/funcoes'
+      path: '/funcoes'
+      fullPath: '/equipe/funcoes'
+      preLoaderRoute: typeof AuthenticatedEquipeFuncoesRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
     '/_authenticated/equipe/funcionarios': {
       id: '/_authenticated/equipe/funcionarios'
       path: '/funcionarios'
@@ -722,10 +742,12 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedEquipeRouteChildren {
   AuthenticatedEquipeFuncionariosRoute: typeof AuthenticatedEquipeFuncionariosRoute
+  AuthenticatedEquipeFuncoesRoute: typeof AuthenticatedEquipeFuncoesRoute
 }
 
 const AuthenticatedEquipeRouteChildren: AuthenticatedEquipeRouteChildren = {
   AuthenticatedEquipeFuncionariosRoute: AuthenticatedEquipeFuncionariosRoute,
+  AuthenticatedEquipeFuncoesRoute: AuthenticatedEquipeFuncoesRoute,
 }
 
 const AuthenticatedEquipeRouteWithChildren =
