@@ -13,6 +13,7 @@ import {
   Wallet,
   UtensilsCrossed,
   Users,
+  ClipboardCheck,
 } from "lucide-react";
 
 
