@@ -44,6 +44,7 @@ import { Route as AuthenticatedEstoqueCategoriasRouteImport } from './routes/_au
 import { Route as AuthenticatedEquipeTarefasRouteImport } from './routes/_authenticated/equipe.tarefas'
 import { Route as AuthenticatedEquipeRotinaRouteImport } from './routes/_authenticated/equipe.rotina'
 import { Route as AuthenticatedEquipeModelosRouteImport } from './routes/_authenticated/equipe.modelos'
+import { Route as AuthenticatedEquipeHistoricoRouteImport } from './routes/_authenticated/equipe.historico'
 import { Route as AuthenticatedEquipeGestaoRouteImport } from './routes/_authenticated/equipe.gestao'
 import { Route as AuthenticatedEquipeFuncoesRouteImport } from './routes/_authenticated/equipe.funcoes'
 import { Route as AuthenticatedEquipeFuncionariosRouteImport } from './routes/_authenticated/equipe.funcionarios'
@@ -246,6 +247,12 @@ const AuthenticatedEquipeModelosRoute =
     path: '/modelos',
     getParentRoute: () => AuthenticatedEquipeRoute,
   } as any)
+const AuthenticatedEquipeHistoricoRoute =
+  AuthenticatedEquipeHistoricoRouteImport.update({
+    id: '/historico',
+    path: '/historico',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
 const AuthenticatedEquipeGestaoRoute =
   AuthenticatedEquipeGestaoRouteImport.update({
     id: '/gestao',
@@ -293,6 +300,7 @@ export interface FileRoutesByFullPath {
   '/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
   '/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
   '/equipe/gestao': typeof AuthenticatedEquipeGestaoRoute
+  '/equipe/historico': typeof AuthenticatedEquipeHistoricoRoute
   '/equipe/modelos': typeof AuthenticatedEquipeModelosRoute
   '/equipe/rotina': typeof AuthenticatedEquipeRotinaRoute
   '/equipe/tarefas': typeof AuthenticatedEquipeTarefasRoute
@@ -334,6 +342,7 @@ export interface FileRoutesByTo {
   '/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
   '/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
   '/equipe/gestao': typeof AuthenticatedEquipeGestaoRoute
+  '/equipe/historico': typeof AuthenticatedEquipeHistoricoRoute
   '/equipe/modelos': typeof AuthenticatedEquipeModelosRoute
   '/equipe/rotina': typeof AuthenticatedEquipeRotinaRoute
   '/equipe/tarefas': typeof AuthenticatedEquipeTarefasRoute
@@ -377,6 +386,7 @@ export interface FileRoutesById {
   '/_authenticated/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
   '/_authenticated/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
   '/_authenticated/equipe/gestao': typeof AuthenticatedEquipeGestaoRoute
+  '/_authenticated/equipe/historico': typeof AuthenticatedEquipeHistoricoRoute
   '/_authenticated/equipe/modelos': typeof AuthenticatedEquipeModelosRoute
   '/_authenticated/equipe/rotina': typeof AuthenticatedEquipeRotinaRoute
   '/_authenticated/equipe/tarefas': typeof AuthenticatedEquipeTarefasRoute
@@ -420,6 +430,7 @@ export interface FileRouteTypes {
     | '/equipe/funcionarios'
     | '/equipe/funcoes'
     | '/equipe/gestao'
+    | '/equipe/historico'
     | '/equipe/modelos'
     | '/equipe/rotina'
     | '/equipe/tarefas'
@@ -461,6 +472,7 @@ export interface FileRouteTypes {
     | '/equipe/funcionarios'
     | '/equipe/funcoes'
     | '/equipe/gestao'
+    | '/equipe/historico'
     | '/equipe/modelos'
     | '/equipe/rotina'
     | '/equipe/tarefas'
@@ -503,6 +515,7 @@ export interface FileRouteTypes {
     | '/_authenticated/equipe/funcionarios'
     | '/_authenticated/equipe/funcoes'
     | '/_authenticated/equipe/gestao'
+    | '/_authenticated/equipe/historico'
     | '/_authenticated/equipe/modelos'
     | '/_authenticated/equipe/rotina'
     | '/_authenticated/equipe/tarefas'
@@ -782,6 +795,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEquipeModelosRouteImport
       parentRoute: typeof AuthenticatedEquipeRoute
     }
+    '/_authenticated/equipe/historico': {
+      id: '/_authenticated/equipe/historico'
+      path: '/historico'
+      fullPath: '/equipe/historico'
+      preLoaderRoute: typeof AuthenticatedEquipeHistoricoRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
     '/_authenticated/equipe/gestao': {
       id: '/_authenticated/equipe/gestao'
       path: '/gestao'
@@ -824,6 +844,7 @@ interface AuthenticatedEquipeRouteChildren {
   AuthenticatedEquipeFuncionariosRoute: typeof AuthenticatedEquipeFuncionariosRoute
   AuthenticatedEquipeFuncoesRoute: typeof AuthenticatedEquipeFuncoesRoute
   AuthenticatedEquipeGestaoRoute: typeof AuthenticatedEquipeGestaoRoute
+  AuthenticatedEquipeHistoricoRoute: typeof AuthenticatedEquipeHistoricoRoute
   AuthenticatedEquipeModelosRoute: typeof AuthenticatedEquipeModelosRoute
   AuthenticatedEquipeRotinaRoute: typeof AuthenticatedEquipeRotinaRoute
   AuthenticatedEquipeTarefasRoute: typeof AuthenticatedEquipeTarefasRoute
@@ -833,6 +854,7 @@ const AuthenticatedEquipeRouteChildren: AuthenticatedEquipeRouteChildren = {
   AuthenticatedEquipeFuncionariosRoute: AuthenticatedEquipeFuncionariosRoute,
   AuthenticatedEquipeFuncoesRoute: AuthenticatedEquipeFuncoesRoute,
   AuthenticatedEquipeGestaoRoute: AuthenticatedEquipeGestaoRoute,
+  AuthenticatedEquipeHistoricoRoute: AuthenticatedEquipeHistoricoRoute,
   AuthenticatedEquipeModelosRoute: AuthenticatedEquipeModelosRoute,
   AuthenticatedEquipeRotinaRoute: AuthenticatedEquipeRotinaRoute,
   AuthenticatedEquipeTarefasRoute: AuthenticatedEquipeTarefasRoute,
