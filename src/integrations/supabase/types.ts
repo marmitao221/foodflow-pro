@@ -304,6 +304,105 @@ export type Database = {
         }
         Relationships: []
       }
+      checklist_template_items: {
+        Row: {
+          company_id: string
+          created_at: string
+          description: string | null
+          due_time: string | null
+          id: string
+          name: string
+          position: number
+          priority: Database["public"]["Enums"]["task_priority"]
+          template_id: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          description?: string | null
+          due_time?: string | null
+          id?: string
+          name: string
+          position?: number
+          priority?: Database["public"]["Enums"]["task_priority"]
+          template_id: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          description?: string | null
+          due_time?: string | null
+          id?: string
+          name?: string
+          position?: number
+          priority?: Database["public"]["Enums"]["task_priority"]
+          template_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "checklist_template_items_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "checklist_template_items_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "checklist_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      checklist_templates: {
+        Row: {
+          branch_id: string | null
+          company_id: string
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          sector: Database["public"]["Enums"]["work_sector"]
+          updated_at: string
+        }
+        Insert: {
+          branch_id?: string | null
+          company_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          sector?: Database["public"]["Enums"]["work_sector"]
+          updated_at?: string
+        }
+        Update: {
+          branch_id?: string | null
+          company_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          sector?: Database["public"]["Enums"]["work_sector"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "checklist_templates_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "checklist_templates_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       companies: {
         Row: {
           city: string | null
@@ -487,6 +586,10 @@ export type Database = {
           role_id: string | null
           salary: number
           schedule_type: Database["public"]["Enums"]["schedule_type"]
+          sector: Database["public"]["Enums"]["work_sector"]
+          shift: string | null
+          shift_end: string | null
+          shift_start: string | null
           status: Database["public"]["Enums"]["employee_status"]
           termination_date: string | null
           updated_at: string
@@ -507,6 +610,10 @@ export type Database = {
           role_id?: string | null
           salary?: number
           schedule_type?: Database["public"]["Enums"]["schedule_type"]
+          sector?: Database["public"]["Enums"]["work_sector"]
+          shift?: string | null
+          shift_end?: string | null
+          shift_start?: string | null
           status?: Database["public"]["Enums"]["employee_status"]
           termination_date?: string | null
           updated_at?: string
@@ -527,6 +634,10 @@ export type Database = {
           role_id?: string | null
           salary?: number
           schedule_type?: Database["public"]["Enums"]["schedule_type"]
+          sector?: Database["public"]["Enums"]["work_sector"]
+          shift?: string | null
+          shift_end?: string | null
+          shift_start?: string | null
           status?: Database["public"]["Enums"]["employee_status"]
           termination_date?: string | null
           updated_at?: string
@@ -1478,6 +1589,208 @@ export type Database = {
           },
         ]
       }
+      task_instances: {
+        Row: {
+          approval: Database["public"]["Enums"]["task_approval"]
+          approval_note: string | null
+          approved_at: string | null
+          approved_by: string | null
+          branch_id: string | null
+          company_id: string
+          completed_at: string | null
+          completed_by: string | null
+          created_at: string
+          due_date: string
+          due_time: string | null
+          employee_id: string | null
+          id: string
+          name: string
+          note: string | null
+          photo_url: string | null
+          priority: Database["public"]["Enums"]["task_priority"]
+          sector: Database["public"]["Enums"]["work_sector"]
+          status: Database["public"]["Enums"]["task_status"]
+          task_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          approval?: Database["public"]["Enums"]["task_approval"]
+          approval_note?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
+          branch_id?: string | null
+          company_id: string
+          completed_at?: string | null
+          completed_by?: string | null
+          created_at?: string
+          due_date: string
+          due_time?: string | null
+          employee_id?: string | null
+          id?: string
+          name: string
+          note?: string | null
+          photo_url?: string | null
+          priority?: Database["public"]["Enums"]["task_priority"]
+          sector?: Database["public"]["Enums"]["work_sector"]
+          status?: Database["public"]["Enums"]["task_status"]
+          task_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          approval?: Database["public"]["Enums"]["task_approval"]
+          approval_note?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
+          branch_id?: string | null
+          company_id?: string
+          completed_at?: string | null
+          completed_by?: string | null
+          created_at?: string
+          due_date?: string
+          due_time?: string | null
+          employee_id?: string | null
+          id?: string
+          name?: string
+          note?: string | null
+          photo_url?: string | null
+          priority?: Database["public"]["Enums"]["task_priority"]
+          sector?: Database["public"]["Enums"]["work_sector"]
+          status?: Database["public"]["Enums"]["task_status"]
+          task_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_instances_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_instances_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_instances_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_instances_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tasks: {
+        Row: {
+          branch_id: string | null
+          company_id: string
+          created_at: string
+          day_of_month: number | null
+          description: string | null
+          due_time: string | null
+          employee_id: string | null
+          frequency: Database["public"]["Enums"]["task_frequency"]
+          id: string
+          is_active: boolean
+          location: string | null
+          name: string
+          notes: string | null
+          priority: Database["public"]["Enums"]["task_priority"]
+          requires_approval: boolean
+          requires_photo: boolean
+          role_id: string | null
+          sector: Database["public"]["Enums"]["work_sector"]
+          start_date: string
+          updated_at: string
+          weekdays: number[]
+        }
+        Insert: {
+          branch_id?: string | null
+          company_id: string
+          created_at?: string
+          day_of_month?: number | null
+          description?: string | null
+          due_time?: string | null
+          employee_id?: string | null
+          frequency?: Database["public"]["Enums"]["task_frequency"]
+          id?: string
+          is_active?: boolean
+          location?: string | null
+          name: string
+          notes?: string | null
+          priority?: Database["public"]["Enums"]["task_priority"]
+          requires_approval?: boolean
+          requires_photo?: boolean
+          role_id?: string | null
+          sector?: Database["public"]["Enums"]["work_sector"]
+          start_date?: string
+          updated_at?: string
+          weekdays?: number[]
+        }
+        Update: {
+          branch_id?: string | null
+          company_id?: string
+          created_at?: string
+          day_of_month?: number | null
+          description?: string | null
+          due_time?: string | null
+          employee_id?: string | null
+          frequency?: Database["public"]["Enums"]["task_frequency"]
+          id?: string
+          is_active?: boolean
+          location?: string | null
+          name?: string
+          notes?: string | null
+          priority?: Database["public"]["Enums"]["task_priority"]
+          requires_approval?: boolean
+          requires_photo?: boolean
+          role_id?: string | null
+          sector?: Database["public"]["Enums"]["work_sector"]
+          start_date?: string
+          updated_at?: string
+          weekdays?: number[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tasks_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "employee_roles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       time_entries: {
         Row: {
           bank_balance_hours: number
@@ -1612,6 +1925,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      generate_task_instances: {
+        Args: { _company_id: string; _date: string }
+        Returns: number
+      }
       has_company_role: {
         Args: {
           _company_id: string
@@ -1654,6 +1971,28 @@ export type Database = {
       schedule_type: "12x36" | "6x1" | "5x2" | "4x2" | "custom"
       stock_movement_type: "entrada" | "saida" | "ajuste"
       table_status: "livre" | "ocupada" | "reservada" | "fechamento_pendente"
+      task_approval:
+        | "nao_requer"
+        | "aguardando"
+        | "aprovado"
+        | "reprovado"
+        | "correcao"
+      task_frequency:
+        | "diaria"
+        | "semanal"
+        | "quinzenal"
+        | "mensal"
+        | "personalizada"
+      task_priority: "baixa" | "media" | "alta" | "urgente"
+      task_status: "pendente" | "em_andamento" | "concluida" | "nao_realizada"
+      work_sector:
+        | "cozinha"
+        | "estoque"
+        | "salao"
+        | "limpeza"
+        | "administrativo"
+        | "entrega"
+        | "outros"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1810,6 +2149,31 @@ export const Constants = {
       schedule_type: ["12x36", "6x1", "5x2", "4x2", "custom"],
       stock_movement_type: ["entrada", "saida", "ajuste"],
       table_status: ["livre", "ocupada", "reservada", "fechamento_pendente"],
+      task_approval: [
+        "nao_requer",
+        "aguardando",
+        "aprovado",
+        "reprovado",
+        "correcao",
+      ],
+      task_frequency: [
+        "diaria",
+        "semanal",
+        "quinzenal",
+        "mensal",
+        "personalizada",
+      ],
+      task_priority: ["baixa", "media", "alta", "urgente"],
+      task_status: ["pendente", "em_andamento", "concluida", "nao_realizada"],
+      work_sector: [
+        "cozinha",
+        "estoque",
+        "salao",
+        "limpeza",
+        "administrativo",
+        "entrega",
+        "outros",
+      ],
     },
   },
 } as const
