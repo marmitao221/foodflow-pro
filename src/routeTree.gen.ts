@@ -41,6 +41,7 @@ import { Route as AuthenticatedEstoqueFornecedoresRouteImport } from './routes/_
 import { Route as AuthenticatedEstoqueEntradasRouteImport } from './routes/_authenticated/estoque.entradas'
 import { Route as AuthenticatedEstoqueDashboardRouteImport } from './routes/_authenticated/estoque.dashboard'
 import { Route as AuthenticatedEstoqueCategoriasRouteImport } from './routes/_authenticated/estoque.categorias'
+import { Route as AuthenticatedEquipeFuncionariosRouteImport } from './routes/_authenticated/equipe.funcionarios'
 import { Route as AuthenticatedConfiguracoesFiliaisRouteImport } from './routes/_authenticated/configuracoes.filiais'
 import { Route as AuthenticatedConfiguracoesEmpresaRouteImport } from './routes/_authenticated/configuracoes.empresa'
 
@@ -222,6 +223,12 @@ const AuthenticatedEstoqueCategoriasRoute =
     path: '/categorias',
     getParentRoute: () => AuthenticatedEstoqueRoute,
   } as any)
+const AuthenticatedEquipeFuncionariosRoute =
+  AuthenticatedEquipeFuncionariosRouteImport.update({
+    id: '/funcionarios',
+    path: '/funcionarios',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
 const AuthenticatedConfiguracoesFiliaisRoute =
   AuthenticatedConfiguracoesFiliaisRouteImport.update({
     id: '/configuracoes/filiais',
@@ -239,7 +246,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/equipe': typeof AuthenticatedEquipeRoute
+  '/equipe': typeof AuthenticatedEquipeRouteWithChildren
   '/estoque': typeof AuthenticatedEstoqueRouteWithChildren
   '/fichas': typeof AuthenticatedFichasRoute
   '/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
@@ -248,6 +255,7 @@ export interface FileRoutesByFullPath {
   '/rh': typeof AuthenticatedRhRouteWithChildren
   '/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
+  '/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
   '/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
   '/estoque/dashboard': typeof AuthenticatedEstoqueDashboardRoute
   '/estoque/entradas': typeof AuthenticatedEstoqueEntradasRoute
@@ -274,7 +282,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/equipe': typeof AuthenticatedEquipeRoute
+  '/equipe': typeof AuthenticatedEquipeRouteWithChildren
   '/estoque': typeof AuthenticatedEstoqueRouteWithChildren
   '/fichas': typeof AuthenticatedFichasRoute
   '/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
@@ -283,6 +291,7 @@ export interface FileRoutesByTo {
   '/rh': typeof AuthenticatedRhRouteWithChildren
   '/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
+  '/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
   '/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
   '/estoque/dashboard': typeof AuthenticatedEstoqueDashboardRoute
   '/estoque/entradas': typeof AuthenticatedEstoqueEntradasRoute
@@ -311,7 +320,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
-  '/_authenticated/equipe': typeof AuthenticatedEquipeRoute
+  '/_authenticated/equipe': typeof AuthenticatedEquipeRouteWithChildren
   '/_authenticated/estoque': typeof AuthenticatedEstoqueRouteWithChildren
   '/_authenticated/fichas': typeof AuthenticatedFichasRoute
   '/_authenticated/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
@@ -320,6 +329,7 @@ export interface FileRoutesById {
   '/_authenticated/rh': typeof AuthenticatedRhRouteWithChildren
   '/_authenticated/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/_authenticated/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
+  '/_authenticated/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
   '/_authenticated/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
   '/_authenticated/estoque/dashboard': typeof AuthenticatedEstoqueDashboardRoute
   '/_authenticated/estoque/entradas': typeof AuthenticatedEstoqueEntradasRoute
@@ -357,6 +367,7 @@ export interface FileRouteTypes {
     | '/rh'
     | '/configuracoes/empresa'
     | '/configuracoes/filiais'
+    | '/equipe/funcionarios'
     | '/estoque/categorias'
     | '/estoque/dashboard'
     | '/estoque/entradas'
@@ -392,6 +403,7 @@ export interface FileRouteTypes {
     | '/rh'
     | '/configuracoes/empresa'
     | '/configuracoes/filiais'
+    | '/equipe/funcionarios'
     | '/estoque/categorias'
     | '/estoque/dashboard'
     | '/estoque/entradas'
@@ -428,6 +440,7 @@ export interface FileRouteTypes {
     | '/_authenticated/rh'
     | '/_authenticated/configuracoes/empresa'
     | '/_authenticated/configuracoes/filiais'
+    | '/_authenticated/equipe/funcionarios'
     | '/_authenticated/estoque/categorias'
     | '/_authenticated/estoque/dashboard'
     | '/_authenticated/estoque/entradas'
@@ -683,6 +696,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEstoqueCategoriasRouteImport
       parentRoute: typeof AuthenticatedEstoqueRoute
     }
+    '/_authenticated/equipe/funcionarios': {
+      id: '/_authenticated/equipe/funcionarios'
+      path: '/funcionarios'
+      fullPath: '/equipe/funcionarios'
+      preLoaderRoute: typeof AuthenticatedEquipeFuncionariosRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
     '/_authenticated/configuracoes/filiais': {
       id: '/_authenticated/configuracoes/filiais'
       path: '/configuracoes/filiais'
@@ -699,6 +719,17 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AuthenticatedEquipeRouteChildren {
+  AuthenticatedEquipeFuncionariosRoute: typeof AuthenticatedEquipeFuncionariosRoute
+}
+
+const AuthenticatedEquipeRouteChildren: AuthenticatedEquipeRouteChildren = {
+  AuthenticatedEquipeFuncionariosRoute: AuthenticatedEquipeFuncionariosRoute,
+}
+
+const AuthenticatedEquipeRouteWithChildren =
+  AuthenticatedEquipeRoute._addFileChildren(AuthenticatedEquipeRouteChildren)
 
 interface AuthenticatedEstoqueRouteChildren {
   AuthenticatedEstoqueCategoriasRoute: typeof AuthenticatedEstoqueCategoriasRoute
@@ -790,7 +821,7 @@ const AuthenticatedRhRouteWithChildren = AuthenticatedRhRoute._addFileChildren(
 
 interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
-  AuthenticatedEquipeRoute: typeof AuthenticatedEquipeRoute
+  AuthenticatedEquipeRoute: typeof AuthenticatedEquipeRouteWithChildren
   AuthenticatedEstoqueRoute: typeof AuthenticatedEstoqueRouteWithChildren
   AuthenticatedFichasRoute: typeof AuthenticatedFichasRoute
   AuthenticatedFinanceiroRoute: typeof AuthenticatedFinanceiroRouteWithChildren
@@ -803,7 +834,7 @@ interface AuthenticatedRouteChildren {
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
-  AuthenticatedEquipeRoute: AuthenticatedEquipeRoute,
+  AuthenticatedEquipeRoute: AuthenticatedEquipeRouteWithChildren,
   AuthenticatedEstoqueRoute: AuthenticatedEstoqueRouteWithChildren,
   AuthenticatedFichasRoute: AuthenticatedFichasRoute,
   AuthenticatedFinanceiroRoute: AuthenticatedFinanceiroRouteWithChildren,
