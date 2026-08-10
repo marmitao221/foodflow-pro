@@ -93,15 +93,15 @@ function MinhaRotina() {
   const setStatus = useMutation({
     mutationFn: async (args: { inst: Instance; status: string }) => {
       const { data: user } = await supabase.auth.getUser();
-      const patch: Record<string, unknown> = { status: args.status };
-      if (args.status === "concluida") {
-        patch["completed_at"] = new Date().toISOString();
-        patch["completed_by"] = user.user?.id ?? null;
-      } else {
-        patch["completed_at"] = null;
-        patch["completed_by"] = null;
-      }
-      const { error } = await supabase.from("task_instances").update(patch).eq("id", args.inst.id);
+      const completed = args.status === "concluida";
+      const { error } = await supabase
+        .from("task_instances")
+        .update({
+          status: args.status as "concluida",
+          completed_at: completed ? new Date().toISOString() : null,
+          completed_by: completed ? (user.user?.id ?? null) : null,
+        })
+        .eq("id", args.inst.id);
       if (error) throw error;
     },
     onSuccess: () => {
