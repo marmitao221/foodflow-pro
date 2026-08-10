@@ -43,6 +43,7 @@ import { Route as AuthenticatedEstoqueDashboardRouteImport } from './routes/_aut
 import { Route as AuthenticatedEstoqueCategoriasRouteImport } from './routes/_authenticated/estoque.categorias'
 import { Route as AuthenticatedEquipeTarefasRouteImport } from './routes/_authenticated/equipe.tarefas'
 import { Route as AuthenticatedEquipeRotinaRouteImport } from './routes/_authenticated/equipe.rotina'
+import { Route as AuthenticatedEquipeModelosRouteImport } from './routes/_authenticated/equipe.modelos'
 import { Route as AuthenticatedEquipeGestaoRouteImport } from './routes/_authenticated/equipe.gestao'
 import { Route as AuthenticatedEquipeFuncoesRouteImport } from './routes/_authenticated/equipe.funcoes'
 import { Route as AuthenticatedEquipeFuncionariosRouteImport } from './routes/_authenticated/equipe.funcionarios'
@@ -239,6 +240,12 @@ const AuthenticatedEquipeRotinaRoute =
     path: '/rotina',
     getParentRoute: () => AuthenticatedEquipeRoute,
   } as any)
+const AuthenticatedEquipeModelosRoute =
+  AuthenticatedEquipeModelosRouteImport.update({
+    id: '/modelos',
+    path: '/modelos',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
 const AuthenticatedEquipeGestaoRoute =
   AuthenticatedEquipeGestaoRouteImport.update({
     id: '/gestao',
@@ -286,6 +293,7 @@ export interface FileRoutesByFullPath {
   '/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
   '/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
   '/equipe/gestao': typeof AuthenticatedEquipeGestaoRoute
+  '/equipe/modelos': typeof AuthenticatedEquipeModelosRoute
   '/equipe/rotina': typeof AuthenticatedEquipeRotinaRoute
   '/equipe/tarefas': typeof AuthenticatedEquipeTarefasRoute
   '/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
@@ -326,6 +334,7 @@ export interface FileRoutesByTo {
   '/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
   '/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
   '/equipe/gestao': typeof AuthenticatedEquipeGestaoRoute
+  '/equipe/modelos': typeof AuthenticatedEquipeModelosRoute
   '/equipe/rotina': typeof AuthenticatedEquipeRotinaRoute
   '/equipe/tarefas': typeof AuthenticatedEquipeTarefasRoute
   '/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
@@ -368,6 +377,7 @@ export interface FileRoutesById {
   '/_authenticated/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
   '/_authenticated/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
   '/_authenticated/equipe/gestao': typeof AuthenticatedEquipeGestaoRoute
+  '/_authenticated/equipe/modelos': typeof AuthenticatedEquipeModelosRoute
   '/_authenticated/equipe/rotina': typeof AuthenticatedEquipeRotinaRoute
   '/_authenticated/equipe/tarefas': typeof AuthenticatedEquipeTarefasRoute
   '/_authenticated/estoque/categorias': typeof AuthenticatedEstoqueCategoriasRoute
@@ -410,6 +420,7 @@ export interface FileRouteTypes {
     | '/equipe/funcionarios'
     | '/equipe/funcoes'
     | '/equipe/gestao'
+    | '/equipe/modelos'
     | '/equipe/rotina'
     | '/equipe/tarefas'
     | '/estoque/categorias'
@@ -450,6 +461,7 @@ export interface FileRouteTypes {
     | '/equipe/funcionarios'
     | '/equipe/funcoes'
     | '/equipe/gestao'
+    | '/equipe/modelos'
     | '/equipe/rotina'
     | '/equipe/tarefas'
     | '/estoque/categorias'
@@ -491,6 +503,7 @@ export interface FileRouteTypes {
     | '/_authenticated/equipe/funcionarios'
     | '/_authenticated/equipe/funcoes'
     | '/_authenticated/equipe/gestao'
+    | '/_authenticated/equipe/modelos'
     | '/_authenticated/equipe/rotina'
     | '/_authenticated/equipe/tarefas'
     | '/_authenticated/estoque/categorias'
@@ -762,6 +775,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEquipeRotinaRouteImport
       parentRoute: typeof AuthenticatedEquipeRoute
     }
+    '/_authenticated/equipe/modelos': {
+      id: '/_authenticated/equipe/modelos'
+      path: '/modelos'
+      fullPath: '/equipe/modelos'
+      preLoaderRoute: typeof AuthenticatedEquipeModelosRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
     '/_authenticated/equipe/gestao': {
       id: '/_authenticated/equipe/gestao'
       path: '/gestao'
@@ -804,6 +824,7 @@ interface AuthenticatedEquipeRouteChildren {
   AuthenticatedEquipeFuncionariosRoute: typeof AuthenticatedEquipeFuncionariosRoute
   AuthenticatedEquipeFuncoesRoute: typeof AuthenticatedEquipeFuncoesRoute
   AuthenticatedEquipeGestaoRoute: typeof AuthenticatedEquipeGestaoRoute
+  AuthenticatedEquipeModelosRoute: typeof AuthenticatedEquipeModelosRoute
   AuthenticatedEquipeRotinaRoute: typeof AuthenticatedEquipeRotinaRoute
   AuthenticatedEquipeTarefasRoute: typeof AuthenticatedEquipeTarefasRoute
 }
@@ -812,6 +833,7 @@ const AuthenticatedEquipeRouteChildren: AuthenticatedEquipeRouteChildren = {
   AuthenticatedEquipeFuncionariosRoute: AuthenticatedEquipeFuncionariosRoute,
   AuthenticatedEquipeFuncoesRoute: AuthenticatedEquipeFuncoesRoute,
   AuthenticatedEquipeGestaoRoute: AuthenticatedEquipeGestaoRoute,
+  AuthenticatedEquipeModelosRoute: AuthenticatedEquipeModelosRoute,
   AuthenticatedEquipeRotinaRoute: AuthenticatedEquipeRotinaRoute,
   AuthenticatedEquipeTarefasRoute: AuthenticatedEquipeTarefasRoute,
 }
