@@ -67,3 +67,37 @@ export function useMembership() {
     can: (p: Permission) => isAdmin || permissions.includes(p),
   };
 }
+
+/** Permissão (ou perfil admin) exigida para cada área do sistema. */
+export function requiredFor(path: string): { perm?: Permission; adminOnly?: boolean } | null {
+  if (path.startsWith("/equipe/rotina")) return { perm: "rotina" };
+  if (path.startsWith("/equipe/limpeza")) return { perm: "limpeza" };
+  if (path.startsWith("/equipe")) return { perm: "checklists" };
+  if (path.startsWith("/restaurante/caixa")) return { perm: "caixa" };
+  if (path.startsWith("/restaurante")) return { perm: "restaurante" };
+  if (path.startsWith("/estoque")) return { perm: "estoque" };
+  if (path.startsWith("/fichas") || path.startsWith("/producao")) return { perm: "producao" };
+  if (path.startsWith("/financeiro") || path.startsWith("/indicadores")) return { perm: "relatorios" };
+  if (path.startsWith("/dashboard")) return { perm: "relatorios" };
+  if (path.startsWith("/rh") || path.startsWith("/configuracoes") || path.startsWith("/usuarios")) {
+    return { adminOnly: true };
+  }
+  return null;
+}
+
+/** Primeira rota acessível para o usuário (usada em redirecionamentos). */
+export function homeFor(isAdmin: boolean, permissions: Permission[]): string {
+  if (isAdmin) return "/dashboard";
+  const order: [Permission, string][] = [
+    ["rotina", "/equipe/rotina"],
+    ["limpeza", "/equipe/limpeza"],
+    ["checklists", "/equipe/dashboard"],
+    ["restaurante", "/restaurante/comandas"],
+    ["caixa", "/restaurante/caixa"],
+    ["estoque", "/estoque/dashboard"],
+    ["producao", "/fichas"],
+    ["relatorios", "/dashboard"],
+  ];
+  for (const [p, route] of order) if (permissions.includes(p)) return route;
+  return "/equipe/rotina";
+}
