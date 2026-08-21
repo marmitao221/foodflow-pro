@@ -593,6 +593,7 @@ export type Database = {
           status: Database["public"]["Enums"]["employee_status"]
           termination_date: string | null
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           branch_id?: string | null
@@ -617,6 +618,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["employee_status"]
           termination_date?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           branch_id?: string | null
@@ -641,6 +643,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["employee_status"]
           termination_date?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -776,27 +779,43 @@ export type Database = {
       }
       memberships: {
         Row: {
+          branch_id: string | null
           company_id: string
           created_at: string
           id: string
+          is_active: boolean
+          permissions: string[]
           role: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Insert: {
+          branch_id?: string | null
           company_id: string
           created_at?: string
           id?: string
+          is_active?: boolean
+          permissions?: string[]
           role?: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Update: {
+          branch_id?: string | null
           company_id?: string
           created_at?: string
           id?: string
+          is_active?: boolean
+          permissions?: string[]
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "memberships_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "memberships_company_id_fkey"
             columns: ["company_id"]
