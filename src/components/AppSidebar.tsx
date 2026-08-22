@@ -123,7 +123,9 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
-  );
+    );
+  };
+
 
   return (
     <Sidebar collapsible="icon">
