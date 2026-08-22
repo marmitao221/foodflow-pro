@@ -8,7 +8,11 @@ import {
   UserCheck,
   FileStack,
   History,
+  Sparkles,
 } from "lucide-react";
+
+import { requiredFor, useMembership } from "@/lib/permissions";
+
 
 export const Route = createFileRoute("/_authenticated/equipe")({
   head: () => ({
