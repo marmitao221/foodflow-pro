@@ -8,7 +8,11 @@ import {
   UserCheck,
   FileStack,
   History,
+  Sparkles,
 } from "lucide-react";
+
+import { requiredFor, useMembership } from "@/lib/permissions";
+
 
 export const Route = createFileRoute("/_authenticated/equipe")({
   head: () => ({
@@ -39,6 +43,7 @@ export const Route = createFileRoute("/_authenticated/equipe")({
 const tabs = [
   { to: "/equipe/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/equipe/rotina", label: "Minha Rotina", icon: ClipboardCheck },
+  { to: "/equipe/limpeza", label: "Limpeza", icon: Sparkles },
   { to: "/equipe/gestao", label: "Gestão da Equipe", icon: UserCheck },
   { to: "/equipe/tarefas", label: "Tarefas", icon: ListChecks },
   { to: "/equipe/modelos", label: "Modelos", icon: FileStack },
@@ -49,6 +54,16 @@ const tabs = [
 
 function EquipeLayout() {
   const path = useRouterState({ select: (r) => r.location.pathname });
+  const { isAdmin, can, loading: loadingPerms } = useMembership();
+  const visibleTabs = loadingPerms
+    ? []
+    : tabs.filter((t) => {
+        const required = requiredFor(t.to);
+        if (!required) return true;
+        if (isAdmin) return true;
+        if (required.adminOnly) return false;
+        return !!required.perm && can(required.perm);
+      });
   return (
     <div className="mx-auto max-w-7xl space-y-6 px-6 py-8">
       <div className="flex items-start gap-3">

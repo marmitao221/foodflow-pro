@@ -8,11 +8,21 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export function BranchSwitcher() {
-  const { branches, activeBranchId, setActiveBranchId, loading } = useCompany();
+  const { branches, activeBranchId, setActiveBranchId, loading, isBranchLocked } = useCompany();
   const active = branches.find((b) => b.id === activeBranchId);
   const label = active ? active.name : "Todas as filiais";
 
   if (loading) return null;
+
+  if (isBranchLocked) {
+    return (
+      <div className="flex items-center gap-2 rounded-md border border-border px-3 py-1.5 text-sm">
+        <Building className="h-3.5 w-3.5 text-accent" />
+        <span className="max-w-[160px] truncate">{label}</span>
+      </div>
+    );
+  }
+
 
   return (
     <DropdownMenu>

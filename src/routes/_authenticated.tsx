@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, Navigate, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Outlet, Navigate, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { Loader2, Menu } from "lucide-react";
@@ -9,6 +9,7 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { BranchSwitcher } from "@/components/BranchSwitcher";
 import { CompanyProvider } from "@/lib/company-context";
+import { PermissionGate } from "@/components/PermissionGate";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -18,6 +19,7 @@ export const Route = createFileRoute("/_authenticated")({
 function AuthenticatedLayout() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const pathname = useRouterState({ select: (r) => r.location.pathname });
 
   const { data: memberships, isLoading: loadingMembership } = useQuery({
     queryKey: ["memberships", user?.id],
@@ -68,7 +70,9 @@ function AuthenticatedLayout() {
               </div>
             </header>
             <main className="flex-1">
-              <Outlet />
+              <PermissionGate path={pathname}>
+                <Outlet />
+              </PermissionGate>
             </main>
           </div>
         </div>

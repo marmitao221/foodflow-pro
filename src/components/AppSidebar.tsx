@@ -14,6 +14,7 @@ import {
   UtensilsCrossed,
   Users,
   ClipboardCheck,
+  Sparkles,
 } from "lucide-react";
 
 
@@ -32,6 +33,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Logo } from "@/components/Logo";
 import { useAuth } from "@/lib/auth-context";
+import { requiredFor, useMembership } from "@/lib/permissions";
 
 type NavItem = { title: string; url: string; icon: typeof LayoutDashboard; disabled?: boolean };
 
@@ -41,6 +43,8 @@ const operacao: NavItem[] = [
   { title: "Estoque", url: "/estoque/dashboard", icon: Package },
   { title: "Produção", url: "/producao", icon: ChefHat, disabled: true },
   { title: "Fichas Técnicas", url: "/fichas", icon: ClipboardList },
+  { title: "Minha Rotina", url: "/equipe/rotina", icon: ClipboardCheck },
+  { title: "Limpeza", url: "/equipe/limpeza", icon: Sparkles },
   { title: "Equipe", url: "/equipe/dashboard", icon: ClipboardCheck },
   { title: "RH", url: "/rh/dashboard", icon: Users },
 ];
@@ -63,18 +67,33 @@ export function AppSidebar() {
   const collapsed = state === "collapsed";
   const currentPath = useRouterState({ select: (r) => r.location.pathname });
   const { signOut, user } = useAuth();
+  const { isAdmin, can, loading: loadingPerms } = useMembership();
 
-  const renderGroup = (label: string, items: NavItem[]) => (
+  const allowed = (item: NavItem) => {
+    const required = requiredFor(item.url);
+    if (!required) return true;
+    if (isAdmin) return true;
+    if (required.adminOnly) return false;
+    return !!required.perm && can(required.perm);
+  };
+
+  const renderGroup = (label: string, items: NavItem[]) => {
+    const visible = loadingPerms ? [] : items.filter(allowed);
+    if (visible.length === 0) return null;
+    return (
     <SidebarGroup>
       {!collapsed && <SidebarGroupLabel>{label}</SidebarGroupLabel>}
       <SidebarGroupContent>
         <SidebarMenu>
-          {items.map((item) => {
+          {visible.map((item) => {
             const prefix = item.url.split("/").slice(0, 2).join("/");
             const active =
-              prefix === "/financeiro" || prefix === "/restaurante" || prefix === "/estoque" || prefix === "/rh" || prefix === "/equipe" || prefix === "/configuracoes"
-                ? currentPath.startsWith(prefix)
-                : currentPath === item.url;
+              prefix === "/equipe"
+                ? currentPath.startsWith(item.url)
+                : prefix === "/financeiro" || prefix === "/restaurante" || prefix === "/estoque" || prefix === "/rh" || prefix === "/configuracoes"
+                  ? currentPath.startsWith(prefix)
+                  : currentPath === item.url;
+
 
             return (
               <SidebarMenuItem key={item.title}>
@@ -104,7 +123,9 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
-  );
+    );
+  };
+
 
   return (
     <Sidebar collapsible="icon">

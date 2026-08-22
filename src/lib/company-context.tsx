@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import { useQuery } from "@tanstack/react-query";
 
 import { useAuth } from "@/lib/auth-context";
+import { useMembership } from "@/lib/permissions";
 import { supabase } from "@/integrations/supabase/client";
 
 export type Branch = {
@@ -22,6 +23,9 @@ type Ctx = {
   branches: Branch[];
   activeBranchId: string | null; // null = "Todas as filiais"
   setActiveBranchId: (id: string | null) => void;
+  /** Funcionário vinculado a uma filial: seletor travado nesta filial. */
+  lockedBranchId: string | null;
+  isBranchLocked: boolean;
   loading: boolean;
 };
 
@@ -30,6 +34,7 @@ const LS_KEY = "cozinhapro:active-branch";
 
 export function CompanyProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
+  const { isAdmin, branchId, loading: loadingMembership } = useMembership();
   const [activeBranchId, setActiveBranchIdState] = useState<string | null>(null);
 
   const { data, isLoading } = useQuery({
@@ -59,19 +64,30 @@ export function CompanyProvider({ children }: { children: ReactNode }) {
     if (stored) setActiveBranchIdState(stored === "__all__" ? null : stored);
   }, []);
 
+  const lockedBranchId = !isAdmin && branchId ? branchId : null;
+  const isBranchLocked = !!lockedBranchId;
+
   const setActiveBranchId = (id: string | null) => {
+    if (isBranchLocked) return; // funcionário não troca de filial
     setActiveBranchIdState(id);
     if (typeof window !== "undefined") localStorage.setItem(LS_KEY, id ?? "__all__");
   };
+
+  const allBranches = data?.branches ?? [];
+  const branches = isBranchLocked
+    ? allBranches.filter((b) => b.id === lockedBranchId)
+    : allBranches;
 
   return (
     <CompanyContext.Provider
       value={{
         company: data?.company ?? null,
-        branches: data?.branches ?? [],
-        activeBranchId,
+        branches,
+        activeBranchId: lockedBranchId ?? activeBranchId,
         setActiveBranchId,
-        loading: isLoading,
+        lockedBranchId,
+        isBranchLocked,
+        loading: isLoading || loadingMembership,
       }}
     >
       {children}
