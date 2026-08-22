@@ -67,18 +67,33 @@ export function AppSidebar() {
   const collapsed = state === "collapsed";
   const currentPath = useRouterState({ select: (r) => r.location.pathname });
   const { signOut, user } = useAuth();
+  const { isAdmin, can, loading: loadingPerms } = useMembership();
 
-  const renderGroup = (label: string, items: NavItem[]) => (
+  const allowed = (item: NavItem) => {
+    const required = requiredFor(item.url);
+    if (!required) return true;
+    if (isAdmin) return true;
+    if (required.adminOnly) return false;
+    return !!required.perm && can(required.perm);
+  };
+
+  const renderGroup = (label: string, items: NavItem[]) => {
+    const visible = loadingPerms ? [] : items.filter(allowed);
+    if (visible.length === 0) return null;
+    return (
     <SidebarGroup>
       {!collapsed && <SidebarGroupLabel>{label}</SidebarGroupLabel>}
       <SidebarGroupContent>
         <SidebarMenu>
-          {items.map((item) => {
+          {visible.map((item) => {
             const prefix = item.url.split("/").slice(0, 2).join("/");
             const active =
-              prefix === "/financeiro" || prefix === "/restaurante" || prefix === "/estoque" || prefix === "/rh" || prefix === "/equipe" || prefix === "/configuracoes"
-                ? currentPath.startsWith(prefix)
-                : currentPath === item.url;
+              prefix === "/equipe"
+                ? currentPath.startsWith(item.url)
+                : prefix === "/financeiro" || prefix === "/restaurante" || prefix === "/estoque" || prefix === "/rh" || prefix === "/configuracoes"
+                  ? currentPath.startsWith(prefix)
+                  : currentPath === item.url;
+
 
             return (
               <SidebarMenuItem key={item.title}>
