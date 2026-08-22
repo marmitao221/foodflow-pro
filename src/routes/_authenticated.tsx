@@ -19,6 +19,7 @@ export const Route = createFileRoute("/_authenticated")({
 function AuthenticatedLayout() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const pathname = useRouterState({ select: (r) => r.location.pathname });
 
   const { data: memberships, isLoading: loadingMembership } = useQuery({
     queryKey: ["memberships", user?.id],
