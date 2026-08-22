@@ -68,7 +68,9 @@ function AuthenticatedLayout() {
               </div>
             </header>
             <main className="flex-1">
-              <Outlet />
+              <PermissionGate path={pathname}>
+                <Outlet />
+              </PermissionGate>
             </main>
           </div>
         </div>
