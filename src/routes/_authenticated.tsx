@@ -9,6 +9,7 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { BranchSwitcher } from "@/components/BranchSwitcher";
 import { CompanyProvider } from "@/lib/company-context";
+import { PermissionGate } from "@/components/PermissionGate";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 export const Route = createFileRoute("/_authenticated")({
