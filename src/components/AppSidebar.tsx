@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Logo } from "@/components/Logo";
 import { useAuth } from "@/lib/auth-context";
+import { requiredFor, useMembership } from "@/lib/permissions";
 
 type NavItem = { title: string; url: string; icon: typeof LayoutDashboard; disabled?: boolean };
 
