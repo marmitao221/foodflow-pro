@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, Navigate, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Outlet, Navigate, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { Loader2, Menu } from "lucide-react";
