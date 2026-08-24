@@ -62,6 +62,15 @@ function EquipeFuncionarios() {
   const [toDelete, setToDelete] = useState<Emp | null>(null);
   const [filter, setFilter] = useState("");
   const [sectorFilter, setSectorFilter] = useState("all");
+  const [accessFor, setAccessFor] = useState<Emp | null>(null);
+  const [access, setAccess] = useState({
+    email: "",
+    password: "",
+    role: "operator" as "admin" | "operator",
+    branch_id: "",
+    permissions: [] as Permission[],
+  });
+  const createAccess = useServerFn(createEmployeeAccess);
 
   const { data: employees = [] } = useQuery({
     queryKey: ["equipe-employees", companyId, activeBranchId],
