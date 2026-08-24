@@ -349,6 +349,72 @@ function EquipeFuncionarios() {
         </DialogContent>
       </Dialog>
 
+      <Dialog open={!!accessFor} onOpenChange={(o) => !o && setAccessFor(null)}>
+        <DialogContent className="max-w-xl">
+          <DialogHeader>
+            <DialogTitle>Permissões de acesso — {accessFor?.full_name}</DialogTitle>
+          </DialogHeader>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label>E-mail de acesso</Label>
+              <Input type="email" autoComplete="off" value={access.email}
+                onChange={(e) => setAccess({ ...access, email: e.target.value })} />
+            </div>
+            <div>
+              <Label>Senha</Label>
+              <Input type="password" autoComplete="new-password" value={access.password}
+                onChange={(e) => setAccess({ ...access, password: e.target.value })} />
+            </div>
+            <div>
+              <Label>Perfil</Label>
+              <Select value={access.role}
+                onValueChange={(v) => setAccess({ ...access, role: v as "admin" | "operator" })}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="admin">Administrador (acesso total)</SelectItem>
+                  <SelectItem value="operator">Funcionário (acesso restrito)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Filial</Label>
+              <Select value={access.branch_id || "none"}
+                onValueChange={(v) => setAccess({ ...access, branch_id: v === "none" ? "" : v })}>
+                <SelectTrigger><SelectValue placeholder="Matriz" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Todas as filiais</SelectItem>
+                  {branches.map((b) => <SelectItem key={b.id} value={b.id}>{b.name}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            {access.role === "operator" && (
+              <div className="col-span-2 space-y-2">
+                <Label>Módulos liberados</Label>
+                <div className="grid grid-cols-2 gap-2">
+                  {PERMISSIONS.map((p) => (
+                    <label key={p.value}
+                      className="flex cursor-pointer items-start gap-2 rounded-md border border-border p-2">
+                      <Checkbox checked={access.permissions.includes(p.value)}
+                        onCheckedChange={() => togglePerm(p.value)} />
+                      <span className="text-sm">
+                        <span className="font-medium">{p.label}</span>
+                        <span className="block text-xs text-muted-foreground">{p.hint}</span>
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAccessFor(null)}>Cancelar</Button>
+            <Button onClick={() => saveAccess.mutate()} disabled={saveAccess.isPending}>
+              Salvar acesso
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       <AlertDialog open={!!toDelete} onOpenChange={(o) => !o && setToDelete(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
