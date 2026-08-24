@@ -44,7 +44,6 @@ import { Route as AuthenticatedEstoqueCategoriasRouteImport } from './routes/_au
 import { Route as AuthenticatedEquipeTarefasRouteImport } from './routes/_authenticated/equipe.tarefas'
 import { Route as AuthenticatedEquipeRotinaRouteImport } from './routes/_authenticated/equipe.rotina'
 import { Route as AuthenticatedEquipeModelosRouteImport } from './routes/_authenticated/equipe.modelos'
-import { Route as AuthenticatedEquipeLimpezaRouteImport } from './routes/_authenticated/equipe.limpeza'
 import { Route as AuthenticatedEquipeHistoricoRouteImport } from './routes/_authenticated/equipe.historico'
 import { Route as AuthenticatedEquipeGestaoRouteImport } from './routes/_authenticated/equipe.gestao'
 import { Route as AuthenticatedEquipeFuncoesRouteImport } from './routes/_authenticated/equipe.funcoes'
@@ -249,12 +248,6 @@ const AuthenticatedEquipeModelosRoute =
     path: '/modelos',
     getParentRoute: () => AuthenticatedEquipeRoute,
   } as any)
-const AuthenticatedEquipeLimpezaRoute =
-  AuthenticatedEquipeLimpezaRouteImport.update({
-    id: '/limpeza',
-    path: '/limpeza',
-    getParentRoute: () => AuthenticatedEquipeRoute,
-  } as any)
 const AuthenticatedEquipeHistoricoRoute =
   AuthenticatedEquipeHistoricoRouteImport.update({
     id: '/historico',
@@ -316,7 +309,6 @@ export interface FileRoutesByFullPath {
   '/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
   '/equipe/gestao': typeof AuthenticatedEquipeGestaoRoute
   '/equipe/historico': typeof AuthenticatedEquipeHistoricoRoute
-  '/equipe/limpeza': typeof AuthenticatedEquipeLimpezaRoute
   '/equipe/modelos': typeof AuthenticatedEquipeModelosRoute
   '/equipe/rotina': typeof AuthenticatedEquipeRotinaRoute
   '/equipe/tarefas': typeof AuthenticatedEquipeTarefasRoute
@@ -360,7 +352,6 @@ export interface FileRoutesByTo {
   '/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
   '/equipe/gestao': typeof AuthenticatedEquipeGestaoRoute
   '/equipe/historico': typeof AuthenticatedEquipeHistoricoRoute
-  '/equipe/limpeza': typeof AuthenticatedEquipeLimpezaRoute
   '/equipe/modelos': typeof AuthenticatedEquipeModelosRoute
   '/equipe/rotina': typeof AuthenticatedEquipeRotinaRoute
   '/equipe/tarefas': typeof AuthenticatedEquipeTarefasRoute
@@ -406,7 +397,6 @@ export interface FileRoutesById {
   '/_authenticated/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
   '/_authenticated/equipe/gestao': typeof AuthenticatedEquipeGestaoRoute
   '/_authenticated/equipe/historico': typeof AuthenticatedEquipeHistoricoRoute
-  '/_authenticated/equipe/limpeza': typeof AuthenticatedEquipeLimpezaRoute
   '/_authenticated/equipe/modelos': typeof AuthenticatedEquipeModelosRoute
   '/_authenticated/equipe/rotina': typeof AuthenticatedEquipeRotinaRoute
   '/_authenticated/equipe/tarefas': typeof AuthenticatedEquipeTarefasRoute
@@ -452,7 +442,6 @@ export interface FileRouteTypes {
     | '/equipe/funcoes'
     | '/equipe/gestao'
     | '/equipe/historico'
-    | '/equipe/limpeza'
     | '/equipe/modelos'
     | '/equipe/rotina'
     | '/equipe/tarefas'
@@ -496,7 +485,6 @@ export interface FileRouteTypes {
     | '/equipe/funcoes'
     | '/equipe/gestao'
     | '/equipe/historico'
-    | '/equipe/limpeza'
     | '/equipe/modelos'
     | '/equipe/rotina'
     | '/equipe/tarefas'
@@ -541,7 +529,6 @@ export interface FileRouteTypes {
     | '/_authenticated/equipe/funcoes'
     | '/_authenticated/equipe/gestao'
     | '/_authenticated/equipe/historico'
-    | '/_authenticated/equipe/limpeza'
     | '/_authenticated/equipe/modelos'
     | '/_authenticated/equipe/rotina'
     | '/_authenticated/equipe/tarefas'
@@ -821,13 +808,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEquipeModelosRouteImport
       parentRoute: typeof AuthenticatedEquipeRoute
     }
-    '/_authenticated/equipe/limpeza': {
-      id: '/_authenticated/equipe/limpeza'
-      path: '/limpeza'
-      fullPath: '/equipe/limpeza'
-      preLoaderRoute: typeof AuthenticatedEquipeLimpezaRouteImport
-      parentRoute: typeof AuthenticatedEquipeRoute
-    }
     '/_authenticated/equipe/historico': {
       id: '/_authenticated/equipe/historico'
       path: '/historico'
@@ -886,7 +866,6 @@ interface AuthenticatedEquipeRouteChildren {
   AuthenticatedEquipeFuncoesRoute: typeof AuthenticatedEquipeFuncoesRoute
   AuthenticatedEquipeGestaoRoute: typeof AuthenticatedEquipeGestaoRoute
   AuthenticatedEquipeHistoricoRoute: typeof AuthenticatedEquipeHistoricoRoute
-  AuthenticatedEquipeLimpezaRoute: typeof AuthenticatedEquipeLimpezaRoute
   AuthenticatedEquipeModelosRoute: typeof AuthenticatedEquipeModelosRoute
   AuthenticatedEquipeRotinaRoute: typeof AuthenticatedEquipeRotinaRoute
   AuthenticatedEquipeTarefasRoute: typeof AuthenticatedEquipeTarefasRoute
@@ -898,7 +877,6 @@ const AuthenticatedEquipeRouteChildren: AuthenticatedEquipeRouteChildren = {
   AuthenticatedEquipeFuncoesRoute: AuthenticatedEquipeFuncoesRoute,
   AuthenticatedEquipeGestaoRoute: AuthenticatedEquipeGestaoRoute,
   AuthenticatedEquipeHistoricoRoute: AuthenticatedEquipeHistoricoRoute,
-  AuthenticatedEquipeLimpezaRoute: AuthenticatedEquipeLimpezaRoute,
   AuthenticatedEquipeModelosRoute: AuthenticatedEquipeModelosRoute,
   AuthenticatedEquipeRotinaRoute: AuthenticatedEquipeRotinaRoute,
   AuthenticatedEquipeTarefasRoute: AuthenticatedEquipeTarefasRoute,
