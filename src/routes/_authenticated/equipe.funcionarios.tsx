@@ -252,6 +252,9 @@ function EquipeFuncionarios() {
                   <span>{branch?.name ?? "Matriz"}</span>
                 </div>
                 <div className="flex justify-end gap-1">
+                  <Button size="sm" variant="outline" onClick={() => openAccess(e)}>
+                    <KeyRound className="mr-2 h-4 w-4" /> Acesso
+                  </Button>
                   <Button size="icon" variant="ghost" onClick={() => {
                     setEditing(e);
                     setForm({
