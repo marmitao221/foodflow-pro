@@ -155,6 +155,52 @@ function EquipeFuncionarios() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  const saveAccess = useMutation({
+    mutationFn: async () => {
+      if (!accessFor) throw new Error("Selecione um funcionário");
+      if (!access.email.trim()) throw new Error("Informe o e-mail");
+      if (access.password.length < 6) throw new Error("A senha precisa ter ao menos 6 caracteres");
+      if (access.role === "operator" && access.permissions.length === 0) {
+        throw new Error("Selecione ao menos uma permissão");
+      }
+      return await createAccess({
+        data: {
+          employeeId: accessFor.id,
+          email: access.email.trim(),
+          password: access.password,
+          role: access.role,
+          branchId: access.branch_id || null,
+          permissions: access.role === "admin" ? [] : access.permissions,
+        },
+      });
+    },
+    onSuccess: () => {
+      toast.success("Acesso configurado com sucesso");
+      qc.invalidateQueries({ queryKey: ["equipe-employees"] });
+      setAccessFor(null);
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const openAccess = (e: Emp) => {
+    setAccessFor(e);
+    setAccess({
+      email: "",
+      password: "",
+      role: "operator",
+      branch_id: e.branch_id ?? activeBranchId ?? "",
+      permissions: ["rotina"],
+    });
+  };
+
+  const togglePerm = (p: Permission) =>
+    setAccess((a) => ({
+      ...a,
+      permissions: a.permissions.includes(p)
+        ? a.permissions.filter((x) => x !== p)
+        : [...a.permissions, p],
+    }));
+
   const filtered = employees.filter(
     (e) =>
       (!filter || e.full_name.toLowerCase().includes(filter.toLowerCase())) &&
