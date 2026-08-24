@@ -1,18 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, KeyRound } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { useMyCompanyId } from "@/lib/restaurante";
 import { useCompany } from "@/lib/company-context";
 import { SECTORS, sectorLabel, fmtTime } from "@/lib/equipe";
+import { PERMISSIONS, type Permission } from "@/lib/permissions";
+import { createEmployeeAccess } from "@/lib/usuarios.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -58,6 +62,15 @@ function EquipeFuncionarios() {
   const [toDelete, setToDelete] = useState<Emp | null>(null);
   const [filter, setFilter] = useState("");
   const [sectorFilter, setSectorFilter] = useState("all");
+  const [accessFor, setAccessFor] = useState<Emp | null>(null);
+  const [access, setAccess] = useState({
+    email: "",
+    password: "",
+    role: "operator" as "admin" | "operator",
+    branch_id: "",
+    permissions: [] as Permission[],
+  });
+  const createAccess = useServerFn(createEmployeeAccess);
 
   const { data: employees = [] } = useQuery({
     queryKey: ["equipe-employees", companyId, activeBranchId],
@@ -142,6 +155,52 @@ function EquipeFuncionarios() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  const saveAccess = useMutation({
+    mutationFn: async () => {
+      if (!accessFor) throw new Error("Selecione um funcionário");
+      if (!access.email.trim()) throw new Error("Informe o e-mail");
+      if (access.password.length < 6) throw new Error("A senha precisa ter ao menos 6 caracteres");
+      if (access.role === "operator" && access.permissions.length === 0) {
+        throw new Error("Selecione ao menos uma permissão");
+      }
+      return await createAccess({
+        data: {
+          employeeId: accessFor.id,
+          email: access.email.trim(),
+          password: access.password,
+          role: access.role,
+          branchId: access.branch_id || null,
+          permissions: access.role === "admin" ? [] : access.permissions,
+        },
+      });
+    },
+    onSuccess: () => {
+      toast.success("Acesso configurado com sucesso");
+      qc.invalidateQueries({ queryKey: ["equipe-employees"] });
+      setAccessFor(null);
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const openAccess = (e: Emp) => {
+    setAccessFor(e);
+    setAccess({
+      email: "",
+      password: "",
+      role: "operator",
+      branch_id: e.branch_id ?? activeBranchId ?? "",
+      permissions: ["rotina"],
+    });
+  };
+
+  const togglePerm = (p: Permission) =>
+    setAccess((a) => ({
+      ...a,
+      permissions: a.permissions.includes(p)
+        ? a.permissions.filter((x) => x !== p)
+        : [...a.permissions, p],
+    }));
+
   const filtered = employees.filter(
     (e) =>
       (!filter || e.full_name.toLowerCase().includes(filter.toLowerCase())) &&
@@ -193,6 +252,9 @@ function EquipeFuncionarios() {
                   <span>{branch?.name ?? "Matriz"}</span>
                 </div>
                 <div className="flex justify-end gap-1">
+                  <Button size="sm" variant="outline" onClick={() => openAccess(e)}>
+                    <KeyRound className="mr-2 h-4 w-4" /> Acesso
+                  </Button>
                   <Button size="icon" variant="ghost" onClick={() => {
                     setEditing(e);
                     setForm({
@@ -283,6 +345,72 @@ function EquipeFuncionarios() {
           <DialogFooter>
             <Button variant="outline" onClick={() => setOpen(false)}>Cancelar</Button>
             <Button onClick={() => save.mutate()} disabled={save.isPending}>Salvar</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={!!accessFor} onOpenChange={(o) => !o && setAccessFor(null)}>
+        <DialogContent className="max-w-xl">
+          <DialogHeader>
+            <DialogTitle>Permissões de acesso — {accessFor?.full_name}</DialogTitle>
+          </DialogHeader>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label>E-mail de acesso</Label>
+              <Input type="email" autoComplete="off" value={access.email}
+                onChange={(e) => setAccess({ ...access, email: e.target.value })} />
+            </div>
+            <div>
+              <Label>Senha</Label>
+              <Input type="password" autoComplete="new-password" value={access.password}
+                onChange={(e) => setAccess({ ...access, password: e.target.value })} />
+            </div>
+            <div>
+              <Label>Perfil</Label>
+              <Select value={access.role}
+                onValueChange={(v) => setAccess({ ...access, role: v as "admin" | "operator" })}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="admin">Administrador (acesso total)</SelectItem>
+                  <SelectItem value="operator">Funcionário (acesso restrito)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Filial</Label>
+              <Select value={access.branch_id || "none"}
+                onValueChange={(v) => setAccess({ ...access, branch_id: v === "none" ? "" : v })}>
+                <SelectTrigger><SelectValue placeholder="Matriz" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Todas as filiais</SelectItem>
+                  {branches.map((b) => <SelectItem key={b.id} value={b.id}>{b.name}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            {access.role === "operator" && (
+              <div className="col-span-2 space-y-2">
+                <Label>Módulos liberados</Label>
+                <div className="grid grid-cols-2 gap-2">
+                  {PERMISSIONS.map((p) => (
+                    <label key={p.value}
+                      className="flex cursor-pointer items-start gap-2 rounded-md border border-border p-2">
+                      <Checkbox checked={access.permissions.includes(p.value)}
+                        onCheckedChange={() => togglePerm(p.value)} />
+                      <span className="text-sm">
+                        <span className="font-medium">{p.label}</span>
+                        <span className="block text-xs text-muted-foreground">{p.hint}</span>
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAccessFor(null)}>Cancelar</Button>
+            <Button onClick={() => saveAccess.mutate()} disabled={saveAccess.isPending}>
+              Salvar acesso
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
