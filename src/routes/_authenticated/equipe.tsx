@@ -78,7 +78,7 @@ function EquipeLayout() {
         </div>
       </div>
       <nav className="flex flex-wrap gap-1 border-b border-border">
-        {tabs.map((t) => {
+        {visibleTabs.map((t) => {
           const active = path.startsWith(t.to);
           return (
             <Link
