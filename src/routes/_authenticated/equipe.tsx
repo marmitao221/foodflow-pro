@@ -8,7 +8,6 @@ import {
   UserCheck,
   FileStack,
   History,
-  Sparkles,
 } from "lucide-react";
 
 import { requiredFor, useMembership } from "@/lib/permissions";
@@ -43,7 +42,6 @@ export const Route = createFileRoute("/_authenticated/equipe")({
 const tabs = [
   { to: "/equipe/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/equipe/rotina", label: "Minha Rotina", icon: ClipboardCheck },
-  { to: "/equipe/limpeza", label: "Limpeza", icon: Sparkles },
   { to: "/equipe/gestao", label: "Gestão da Equipe", icon: UserCheck },
   { to: "/equipe/tarefas", label: "Tarefas", icon: ListChecks },
   { to: "/equipe/modelos", label: "Modelos", icon: FileStack },

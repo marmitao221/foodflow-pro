@@ -14,7 +14,6 @@ import {
   UtensilsCrossed,
   Users,
   ClipboardCheck,
-  Sparkles,
 } from "lucide-react";
 
 
@@ -44,7 +43,6 @@ const operacao: NavItem[] = [
   { title: "Produção", url: "/producao", icon: ChefHat, disabled: true },
   { title: "Fichas Técnicas", url: "/fichas", icon: ClipboardList },
   { title: "Minha Rotina", url: "/equipe/rotina", icon: ClipboardCheck },
-  { title: "Limpeza", url: "/equipe/limpeza", icon: Sparkles },
   { title: "Equipe", url: "/equipe/dashboard", icon: ClipboardCheck },
   { title: "RH", url: "/rh/dashboard", icon: Users },
 ];
