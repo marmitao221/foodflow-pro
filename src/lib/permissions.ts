@@ -10,7 +10,6 @@ export type Permission =
   | "estoque"
   | "restaurante"
   | "caixa"
-  | "limpeza"
   | "relatorios";
 
 export const PERMISSIONS: { value: Permission; label: string; hint: string }[] = [
@@ -20,7 +19,6 @@ export const PERMISSIONS: { value: Permission; label: string; hint: string }[] =
   { value: "estoque", label: "Estoque", hint: "Itens, entradas, saídas e fornecedores" },
   { value: "restaurante", label: "Restaurante", hint: "Comandas, mesas e produtos" },
   { value: "caixa", label: "Caixa", hint: "Abertura, movimentações e fechamento" },
-  { value: "limpeza", label: "Limpeza", hint: "Checklist do setor de limpeza" },
   { value: "relatorios", label: "Relatórios", hint: "Financeiro e indicadores (leitura)" },
 ];
 
@@ -71,7 +69,6 @@ export function useMembership() {
 /** Permissão (ou perfil admin) exigida para cada área do sistema. */
 export function requiredFor(path: string): { perm?: Permission; adminOnly?: boolean } | null {
   if (path.startsWith("/equipe/rotina")) return { perm: "rotina" };
-  if (path.startsWith("/equipe/limpeza")) return { perm: "limpeza" };
   if (path.startsWith("/equipe")) return { perm: "checklists" };
   if (path.startsWith("/restaurante/caixa")) return { perm: "caixa" };
   if (path.startsWith("/restaurante")) return { perm: "restaurante" };
@@ -90,7 +87,6 @@ export function homeFor(isAdmin: boolean, permissions: Permission[]): string {
   if (isAdmin) return "/dashboard";
   const order: [Permission, string][] = [
     ["rotina", "/equipe/rotina"],
-    ["limpeza", "/equipe/limpeza"],
     ["checklists", "/equipe/dashboard"],
     ["restaurante", "/restaurante/comandas"],
     ["caixa", "/restaurante/caixa"],
