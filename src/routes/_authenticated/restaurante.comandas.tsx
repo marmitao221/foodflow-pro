@@ -12,6 +12,7 @@ import {
   orderTypeLabel,
   paymentMethodLabel,
   useMyCompanyId,
+  type Customer,
   type OrderType,
   type PaymentMethod,
   type Product,
