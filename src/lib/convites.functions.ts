@@ -53,6 +53,7 @@ export const createTeamInvite = createServerFn({ method: "POST" })
       .from("team_invites")
       .insert({
         company_id: data.companyId,
+        token,
         branch_id: data.branchId,
         permissions: data.permissions,
         full_name: data.fullName?.trim() || null,
