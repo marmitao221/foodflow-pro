@@ -716,12 +716,37 @@ function ClosePaymentDialog({
     { method: "dinheiro", amount: Number(order.total) },
   ]);
 
+  const { data: customer } = useQuery({
+    queryKey: ["customer", order.customer_id],
+    enabled: !!order.customer_id,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("customers")
+        .select("*")
+        .eq("id", order.customer_id!)
+        .single();
+      if (error) throw error;
+      return data as Customer;
+    },
+  });
+
   const total = Number(order.total);
   const paid = pays.reduce((s, p) => s + (Number(p.amount) || 0), 0);
   const diff = total - paid;
+  const onAccount = pays
+    .filter((p) => p.method === "conta_cliente")
+    .reduce((s, p) => s + (Number(p.amount) || 0), 0);
+  const balance = Number(customer?.balance ?? 0);
+  const accountError =
+    onAccount > 0.001 && !order.customer_id
+      ? "Vincule um cliente cadastrado à comanda para usar a conta."
+      : onAccount - balance > 0.001
+        ? `Saldo insuficiente. Disponível: ${formatBRL(balance)}`
+        : null;
 
   const close = useMutation({
     mutationFn: async () => {
+      if (accountError) throw new Error(accountError);
       // get active cash session of this user/branch
       let sessionId: string | null = null;
       if (user) {
@@ -746,6 +771,17 @@ function ClosePaymentDialog({
       if (rows.length === 0) throw new Error("Informe ao menos um pagamento");
       const { error: ePay } = await supabase.from("order_payments").insert(rows);
       if (ePay) throw ePay;
+      if (onAccount > 0 && order.customer_id) {
+        const { error: eTx } = await supabase.from("customer_transactions").insert({
+          company_id: companyId,
+          customer_id: order.customer_id,
+          type: "consumo",
+          amount: onAccount,
+          order_id: order.id,
+          note: `Comanda #${order.number}`,
+        });
+        if (eTx) throw eTx;
+      }
       const { error } = await supabase
         .from("orders")
         .update({ status: "fechada", closed_at: new Date().toISOString() })
@@ -761,6 +797,7 @@ function ClosePaymentDialog({
     onSuccess: onClosed,
     onError: (e: Error) => toast.error(e.message),
   });
+
 
   return (
     <Dialog open onOpenChange={(o) => !o && onCancel()}>
