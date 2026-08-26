@@ -49,6 +49,7 @@ type Order = {
   number: number;
   type: OrderType;
   table_id: string | null;
+  customer_id: string | null;
   customer_name: string | null;
   waiter_name: string | null;
   subtotal: number;
@@ -79,6 +80,7 @@ const methods: PaymentMethod[] = [
   "ifood_online",
   "keeta_online",
   "aiqfome_online",
+  "conta_cliente",
 ];
 
 function ComandasPage() {
