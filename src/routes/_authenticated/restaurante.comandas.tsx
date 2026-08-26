@@ -12,6 +12,7 @@ import {
   orderTypeLabel,
   paymentMethodLabel,
   useMyCompanyId,
+  type Customer,
   type OrderType,
   type PaymentMethod,
   type Product,
@@ -49,6 +50,7 @@ type Order = {
   number: number;
   type: OrderType;
   table_id: string | null;
+  customer_id: string | null;
   customer_name: string | null;
   waiter_name: string | null;
   subtotal: number;
@@ -79,6 +81,7 @@ const methods: PaymentMethod[] = [
   "ifood_online",
   "keeta_online",
   "aiqfome_online",
+  "conta_cliente",
 ];
 
 function ComandasPage() {
@@ -118,10 +121,27 @@ function ComandasPage() {
     },
   });
 
+  const { data: customers = [] } = useQuery({
+    queryKey: ["customers", companyId, activeBranchId],
+    enabled: !!companyId,
+    queryFn: async () => {
+      let q = supabase
+        .from("customers")
+        .select("*")
+        .eq("company_id", companyId!)
+        .eq("is_active", true);
+      if (activeBranchId) q = q.eq("branch_id", activeBranchId);
+      const { data, error } = await q.order("name");
+      if (error) throw error;
+      return data as Customer[];
+    },
+  });
+
   const createOrder = useMutation({
     mutationFn: async (payload: {
       type: OrderType;
       table_id: string | null;
+      customer_id: string | null;
       customer_name: string;
       waiter_name: string;
       notes: string;
@@ -139,6 +159,7 @@ function ComandasPage() {
           number: numberData as number,
           type: payload.type,
           table_id: payload.table_id,
+          customer_id: payload.customer_id,
           customer_name: payload.customer_name || null,
           waiter_name: payload.waiter_name || null,
           notes: payload.notes || null,
@@ -175,10 +196,12 @@ function ComandasPage() {
           open={createOpen}
           onOpenChange={setCreateOpen}
           tables={tables}
+          customers={customers}
           onCreate={(p) => createOrder.mutate(p)}
           pending={createOrder.isPending}
         />
       </div>
+
 
       {isLoading ? (
         <p className="text-muted-foreground text-sm">Carregando...</p>
@@ -242,15 +265,18 @@ function NewOrderDialog({
   open,
   onOpenChange,
   tables,
+  customers,
   onCreate,
   pending,
 }: {
   open: boolean;
   onOpenChange: (o: boolean) => void;
   tables: RestaurantTable[];
+  customers: Customer[];
   onCreate: (p: {
     type: OrderType;
     table_id: string | null;
+    customer_id: string | null;
     customer_name: string;
     waiter_name: string;
     notes: string;
@@ -259,9 +285,12 @@ function NewOrderDialog({
 }) {
   const [type, setType] = useState<OrderType>("mesa");
   const [tableId, setTableId] = useState<string>("");
+  const [customerId, setCustomerId] = useState<string>("");
   const [customer, setCustomer] = useState("");
   const [waiter, setWaiter] = useState("");
   const [notes, setNotes] = useState("");
+  const selected = customers.find((c) => c.id === customerId);
+
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -309,7 +338,39 @@ function NewOrderDialog({
             </div>
           )}
           <div className="col-span-2">
-            <Label>Cliente</Label>
+            <Label>Cliente cadastrado</Label>
+            <Select
+              value={customerId || "none"}
+              onValueChange={(v) => {
+                if (v === "none") {
+                  setCustomerId("");
+                  return;
+                }
+                setCustomerId(v);
+                const c = customers.find((x) => x.id === v);
+                if (c) setCustomer(c.name);
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Nenhum" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">— Nenhum —</SelectItem>
+                {customers.map((c) => (
+                  <SelectItem key={c.id} value={c.id}>
+                    {c.name} — saldo {formatBRL(Number(c.balance))}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {selected && (
+              <p className="mt-1 text-xs text-muted-foreground">
+                Saldo disponível: {formatBRL(Number(selected.balance))}
+              </p>
+            )}
+          </div>
+          <div className="col-span-2">
+            <Label>Nome do cliente (avulso)</Label>
             <Input value={customer} onChange={(e) => setCustomer(e.target.value)} />
           </div>
           <div className="col-span-2">
@@ -330,6 +391,7 @@ function NewOrderDialog({
               onCreate({
                 type,
                 table_id: type === "mesa" ? tableId || null : null,
+                customer_id: customerId || null,
                 customer_name: customer,
                 waiter_name: waiter,
                 notes,
@@ -627,6 +689,9 @@ function OrderDialog({
             qc.invalidateQueries({ queryKey: ["restaurant_tables"] });
             qc.invalidateQueries({ queryKey: ["cash_session"] });
             qc.invalidateQueries({ queryKey: ["order_payments"] });
+            qc.invalidateQueries({ queryKey: ["customers"] });
+            qc.invalidateQueries({ queryKey: ["customer"] });
+            qc.invalidateQueries({ queryKey: ["customer_transactions"] });
             toast.success(`Comanda #${order.number} fechada`);
             onClose();
           }}
@@ -654,12 +719,37 @@ function ClosePaymentDialog({
     { method: "dinheiro", amount: Number(order.total) },
   ]);
 
+  const { data: customer } = useQuery({
+    queryKey: ["customer", order.customer_id],
+    enabled: !!order.customer_id,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("customers")
+        .select("*")
+        .eq("id", order.customer_id!)
+        .single();
+      if (error) throw error;
+      return data as Customer;
+    },
+  });
+
   const total = Number(order.total);
   const paid = pays.reduce((s, p) => s + (Number(p.amount) || 0), 0);
   const diff = total - paid;
+  const onAccount = pays
+    .filter((p) => p.method === "conta_cliente")
+    .reduce((s, p) => s + (Number(p.amount) || 0), 0);
+  const balance = Number(customer?.balance ?? 0);
+  const accountError =
+    onAccount > 0.001 && !order.customer_id
+      ? "Vincule um cliente cadastrado à comanda para usar a conta."
+      : onAccount - balance > 0.001
+        ? `Saldo insuficiente. Disponível: ${formatBRL(balance)}`
+        : null;
 
   const close = useMutation({
     mutationFn: async () => {
+      if (accountError) throw new Error(accountError);
       // get active cash session of this user/branch
       let sessionId: string | null = null;
       if (user) {
@@ -684,6 +774,17 @@ function ClosePaymentDialog({
       if (rows.length === 0) throw new Error("Informe ao menos um pagamento");
       const { error: ePay } = await supabase.from("order_payments").insert(rows);
       if (ePay) throw ePay;
+      if (onAccount > 0 && order.customer_id) {
+        const { error: eTx } = await supabase.from("customer_transactions").insert({
+          company_id: companyId,
+          customer_id: order.customer_id,
+          type: "consumo",
+          amount: onAccount,
+          order_id: order.id,
+          note: `Comanda #${order.number}`,
+        });
+        if (eTx) throw eTx;
+      }
       const { error } = await supabase
         .from("orders")
         .update({ status: "fechada", closed_at: new Date().toISOString() })
@@ -699,6 +800,7 @@ function ClosePaymentDialog({
     onSuccess: onClosed,
     onError: (e: Error) => toast.error(e.message),
   });
+
 
   return (
     <Dialog open onOpenChange={(o) => !o && onCancel()}>
@@ -784,13 +886,29 @@ function ClosePaymentDialog({
           </div>
         </div>
 
+        {customer && (
+          <div className="rounded-md border border-border p-3 text-sm">
+            <p className="text-xs text-muted-foreground">Conta de {customer.name}</p>
+            <p className="font-semibold">
+              Saldo atual: {formatBRL(balance)}
+              {onAccount > 0 && (
+                <span className="text-muted-foreground">
+                  {" "}
+                  → após: {formatBRL(balance - onAccount)}
+                </span>
+              )}
+            </p>
+          </div>
+        )}
+        {accountError && <p className="text-xs text-destructive">{accountError}</p>}
+
         <DialogFooter>
           <Button variant="outline" onClick={onCancel}>
             Voltar
           </Button>
           <Button
             onClick={() => close.mutate()}
-            disabled={close.isPending || diff > 0.001 || paid <= 0}
+            disabled={close.isPending || diff > 0.001 || paid <= 0 || !!accountError}
           >
             Confirmar fechamento
           </Button>

@@ -30,6 +30,7 @@ import { Route as AuthenticatedRhBeneficiosRouteImport } from './routes/_authent
 import { Route as AuthenticatedRestauranteProdutosRouteImport } from './routes/_authenticated/restaurante.produtos'
 import { Route as AuthenticatedRestauranteMesasRouteImport } from './routes/_authenticated/restaurante.mesas'
 import { Route as AuthenticatedRestauranteComandasRouteImport } from './routes/_authenticated/restaurante.comandas'
+import { Route as AuthenticatedRestauranteClientesRouteImport } from './routes/_authenticated/restaurante.clientes'
 import { Route as AuthenticatedRestauranteCaixaRouteImport } from './routes/_authenticated/restaurante.caixa'
 import { Route as AuthenticatedFinanceiroReceberRouteImport } from './routes/_authenticated/financeiro.receber'
 import { Route as AuthenticatedFinanceiroPagarRouteImport } from './routes/_authenticated/financeiro.pagar'
@@ -162,6 +163,12 @@ const AuthenticatedRestauranteComandasRoute =
   AuthenticatedRestauranteComandasRouteImport.update({
     id: '/comandas',
     path: '/comandas',
+    getParentRoute: () => AuthenticatedRestauranteRoute,
+  } as any)
+const AuthenticatedRestauranteClientesRoute =
+  AuthenticatedRestauranteClientesRouteImport.update({
+    id: '/clientes',
+    path: '/clientes',
     getParentRoute: () => AuthenticatedRestauranteRoute,
   } as any)
 const AuthenticatedRestauranteCaixaRoute =
@@ -331,6 +338,7 @@ export interface FileRoutesByFullPath {
   '/financeiro/pagar': typeof AuthenticatedFinanceiroPagarRoute
   '/financeiro/receber': typeof AuthenticatedFinanceiroReceberRoute
   '/restaurante/caixa': typeof AuthenticatedRestauranteCaixaRoute
+  '/restaurante/clientes': typeof AuthenticatedRestauranteClientesRoute
   '/restaurante/comandas': typeof AuthenticatedRestauranteComandasRoute
   '/restaurante/mesas': typeof AuthenticatedRestauranteMesasRoute
   '/restaurante/produtos': typeof AuthenticatedRestauranteProdutosRoute
@@ -375,6 +383,7 @@ export interface FileRoutesByTo {
   '/financeiro/pagar': typeof AuthenticatedFinanceiroPagarRoute
   '/financeiro/receber': typeof AuthenticatedFinanceiroReceberRoute
   '/restaurante/caixa': typeof AuthenticatedRestauranteCaixaRoute
+  '/restaurante/clientes': typeof AuthenticatedRestauranteClientesRoute
   '/restaurante/comandas': typeof AuthenticatedRestauranteComandasRoute
   '/restaurante/mesas': typeof AuthenticatedRestauranteMesasRoute
   '/restaurante/produtos': typeof AuthenticatedRestauranteProdutosRoute
@@ -421,6 +430,7 @@ export interface FileRoutesById {
   '/_authenticated/financeiro/pagar': typeof AuthenticatedFinanceiroPagarRoute
   '/_authenticated/financeiro/receber': typeof AuthenticatedFinanceiroReceberRoute
   '/_authenticated/restaurante/caixa': typeof AuthenticatedRestauranteCaixaRoute
+  '/_authenticated/restaurante/clientes': typeof AuthenticatedRestauranteClientesRoute
   '/_authenticated/restaurante/comandas': typeof AuthenticatedRestauranteComandasRoute
   '/_authenticated/restaurante/mesas': typeof AuthenticatedRestauranteMesasRoute
   '/_authenticated/restaurante/produtos': typeof AuthenticatedRestauranteProdutosRoute
@@ -467,6 +477,7 @@ export interface FileRouteTypes {
     | '/financeiro/pagar'
     | '/financeiro/receber'
     | '/restaurante/caixa'
+    | '/restaurante/clientes'
     | '/restaurante/comandas'
     | '/restaurante/mesas'
     | '/restaurante/produtos'
@@ -511,6 +522,7 @@ export interface FileRouteTypes {
     | '/financeiro/pagar'
     | '/financeiro/receber'
     | '/restaurante/caixa'
+    | '/restaurante/clientes'
     | '/restaurante/comandas'
     | '/restaurante/mesas'
     | '/restaurante/produtos'
@@ -556,6 +568,7 @@ export interface FileRouteTypes {
     | '/_authenticated/financeiro/pagar'
     | '/_authenticated/financeiro/receber'
     | '/_authenticated/restaurante/caixa'
+    | '/_authenticated/restaurante/clientes'
     | '/_authenticated/restaurante/comandas'
     | '/_authenticated/restaurante/mesas'
     | '/_authenticated/restaurante/produtos'
@@ -721,6 +734,13 @@ declare module '@tanstack/react-router' {
       path: '/comandas'
       fullPath: '/restaurante/comandas'
       preLoaderRoute: typeof AuthenticatedRestauranteComandasRouteImport
+      parentRoute: typeof AuthenticatedRestauranteRoute
+    }
+    '/_authenticated/restaurante/clientes': {
+      id: '/_authenticated/restaurante/clientes'
+      path: '/clientes'
+      fullPath: '/restaurante/clientes'
+      preLoaderRoute: typeof AuthenticatedRestauranteClientesRouteImport
       parentRoute: typeof AuthenticatedRestauranteRoute
     }
     '/_authenticated/restaurante/caixa': {
@@ -951,6 +971,7 @@ const AuthenticatedFinanceiroRouteWithChildren =
 
 interface AuthenticatedRestauranteRouteChildren {
   AuthenticatedRestauranteCaixaRoute: typeof AuthenticatedRestauranteCaixaRoute
+  AuthenticatedRestauranteClientesRoute: typeof AuthenticatedRestauranteClientesRoute
   AuthenticatedRestauranteComandasRoute: typeof AuthenticatedRestauranteComandasRoute
   AuthenticatedRestauranteMesasRoute: typeof AuthenticatedRestauranteMesasRoute
   AuthenticatedRestauranteProdutosRoute: typeof AuthenticatedRestauranteProdutosRoute
@@ -959,6 +980,8 @@ interface AuthenticatedRestauranteRouteChildren {
 const AuthenticatedRestauranteRouteChildren: AuthenticatedRestauranteRouteChildren =
   {
     AuthenticatedRestauranteCaixaRoute: AuthenticatedRestauranteCaixaRoute,
+    AuthenticatedRestauranteClientesRoute:
+      AuthenticatedRestauranteClientesRoute,
     AuthenticatedRestauranteComandasRoute:
       AuthenticatedRestauranteComandasRoute,
     AuthenticatedRestauranteMesasRoute: AuthenticatedRestauranteMesasRoute,

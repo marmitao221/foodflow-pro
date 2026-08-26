@@ -22,7 +22,8 @@ export type PaymentMethod =
   | "credito"
   | "ifood_online"
   | "keeta_online"
-  | "aiqfome_online";
+  | "aiqfome_online"
+  | "conta_cliente";
 export type CashMovementType = "sangria" | "suprimento" | "retirada" | "ajuste";
 export type CashSessionStatus = "aberto" | "fechado";
 
@@ -41,6 +42,7 @@ export const paymentMethodLabel: Record<PaymentMethod, string> = {
   ifood_online: "iFood Online",
   keeta_online: "Keeta Online",
   aiqfome_online: "Aiqfome Online",
+  conta_cliente: "Conta do cliente",
 };
 
 export const cashMovementLabel: Record<CashMovementType, string> = {
@@ -120,3 +122,22 @@ export function useMyCompanyId() {
     },
   });
 }
+
+export type Customer = {
+  id: string;
+  company_id: string;
+  branch_id: string | null;
+  name: string;
+  phone: string | null;
+  balance: number;
+  is_active: boolean;
+  created_at: string;
+};
+
+export type CustomerTxType = "credito" | "consumo" | "ajuste";
+
+export const customerTxLabel: Record<CustomerTxType, string> = {
+  credito: "Crédito",
+  consumo: "Consumo",
+  ajuste: "Ajuste",
+};

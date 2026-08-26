@@ -454,6 +454,122 @@ export type Database = {
         }
         Relationships: []
       }
+      customer_transactions: {
+        Row: {
+          amount: number
+          branch_id: string | null
+          company_id: string
+          created_at: string
+          customer_id: string
+          id: string
+          note: string | null
+          order_id: string | null
+          type: Database["public"]["Enums"]["customer_tx_type"]
+        }
+        Insert: {
+          amount: number
+          branch_id?: string | null
+          company_id: string
+          created_at?: string
+          customer_id: string
+          id?: string
+          note?: string | null
+          order_id?: string | null
+          type: Database["public"]["Enums"]["customer_tx_type"]
+        }
+        Update: {
+          amount?: number
+          branch_id?: string | null
+          company_id?: string
+          created_at?: string
+          customer_id?: string
+          id?: string
+          note?: string | null
+          order_id?: string | null
+          type?: Database["public"]["Enums"]["customer_tx_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_transactions_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_transactions_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_transactions_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_transactions_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      customers: {
+        Row: {
+          balance: number
+          branch_id: string | null
+          company_id: string
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          balance?: number
+          branch_id?: string | null
+          company_id: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          balance?: number
+          branch_id?: string | null
+          company_id?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customers_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customers_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employee_benefits: {
         Row: {
           active: boolean
@@ -945,6 +1061,7 @@ export type Database = {
           closed_at: string | null
           company_id: string
           created_at: string
+          customer_id: string | null
           customer_name: string | null
           discount: number
           id: string
@@ -965,6 +1082,7 @@ export type Database = {
           closed_at?: string | null
           company_id: string
           created_at?: string
+          customer_id?: string | null
           customer_name?: string | null
           discount?: number
           id?: string
@@ -985,6 +1103,7 @@ export type Database = {
           closed_at?: string | null
           company_id?: string
           created_at?: string
+          customer_id?: string | null
           customer_name?: string | null
           discount?: number
           id?: string
@@ -1001,6 +1120,13 @@ export type Database = {
           waiter_name?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "orders_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "orders_table_id_fkey"
             columns: ["table_id"]
@@ -2032,6 +2158,7 @@ export type Database = {
       app_role: "owner" | "admin" | "manager" | "operator" | "finance"
       cash_movement_type: "sangria" | "suprimento" | "retirada" | "ajuste"
       cash_session_status: "aberto" | "fechado"
+      customer_tx_type: "credito" | "consumo" | "ajuste"
       employee_status: "ativo" | "ferias" | "afastado" | "desligado"
       financial_status: "pendente" | "pago" | "recebido" | "cancelado"
       financial_type: "receita" | "despesa"
@@ -2045,6 +2172,7 @@ export type Database = {
         | "ifood_online"
         | "keeta_online"
         | "aiqfome_online"
+        | "conta_cliente"
       product_category:
         | "refeicao"
         | "marmita"
@@ -2208,6 +2336,7 @@ export const Constants = {
       app_role: ["owner", "admin", "manager", "operator", "finance"],
       cash_movement_type: ["sangria", "suprimento", "retirada", "ajuste"],
       cash_session_status: ["aberto", "fechado"],
+      customer_tx_type: ["credito", "consumo", "ajuste"],
       employee_status: ["ativo", "ferias", "afastado", "desligado"],
       financial_status: ["pendente", "pago", "recebido", "cancelado"],
       financial_type: ["receita", "despesa"],
@@ -2221,6 +2350,7 @@ export const Constants = {
         "ifood_online",
         "keeta_online",
         "aiqfome_online",
+        "conta_cliente",
       ],
       product_category: [
         "refeicao",

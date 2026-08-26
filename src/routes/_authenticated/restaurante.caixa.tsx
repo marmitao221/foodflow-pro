@@ -289,6 +289,7 @@ function ActiveSessionPanel({
     ifood_online: 0,
     keeta_online: 0,
     aiqfome_online: 0,
+    conta_cliente: 0,
   };
   payments.forEach((p) => (byMethod[p.method] += Number(p.amount)));
   const totalVendas = payments.reduce((s, p) => s + Number(p.amount), 0);
