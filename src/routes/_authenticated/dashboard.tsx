@@ -204,6 +204,7 @@ function QuickAccess() {
               {item.label}
             </span>
           </Link>
+          </Reveal>
         ))}
       </div>
     </section>
