@@ -73,6 +73,89 @@ function EquipeFuncionarios() {
   });
   const createAccess = useServerFn(createEmployeeAccess);
 
+  // --- convites por link ---
+  const [inviteOpen, setInviteOpen] = useState(false);
+  const [invite, setInvite] = useState({
+    branch_id: "",
+    days: 7,
+    full_name: "",
+    email: "",
+    permissions: ["rotina"] as Permission[],
+  });
+  const [lastLink, setLastLink] = useState<string | null>(null);
+  const makeInvite = useServerFn(createTeamInvite);
+  const fetchInvites = useServerFn(listTeamInvites);
+  const cancelInvite = useServerFn(revokeTeamInvite);
+
+  const inviteLink = (token: string) =>
+    typeof window === "undefined" ? `/convite/${token}` : `${window.location.origin}/convite/${token}`;
+
+  const copyLink = async (token: string) => {
+    try {
+      await navigator.clipboard.writeText(inviteLink(token));
+      toast.success("Link copiado");
+    } catch {
+      toast.error("Não foi possível copiar. Copie manualmente.");
+    }
+  };
+
+  const { data: invites = [] } = useQuery({
+    queryKey: ["team-invites", companyId],
+    enabled: !!companyId && inviteOpen,
+    queryFn: () => fetchInvites({ data: { companyId: companyId! } }),
+  });
+
+  const generateInvite = useMutation({
+    mutationFn: async () => {
+      if (!companyId) throw new Error("Sem empresa");
+      if (invite.permissions.length === 0) throw new Error("Selecione ao menos uma permissão");
+      return await makeInvite({
+        data: {
+          companyId,
+          branchId: invite.branch_id || null,
+          permissions: invite.permissions,
+          fullName: invite.full_name.trim() || null,
+          email: invite.email.trim() || null,
+          days: invite.days,
+        },
+      });
+    },
+    onSuccess: async (row) => {
+      setLastLink(inviteLink(row.token));
+      await copyLink(row.token);
+      qc.invalidateQueries({ queryKey: ["team-invites"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const revoke = useMutation({
+    mutationFn: async (id: string) => await cancelInvite({ data: { id } }),
+    onSuccess: () => {
+      toast.success("Convite cancelado");
+      qc.invalidateQueries({ queryKey: ["team-invites"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const toggleInvitePerm = (p: Permission) =>
+    setInvite((i) => ({
+      ...i,
+      permissions: i.permissions.includes(p)
+        ? i.permissions.filter((x) => x !== p)
+        : [...i.permissions, p],
+    }));
+
+  const inviteStatus = (i: {
+    accepted_at: string | null;
+    revoked_at: string | null;
+    expires_at: string;
+  }) => {
+    if (i.accepted_at) return "Utilizado";
+    if (i.revoked_at) return "Cancelado";
+    if (new Date(i.expires_at).getTime() < Date.now()) return "Expirado";
+    return "Pendente";
+  };
+
   const { data: employees = [] } = useQuery({
     queryKey: ["equipe-employees", companyId, activeBranchId],
     enabled: !!companyId,
