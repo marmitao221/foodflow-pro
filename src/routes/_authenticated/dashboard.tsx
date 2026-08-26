@@ -271,13 +271,15 @@ function ChartCard({
   children: React.ReactNode;
 }) {
   return (
-    <Card className="border-border shadow-none">
-      <CardHeader className="pb-2">
-        <CardTitle className="font-display text-base font-normal tracking-tight">{title}</CardTitle>
-        <CardDescription className="text-xs">{description}</CardDescription>
-      </CardHeader>
-      <CardContent className="h-52">{children}</CardContent>
-    </Card>
+    <Reveal>
+      <Card className="border-border shadow-none">
+        <CardHeader className="pb-2">
+          <CardTitle className="font-display text-base font-normal tracking-tight">{title}</CardTitle>
+          <CardDescription className="text-xs">{description}</CardDescription>
+        </CardHeader>
+        <CardContent className="h-52">{children}</CardContent>
+      </Card>
+    </Reveal>
   );
 }
 
