@@ -75,6 +75,7 @@ export function AppSidebar() {
   const { isAdmin, can, loading: loadingPerms } = useMembership();
 
   const allowed = (item: NavItem) => {
+    if (item.hideForAdmin && isAdmin) return false;
     const required = requiredFor(item.url);
     if (!required) return true;
     if (isAdmin) return true;
