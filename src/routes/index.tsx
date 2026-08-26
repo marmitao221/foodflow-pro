@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/Logo";
 import { useAuth } from "@/lib/auth-context";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Reveal } from "@/components/Reveal";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -110,12 +111,12 @@ function Landing() {
               Módulos que conversam entre si, sem planilhas paralelas.
             </p>
             <div className="mt-12 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-              {features.map((f) => (
-                <div key={f.title}>
+              {features.map((f, i) => (
+                <Reveal key={f.title} delay={(i % 3) * 70}>
                   <f.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
                   <h3 className="mt-4 font-display text-xl tracking-tight">{f.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
-                </div>
+                </Reveal>
               ))}
             </div>
           </div>
