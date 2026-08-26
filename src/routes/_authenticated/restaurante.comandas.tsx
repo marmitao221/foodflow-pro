@@ -924,3 +924,64 @@ function ClosePaymentDialog({
     </Dialog>
   );
 }
+
+function printOrder(order: Order, items: OrderItem[]) {
+  const esc = (s: string) =>
+    s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const rows = items
+    .map(
+      (it) => `<tr>
+        <td>${esc(it.product_name)}</td>
+        <td class="c">${Number(it.quantity).toLocaleString("pt-BR", { maximumFractionDigits: 3 })}</td>
+        <td class="r">${formatBRL(Number(it.unit_price))}</td>
+        <td class="r">${formatBRL(Number(it.total))}</td>
+      </tr>`,
+    )
+    .join("");
+
+  const html = `<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8" />
+<title>Comanda ${order.number}</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: ui-monospace, "Courier New", monospace; font-size: 12px; color: #000; margin: 0; padding: 12px; width: 80mm; }
+  h1 { font-size: 15px; margin: 0 0 2px; }
+  .muted { color: #444; font-size: 11px; }
+  hr { border: none; border-top: 1px dashed #000; margin: 8px 0; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 2px 0; text-align: left; font-size: 11px; vertical-align: top; }
+  .r { text-align: right; }
+  .c { text-align: center; }
+  .tot { display: flex; justify-content: space-between; font-size: 12px; }
+  .tot.big { font-size: 15px; font-weight: bold; margin-top: 4px; }
+  @page { margin: 4mm; }
+</style></head>
+<body>
+  <h1>Comanda #${order.number}</h1>
+  <div class="muted">${esc(orderTypeLabel[order.type])}${order.customer_name ? ` — ${esc(order.customer_name)}` : ""}</div>
+  <div class="muted">Aberta: ${new Date(order.opened_at).toLocaleString("pt-BR")}</div>
+  <div class="muted">Impresso: ${new Date().toLocaleString("pt-BR")}</div>
+  ${order.waiter_name ? `<div class="muted">Atendente: ${esc(order.waiter_name)}</div>` : ""}
+  <hr />
+  <table>
+    <thead><tr><th>Item</th><th class="c">Qtd</th><th class="r">Un.</th><th class="r">Total</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>
+  <hr />
+  <div class="tot"><span>Subtotal</span><span>${formatBRL(Number(order.subtotal))}</span></div>
+  <div class="tot"><span>Taxa de serviço</span><span>${formatBRL(Number(order.service_fee))}</span></div>
+  <div class="tot"><span>Desconto</span><span>- ${formatBRL(Number(order.discount))}</span></div>
+  <div class="tot big"><span>TOTAL</span><span>${formatBRL(Number(order.total))}</span></div>
+  ${order.notes ? `<hr /><div class="muted">Obs.: ${esc(order.notes)}</div>` : ""}
+</body></html>`;
+
+  const w = window.open("", "_blank", "width=420,height=640");
+  if (!w) {
+    toast.error("Permita pop-ups para imprimir a comanda.");
+    return;
+  }
+  w.document.write(html);
+  w.document.close();
+  w.focus();
+  setTimeout(() => w.print(), 250);
+}
