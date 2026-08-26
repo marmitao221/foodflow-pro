@@ -36,6 +36,7 @@ import { Route as AuthenticatedRestauranteCaixaRouteImport } from './routes/_aut
 import { Route as AuthenticatedProducaoTurnosRouteImport } from './routes/_authenticated/producao.turnos'
 import { Route as AuthenticatedProducaoPlanejamentoRouteImport } from './routes/_authenticated/producao.planejamento'
 import { Route as AuthenticatedProducaoDesperdicioRouteImport } from './routes/_authenticated/producao.desperdicio'
+import { Route as AuthenticatedProducaoDashboardRouteImport } from './routes/_authenticated/producao.dashboard'
 import { Route as AuthenticatedProducaoContratosRouteImport } from './routes/_authenticated/producao.contratos'
 import { Route as AuthenticatedFinanceiroReceberRouteImport } from './routes/_authenticated/financeiro.receber'
 import { Route as AuthenticatedFinanceiroPagarRouteImport } from './routes/_authenticated/financeiro.pagar'
@@ -203,6 +204,12 @@ const AuthenticatedProducaoDesperdicioRoute =
   AuthenticatedProducaoDesperdicioRouteImport.update({
     id: '/desperdicio',
     path: '/desperdicio',
+    getParentRoute: () => AuthenticatedProducaoRoute,
+  } as any)
+const AuthenticatedProducaoDashboardRoute =
+  AuthenticatedProducaoDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
     getParentRoute: () => AuthenticatedProducaoRoute,
   } as any)
 const AuthenticatedProducaoContratosRoute =
@@ -373,6 +380,7 @@ export interface FileRoutesByFullPath {
   '/financeiro/pagar': typeof AuthenticatedFinanceiroPagarRoute
   '/financeiro/receber': typeof AuthenticatedFinanceiroReceberRoute
   '/producao/contratos': typeof AuthenticatedProducaoContratosRoute
+  '/producao/dashboard': typeof AuthenticatedProducaoDashboardRoute
   '/producao/desperdicio': typeof AuthenticatedProducaoDesperdicioRoute
   '/producao/planejamento': typeof AuthenticatedProducaoPlanejamentoRoute
   '/producao/turnos': typeof AuthenticatedProducaoTurnosRoute
@@ -423,6 +431,7 @@ export interface FileRoutesByTo {
   '/financeiro/pagar': typeof AuthenticatedFinanceiroPagarRoute
   '/financeiro/receber': typeof AuthenticatedFinanceiroReceberRoute
   '/producao/contratos': typeof AuthenticatedProducaoContratosRoute
+  '/producao/dashboard': typeof AuthenticatedProducaoDashboardRoute
   '/producao/desperdicio': typeof AuthenticatedProducaoDesperdicioRoute
   '/producao/planejamento': typeof AuthenticatedProducaoPlanejamentoRoute
   '/producao/turnos': typeof AuthenticatedProducaoTurnosRoute
@@ -475,6 +484,7 @@ export interface FileRoutesById {
   '/_authenticated/financeiro/pagar': typeof AuthenticatedFinanceiroPagarRoute
   '/_authenticated/financeiro/receber': typeof AuthenticatedFinanceiroReceberRoute
   '/_authenticated/producao/contratos': typeof AuthenticatedProducaoContratosRoute
+  '/_authenticated/producao/dashboard': typeof AuthenticatedProducaoDashboardRoute
   '/_authenticated/producao/desperdicio': typeof AuthenticatedProducaoDesperdicioRoute
   '/_authenticated/producao/planejamento': typeof AuthenticatedProducaoPlanejamentoRoute
   '/_authenticated/producao/turnos': typeof AuthenticatedProducaoTurnosRoute
@@ -527,6 +537,7 @@ export interface FileRouteTypes {
     | '/financeiro/pagar'
     | '/financeiro/receber'
     | '/producao/contratos'
+    | '/producao/dashboard'
     | '/producao/desperdicio'
     | '/producao/planejamento'
     | '/producao/turnos'
@@ -577,6 +588,7 @@ export interface FileRouteTypes {
     | '/financeiro/pagar'
     | '/financeiro/receber'
     | '/producao/contratos'
+    | '/producao/dashboard'
     | '/producao/desperdicio'
     | '/producao/planejamento'
     | '/producao/turnos'
@@ -628,6 +640,7 @@ export interface FileRouteTypes {
     | '/_authenticated/financeiro/pagar'
     | '/_authenticated/financeiro/receber'
     | '/_authenticated/producao/contratos'
+    | '/_authenticated/producao/dashboard'
     | '/_authenticated/producao/desperdicio'
     | '/_authenticated/producao/planejamento'
     | '/_authenticated/producao/turnos'
@@ -840,6 +853,13 @@ declare module '@tanstack/react-router' {
       path: '/desperdicio'
       fullPath: '/producao/desperdicio'
       preLoaderRoute: typeof AuthenticatedProducaoDesperdicioRouteImport
+      parentRoute: typeof AuthenticatedProducaoRoute
+    }
+    '/_authenticated/producao/dashboard': {
+      id: '/_authenticated/producao/dashboard'
+      path: '/dashboard'
+      fullPath: '/producao/dashboard'
+      preLoaderRoute: typeof AuthenticatedProducaoDashboardRouteImport
       parentRoute: typeof AuthenticatedProducaoRoute
     }
     '/_authenticated/producao/contratos': {
@@ -1070,6 +1090,7 @@ const AuthenticatedFinanceiroRouteWithChildren =
 
 interface AuthenticatedProducaoRouteChildren {
   AuthenticatedProducaoContratosRoute: typeof AuthenticatedProducaoContratosRoute
+  AuthenticatedProducaoDashboardRoute: typeof AuthenticatedProducaoDashboardRoute
   AuthenticatedProducaoDesperdicioRoute: typeof AuthenticatedProducaoDesperdicioRoute
   AuthenticatedProducaoPlanejamentoRoute: typeof AuthenticatedProducaoPlanejamentoRoute
   AuthenticatedProducaoTurnosRoute: typeof AuthenticatedProducaoTurnosRoute
@@ -1077,6 +1098,7 @@ interface AuthenticatedProducaoRouteChildren {
 
 const AuthenticatedProducaoRouteChildren: AuthenticatedProducaoRouteChildren = {
   AuthenticatedProducaoContratosRoute: AuthenticatedProducaoContratosRoute,
+  AuthenticatedProducaoDashboardRoute: AuthenticatedProducaoDashboardRoute,
   AuthenticatedProducaoDesperdicioRoute: AuthenticatedProducaoDesperdicioRoute,
   AuthenticatedProducaoPlanejamentoRoute:
     AuthenticatedProducaoPlanejamentoRoute,
