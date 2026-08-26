@@ -185,13 +185,15 @@ const SHORTCUTS: {
   { label: "Fichas técnicas", to: "/fichas", icon: FileSpreadsheet, perm: "producao" },
   { label: "Financeiro", to: "/financeiro/fluxo", icon: Landmark, perm: "relatorios" },
   { label: "Equipe", to: "/equipe/dashboard", icon: Users, perm: "checklists" },
-  { label: "Minha rotina", to: "/equipe/rotina", icon: ClipboardList, perm: "rotina" },
+  { label: "Minha rotina", to: "/equipe/rotina", icon: ClipboardList, perm: "rotina", hideForAdmin: true },
 ];
 
 function QuickAccess() {
-  const { can, loading } = useMembership();
+  const { can, isAdmin, loading } = useMembership();
   if (loading) return null;
-  const items = SHORTCUTS.filter((s) => !s.perm || can(s.perm));
+  const items = SHORTCUTS.filter(
+    (s) => !(s.hideForAdmin && isAdmin) && (!s.perm || can(s.perm)),
+  );
   if (items.length === 0) return null;
 
   return (
