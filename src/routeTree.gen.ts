@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ConviteTokenRouteImport } from './routes/convite.$token'
 import { Route as AuthenticatedRhRouteImport } from './routes/_authenticated/rh'
 import { Route as AuthenticatedRestauranteRouteImport } from './routes/_authenticated/restaurante'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
@@ -64,6 +65,11 @@ const AuthenticatedRoute = AuthenticatedRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConviteTokenRoute = ConviteTokenRouteImport.update({
+  id: '/convite/$token',
+  path: '/convite/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedRhRoute = AuthenticatedRhRouteImport.update({
@@ -302,6 +308,7 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/restaurante': typeof AuthenticatedRestauranteRouteWithChildren
   '/rh': typeof AuthenticatedRhRouteWithChildren
+  '/convite/$token': typeof ConviteTokenRoute
   '/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
   '/equipe/dashboard': typeof AuthenticatedEquipeDashboardRoute
@@ -345,6 +352,7 @@ export interface FileRoutesByTo {
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/restaurante': typeof AuthenticatedRestauranteRouteWithChildren
   '/rh': typeof AuthenticatedRhRouteWithChildren
+  '/convite/$token': typeof ConviteTokenRoute
   '/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
   '/equipe/dashboard': typeof AuthenticatedEquipeDashboardRoute
@@ -390,6 +398,7 @@ export interface FileRoutesById {
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/_authenticated/restaurante': typeof AuthenticatedRestauranteRouteWithChildren
   '/_authenticated/rh': typeof AuthenticatedRhRouteWithChildren
+  '/convite/$token': typeof ConviteTokenRoute
   '/_authenticated/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/_authenticated/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
   '/_authenticated/equipe/dashboard': typeof AuthenticatedEquipeDashboardRoute
@@ -435,6 +444,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/restaurante'
     | '/rh'
+    | '/convite/$token'
     | '/configuracoes/empresa'
     | '/configuracoes/filiais'
     | '/equipe/dashboard'
@@ -478,6 +488,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/restaurante'
     | '/rh'
+    | '/convite/$token'
     | '/configuracoes/empresa'
     | '/configuracoes/filiais'
     | '/equipe/dashboard'
@@ -522,6 +533,7 @@ export interface FileRouteTypes {
     | '/_authenticated/onboarding'
     | '/_authenticated/restaurante'
     | '/_authenticated/rh'
+    | '/convite/$token'
     | '/_authenticated/configuracoes/empresa'
     | '/_authenticated/configuracoes/filiais'
     | '/_authenticated/equipe/dashboard'
@@ -559,6 +571,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   LoginRoute: typeof LoginRoute
+  ConviteTokenRoute: typeof ConviteTokenRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -582,6 +595,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/convite/$token': {
+      id: '/convite/$token'
+      path: '/convite/$token'
+      fullPath: '/convite/$token'
+      preLoaderRoute: typeof ConviteTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/rh': {
@@ -1009,6 +1029,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   LoginRoute: LoginRoute,
+  ConviteTokenRoute: ConviteTokenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
