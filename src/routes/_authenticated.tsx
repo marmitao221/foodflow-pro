@@ -69,7 +69,7 @@ function AuthenticatedLayout() {
                 <ThemeToggle />
               </div>
             </header>
-            <main className="flex-1">
+            <main key={pathname} className="flex-1 animate-module-in">
               <PermissionGate path={pathname}>
                 <Outlet />
               </PermissionGate>
