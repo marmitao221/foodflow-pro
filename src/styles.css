@@ -6,15 +6,20 @@
 
 /*
  * CozinhaPro — Design System
- * Paleta: verde profundo (confiança/food-service) + laranja queimado (energia)
+ * Identidade minimalista "Branco Nuvem": brancos frios, cinzas azulados
+ * e um único acento azul usado com parcimônia.
+ * Tipografia: Instrument Serif (títulos) + Work Sans (corpo).
  * Tokens semânticos em oklch. Nunca usar cores literais em componentes.
  */
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+  --font-sans: "Work Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Instrument Serif", ui-serif, Georgia, serif;
+  --radius-sm: calc(var(--radius) - 3px);
+  --radius-md: calc(var(--radius) - 1px);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 3px);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
