@@ -191,9 +191,9 @@ function QuickAccess() {
     <section>
       <h2 className="font-display text-lg tracking-tight">Acesso rápido</h2>
       <div className="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
-        {items.map((item) => (
+        {items.map((item, i) => (
+          <Reveal key={item.to} delay={i * 45}>
           <Link
-            key={item.to}
             to={item.to}
             className="group flex flex-col items-center gap-2 text-center"
           >
