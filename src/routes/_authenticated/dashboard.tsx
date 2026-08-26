@@ -172,7 +172,13 @@ function HeroCard({ data }: { data: DashboardData }) {
 
 /* ----------------------------------------------------------- acesso rápido */
 
-const SHORTCUTS: { label: string; to: string; icon: typeof Wallet; perm?: Permission }[] = [
+const SHORTCUTS: {
+  label: string;
+  to: string;
+  icon: typeof Wallet;
+  perm?: Permission;
+  hideForAdmin?: boolean;
+}[] = [
   { label: "Comandas", to: "/restaurante/comandas", icon: ScrollText, perm: "restaurante" },
   { label: "Caixa", to: "/restaurante/caixa", icon: Wallet, perm: "caixa" },
   { label: "Estoque", to: "/estoque/dashboard", icon: Boxes, perm: "estoque" },
