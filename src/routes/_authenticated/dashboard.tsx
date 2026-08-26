@@ -34,6 +34,7 @@ import { getDashboardData, type DashboardData } from "@/lib/dashboard";
 import { useMembership, type Permission } from "@/lib/permissions";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Reveal } from "@/components/Reveal";
 import {
   Select,
   SelectContent,
