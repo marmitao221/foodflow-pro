@@ -1,85 +1,31 @@
-# Módulo Restaurante (PDV) — Plano de Implementação
+# Convites por link para a equipe
 
-Módulo grande e integrado. Será entregue em **3 fases** para garantir qualidade. Cada fase é funcional sozinha.
+Criar links de convite: o administrador gera um link, envia para a pessoa, e ela só preenche **nome, e-mail e senha**. Ao concluir, já entra na empresa como **funcionário**, na filial e com as permissões que o administrador definiu no convite.
 
----
+## Como vai funcionar
 
-## FASE 1 — Cadastros base (Produtos + Mesas)
+1. Em **Equipe > Funcionários** aparece um botão "Convidar por link".
+2. No diálogo o admin escolhe: filial, permissões (Rotina, Checklists, Produção, Estoque, Restaurante, Caixa, Relatórios), validade (7 dias por padrão) e, opcionalmente, o nome/e-mail esperado.
+3. O sistema gera um link único (ex.: `/convite/<código>`) com botão de copiar.
+4. Quem abre o link vê o nome da empresa e um formulário simples: nome, e-mail, senha, confirmar senha. Sem confirmação de e-mail.
+5. Ao enviar: cria a conta, cria o vínculo como funcionário com exatamente as permissões do convite, cria o cadastro do funcionário na empresa, marca o convite como usado e já entra logado na área permitida.
+6. Uma lista mostra os convites pendentes/usados/expirados, com opção de revogar e copiar link novamente.
 
-### Banco (migration)
-- Enum `product_category`: refeicao, marmita, bebida, sobremesa, lanche, porcao, adicional
-- Enum `table_status`: livre, ocupada, reservada, fechamento_pendente
-- Tabela `products` (company_id, name, category, sku, description, price, cost, unit, stock, min_stock, image_url, is_active)
-- Tabela `restaurant_tables` (company_id, branch_id, number, name, capacity, status)
-- Bucket de storage `product-images` (público)
-- RLS via `private.is_company_member` + GRANTs
+## Regras de segurança
 
-### Frontend
-- `src/routes/_authenticated/restaurante.tsx` — layout com abas
-- `restaurante.produtos.tsx` — CRUD com filtros por categoria, busca, upload de imagem
-- `restaurante.mesas.tsx` — grid visual do salão, abrir/fechar/reservar
-- Item "Restaurante" no AppSidebar com ícone `UtensilsCrossed`
-
----
-
-## FASE 2 — Operação (Comandas + Caixa)
-
-### Banco
-- Enum `order_type`: mesa, balcao, delivery, retirada
-- Enum `order_status`: aberta, fechada, cancelada
-- Enum `payment_method`: dinheiro, pix, debito, credito
-- Enum `cash_movement_type`: sangria, suprimento, retirada, ajuste
-- Tabela `orders` (comandas: number, type, table_id, customer_name, waiter, subtotal, service_fee, discount, total, status)
-- Tabela `order_items` (order_id, product_id, quantity, unit_price, notes)
-- Tabela `cash_sessions` (operator_id, opened_at, closed_at, opening_balance, closing_*, status)
-- Tabela `cash_movements` (session_id, type, amount, reason)
-- Tabela `order_payments` (order_id, session_id, method, amount)
-- Trigger para gerar número sequencial de comanda por empresa
-- Trigger para baixa automática de estoque ao fechar comanda
-- RLS + GRANTs
-
-### Frontend
-- `restaurante.comandas.tsx` — lista de comandas abertas + dialog de comanda (adicionar/remover itens, fechar com pagamento misto)
-- `restaurante.caixa.tsx` — abertura, movimentações, fechamento detalhado por forma de pgto
-- Regra: apenas 1 caixa aberto por operador por filial
-
----
-
-## FASE 3 — Integrações + Dashboard + Relatórios
-
-### Integração Financeiro
-- Ao fechar caixa: server function cria automaticamente `financial_transaction` (tipo receita, status recebido, categoria "Receita Operacional - Restaurante" criada se não existir), descrição "Fechamento de Caixa Restaurante DD/MM/YYYY"
-- Valor = soma de `order_payments` da sessão
-
-### Integração Estoque
-- Trigger no banco: ao inserir `order_items` com status comanda=fechada, decrementa `products.stock`
-- Alerta visual quando `stock <= min_stock` nas telas de produtos e dashboard
-
-### Dashboard
-- `restaurante.dashboard.tsx`: mesas livres/ocupadas, comandas abertas, vendas do dia, ticket médio, top produtos, vendas por forma de pgto, status do caixa
-
-### Relatórios
-- `restaurante.relatorios.tsx`: filtros por período, exportação PDF/Excel (reusa helpers de `src/lib/financeiro.ts`)
-- Vendas por período / produto / categoria / mesa / garçom; histórico de caixa
-
-### Multi-filial
-- Todas as tabelas operacionais (mesas, comandas, caixa) com `branch_id` obrigatório
-- Filtro pelo `useCompany().activeBranchId` em todas as telas
-
----
+- Convite é de uso único, expira na data definida e pode ser revogado.
+- O perfil criado é sempre **funcionário** (nunca administrador) e limitado à filial do convite.
+- As permissões vêm apenas do convite gravado no banco — nada é enviado pelo navegador de quem se cadastra.
+- A página do convite mostra somente o nome da empresa; nenhum outro dado da empresa é exposto.
+- Convite inválido/expirado/já usado mostra mensagem clara e não cria nada.
 
 ## Detalhes técnicos
 
-- Stack: TanStack Start + Supabase (Lovable Cloud), React Query, shadcn/ui
-- Padrão: RLS por `private.is_company_member(auth.uid(), company_id)`
-- Tokens de design existentes (verde/laranja em `src/styles.css`) — sem cores literais
-- pt-BR em toda a UI
-- Sequencial de comanda: função `nextval` por empresa via tabela auxiliar `order_counters(company_id, last_number)`
-
----
-
-## Confirmação
-
-Devido ao tamanho, vou começar pela **Fase 1 agora** (Produtos + Mesas + storage bucket + sidebar). Após validação, sigo para Fase 2 (Comandas + Caixa) e depois Fase 3 (Integrações + Dashboard + Relatórios).
-
-Posso prosseguir?
+- Migração: tabela `team_invites` (`company_id`, `branch_id`, `token`, `permissions[]`, `expires_at`, `created_by`, `accepted_at`, `accepted_user_id`, `revoked_at`, `full_name`, `email`) com GRANTs e RLS: apenas admins da empresa (via helper `private.is_admin_of`) leem/criam/revogam; sem acesso anônimo.
+- `src/lib/convites.functions.ts` (createServerFn):
+  - `createTeamInvite` — protegido, valida se quem chama é admin da empresa e grava o convite.
+  - `listTeamInvites` / `revokeTeamInvite` — protegidos, admin da empresa.
+  - `getInviteInfo` — público, recebe o token e devolve só `{ companyName, valid, reason }`.
+  - `acceptInvite` — público, cria o usuário via admin API (e-mail confirmado), grava `memberships` (role `operator` + permissões do convite + `branch_id`), cria/vincula `employees`, marca o convite como aceito. Rejeita token inválido, expirado, revogado ou já usado.
+- Rota pública `src/routes/convite.$token.tsx` (fora de `_authenticated`) com formulário e login automático após o cadastro, redirecionando para a primeira área permitida (`homeFor`).
+- UI de gestão no diálogo de `equipe.funcionarios.tsx`, reaproveitando `PERMISSIONS` e o seletor de filiais existente.
