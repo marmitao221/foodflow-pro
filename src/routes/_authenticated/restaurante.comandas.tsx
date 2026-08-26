@@ -689,6 +689,9 @@ function OrderDialog({
             qc.invalidateQueries({ queryKey: ["restaurant_tables"] });
             qc.invalidateQueries({ queryKey: ["cash_session"] });
             qc.invalidateQueries({ queryKey: ["order_payments"] });
+            qc.invalidateQueries({ queryKey: ["customers"] });
+            qc.invalidateQueries({ queryKey: ["customer"] });
+            qc.invalidateQueries({ queryKey: ["customer_transactions"] });
             toast.success(`Comanda #${order.number} fechada`);
             onClose();
           }}
