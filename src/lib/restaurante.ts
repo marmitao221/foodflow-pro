@@ -122,3 +122,22 @@ export function useMyCompanyId() {
     },
   });
 }
+
+export type Customer = {
+  id: string;
+  company_id: string;
+  branch_id: string | null;
+  name: string;
+  phone: string | null;
+  balance: number;
+  is_active: boolean;
+  created_at: string;
+};
+
+export type CustomerTxType = "credito" | "consumo" | "ajuste";
+
+export const customerTxLabel: Record<CustomerTxType, string> = {
+  credito: "Crédito",
+  consumo: "Consumo",
+  ajuste: "Ajuste",
+};
