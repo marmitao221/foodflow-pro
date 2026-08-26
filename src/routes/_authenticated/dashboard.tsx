@@ -479,6 +479,7 @@ function Dashboard() {
                     </div>
                   </CardContent>
                 </Card>
+                </Reveal>
               )}
             </>
           )}
