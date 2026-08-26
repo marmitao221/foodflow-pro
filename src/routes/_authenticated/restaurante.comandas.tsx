@@ -265,15 +265,18 @@ function NewOrderDialog({
   open,
   onOpenChange,
   tables,
+  customers,
   onCreate,
   pending,
 }: {
   open: boolean;
   onOpenChange: (o: boolean) => void;
   tables: RestaurantTable[];
+  customers: Customer[];
   onCreate: (p: {
     type: OrderType;
     table_id: string | null;
+    customer_id: string | null;
     customer_name: string;
     waiter_name: string;
     notes: string;
@@ -282,9 +285,12 @@ function NewOrderDialog({
 }) {
   const [type, setType] = useState<OrderType>("mesa");
   const [tableId, setTableId] = useState<string>("");
+  const [customerId, setCustomerId] = useState<string>("");
   const [customer, setCustomer] = useState("");
   const [waiter, setWaiter] = useState("");
   const [notes, setNotes] = useState("");
+  const selected = customers.find((c) => c.id === customerId);
+
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
