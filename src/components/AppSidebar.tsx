@@ -34,7 +34,14 @@ import { Logo } from "@/components/Logo";
 import { useAuth } from "@/lib/auth-context";
 import { requiredFor, useMembership } from "@/lib/permissions";
 
-type NavItem = { title: string; url: string; icon: typeof LayoutDashboard; disabled?: boolean };
+type NavItem = {
+  title: string;
+  url: string;
+  icon: typeof LayoutDashboard;
+  disabled?: boolean;
+  /** Oculto para administradores (segue disponível dentro de Equipe). */
+  hideForAdmin?: boolean;
+};
 
 const operacao: NavItem[] = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
@@ -42,7 +49,7 @@ const operacao: NavItem[] = [
   { title: "Estoque", url: "/estoque/dashboard", icon: Package },
   { title: "Produção", url: "/producao", icon: ChefHat, disabled: true },
   { title: "Fichas Técnicas", url: "/fichas", icon: ClipboardList },
-  { title: "Minha Rotina", url: "/equipe/rotina", icon: ClipboardCheck },
+  { title: "Minha Rotina", url: "/equipe/rotina", icon: ClipboardCheck, hideForAdmin: true },
   { title: "Equipe", url: "/equipe/dashboard", icon: ClipboardCheck },
   { title: "RH", url: "/rh/dashboard", icon: Users },
 ];
@@ -68,6 +75,7 @@ export function AppSidebar() {
   const { isAdmin, can, loading: loadingPerms } = useMembership();
 
   const allowed = (item: NavItem) => {
+    if (item.hideForAdmin && isAdmin) return false;
     const required = requiredFor(item.url);
     if (!required) return true;
     if (isAdmin) return true;

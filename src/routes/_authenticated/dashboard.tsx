@@ -172,20 +172,28 @@ function HeroCard({ data }: { data: DashboardData }) {
 
 /* ----------------------------------------------------------- acesso rápido */
 
-const SHORTCUTS: { label: string; to: string; icon: typeof Wallet; perm?: Permission }[] = [
+const SHORTCUTS: {
+  label: string;
+  to: string;
+  icon: typeof Wallet;
+  perm?: Permission;
+  hideForAdmin?: boolean;
+}[] = [
   { label: "Comandas", to: "/restaurante/comandas", icon: ScrollText, perm: "restaurante" },
   { label: "Caixa", to: "/restaurante/caixa", icon: Wallet, perm: "caixa" },
   { label: "Estoque", to: "/estoque/dashboard", icon: Boxes, perm: "estoque" },
   { label: "Fichas técnicas", to: "/fichas", icon: FileSpreadsheet, perm: "producao" },
   { label: "Financeiro", to: "/financeiro/fluxo", icon: Landmark, perm: "relatorios" },
   { label: "Equipe", to: "/equipe/dashboard", icon: Users, perm: "checklists" },
-  { label: "Minha rotina", to: "/equipe/rotina", icon: ClipboardList, perm: "rotina" },
+  { label: "Minha rotina", to: "/equipe/rotina", icon: ClipboardList, perm: "rotina", hideForAdmin: true },
 ];
 
 function QuickAccess() {
-  const { can, loading } = useMembership();
+  const { can, isAdmin, loading } = useMembership();
   if (loading) return null;
-  const items = SHORTCUTS.filter((s) => !s.perm || can(s.perm));
+  const items = SHORTCUTS.filter(
+    (s) => !(s.hideForAdmin && isAdmin) && (!s.perm || can(s.perm)),
+  );
   if (items.length === 0) return null;
 
   return (
