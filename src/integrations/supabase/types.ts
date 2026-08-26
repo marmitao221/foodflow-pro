@@ -1136,6 +1136,526 @@ export type Database = {
           },
         ]
       }
+      production_consumptions: {
+        Row: {
+          branch_id: string | null
+          company_id: string
+          created_at: string
+          id: string
+          is_packaging: boolean
+          item_id: string | null
+          item_name: string
+          quantity: number
+          run_id: string
+          total_cost: number
+          unit: string
+          unit_cost: number
+        }
+        Insert: {
+          branch_id?: string | null
+          company_id: string
+          created_at?: string
+          id?: string
+          is_packaging?: boolean
+          item_id?: string | null
+          item_name: string
+          quantity?: number
+          run_id: string
+          total_cost?: number
+          unit?: string
+          unit_cost?: number
+        }
+        Update: {
+          branch_id?: string | null
+          company_id?: string
+          created_at?: string
+          id?: string
+          is_packaging?: boolean
+          item_id?: string | null
+          item_name?: string
+          quantity?: number
+          run_id?: string
+          total_cost?: number
+          unit?: string
+          unit_cost?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "production_consumptions_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "production_consumptions_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "production_consumptions_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "stock_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "production_consumptions_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "production_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      production_contracts: {
+        Row: {
+          branch_id: string | null
+          company_id: string
+          contact_name: string | null
+          created_at: string
+          id: string
+          is_active: boolean
+          meals_per_day: number
+          name: string
+          notes: string | null
+          phone: string | null
+          price_per_meal: number
+          updated_at: string
+        }
+        Insert: {
+          branch_id?: string | null
+          company_id: string
+          contact_name?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          meals_per_day?: number
+          name: string
+          notes?: string | null
+          phone?: string | null
+          price_per_meal?: number
+          updated_at?: string
+        }
+        Update: {
+          branch_id?: string | null
+          company_id?: string
+          contact_name?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          meals_per_day?: number
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          price_per_meal?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "production_contracts_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "production_contracts_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      production_plan_contracts: {
+        Row: {
+          contract_id: string
+          created_at: string
+          id: string
+          meals: number
+          plan_id: string
+        }
+        Insert: {
+          contract_id: string
+          created_at?: string
+          id?: string
+          meals?: number
+          plan_id: string
+        }
+        Update: {
+          contract_id?: string
+          created_at?: string
+          id?: string
+          meals?: number
+          plan_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "production_plan_contracts_contract_id_fkey"
+            columns: ["contract_id"]
+            isOneToOne: false
+            referencedRelation: "production_contracts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "production_plan_contracts_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "production_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      production_plan_recipes: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          plan_id: string
+          planned_qty: number
+          recipe_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          plan_id: string
+          planned_qty?: number
+          recipe_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          plan_id?: string
+          planned_qty?: number
+          recipe_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "production_plan_recipes_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "production_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "production_plan_recipes_recipe_id_fkey"
+            columns: ["recipe_id"]
+            isOneToOne: false
+            referencedRelation: "recipes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      production_plans: {
+        Row: {
+          branch_id: string | null
+          company_id: string
+          created_at: string
+          id: string
+          menu_name: string
+          notes: string | null
+          plan_date: string
+          planned_meals: number
+          shift: Database["public"]["Enums"]["production_shift"]
+          shift_label: string | null
+          updated_at: string
+        }
+        Insert: {
+          branch_id?: string | null
+          company_id: string
+          created_at?: string
+          id?: string
+          menu_name?: string
+          notes?: string | null
+          plan_date: string
+          planned_meals?: number
+          shift?: Database["public"]["Enums"]["production_shift"]
+          shift_label?: string | null
+          updated_at?: string
+        }
+        Update: {
+          branch_id?: string | null
+          company_id?: string
+          created_at?: string
+          id?: string
+          menu_name?: string
+          notes?: string | null
+          plan_date?: string
+          planned_meals?: number
+          shift?: Database["public"]["Enums"]["production_shift"]
+          shift_label?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "production_plans_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "production_plans_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      production_run_recipes: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          planned_qty: number
+          produced_qty: number
+          recipe_id: string | null
+          run_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          planned_qty?: number
+          produced_qty?: number
+          recipe_id?: string | null
+          run_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          planned_qty?: number
+          produced_qty?: number
+          recipe_id?: string | null
+          run_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "production_run_recipes_recipe_id_fkey"
+            columns: ["recipe_id"]
+            isOneToOne: false
+            referencedRelation: "recipes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "production_run_recipes_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "production_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      production_runs: {
+        Row: {
+          branch_id: string | null
+          company_id: string
+          consumption_value: number
+          created_at: string
+          finished_at: string | null
+          id: string
+          leftover_clean: number
+          menu_name: string
+          notes: string | null
+          plan_id: string | null
+          planned_meals: number
+          produced_meals: number
+          responsible_employee_id: string | null
+          responsible_name: string | null
+          run_date: string
+          served_meals: number
+          shift: Database["public"]["Enums"]["production_shift"]
+          shift_label: string | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["production_status"]
+          stock_applied: boolean
+          updated_at: string
+          waste_qty: number
+        }
+        Insert: {
+          branch_id?: string | null
+          company_id: string
+          consumption_value?: number
+          created_at?: string
+          finished_at?: string | null
+          id?: string
+          leftover_clean?: number
+          menu_name?: string
+          notes?: string | null
+          plan_id?: string | null
+          planned_meals?: number
+          produced_meals?: number
+          responsible_employee_id?: string | null
+          responsible_name?: string | null
+          run_date?: string
+          served_meals?: number
+          shift?: Database["public"]["Enums"]["production_shift"]
+          shift_label?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["production_status"]
+          stock_applied?: boolean
+          updated_at?: string
+          waste_qty?: number
+        }
+        Update: {
+          branch_id?: string | null
+          company_id?: string
+          consumption_value?: number
+          created_at?: string
+          finished_at?: string | null
+          id?: string
+          leftover_clean?: number
+          menu_name?: string
+          notes?: string | null
+          plan_id?: string | null
+          planned_meals?: number
+          produced_meals?: number
+          responsible_employee_id?: string | null
+          responsible_name?: string | null
+          run_date?: string
+          served_meals?: number
+          shift?: Database["public"]["Enums"]["production_shift"]
+          shift_label?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["production_status"]
+          stock_applied?: boolean
+          updated_at?: string
+          waste_qty?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "production_runs_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "production_runs_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "production_runs_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "production_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "production_runs_responsible_employee_id_fkey"
+            columns: ["responsible_employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      production_waste: {
+        Row: {
+          branch_id: string | null
+          company_id: string
+          created_at: string
+          estimated_cost: number
+          id: string
+          item_id: string | null
+          kind: Database["public"]["Enums"]["waste_kind"]
+          notes: string | null
+          product_name: string
+          quantity: number
+          reason: string | null
+          recipe_id: string | null
+          run_id: string | null
+          shift: Database["public"]["Enums"]["production_shift"]
+          unit: string
+          updated_at: string
+          waste_date: string
+        }
+        Insert: {
+          branch_id?: string | null
+          company_id: string
+          created_at?: string
+          estimated_cost?: number
+          id?: string
+          item_id?: string | null
+          kind?: Database["public"]["Enums"]["waste_kind"]
+          notes?: string | null
+          product_name: string
+          quantity?: number
+          reason?: string | null
+          recipe_id?: string | null
+          run_id?: string | null
+          shift?: Database["public"]["Enums"]["production_shift"]
+          unit?: string
+          updated_at?: string
+          waste_date?: string
+        }
+        Update: {
+          branch_id?: string | null
+          company_id?: string
+          created_at?: string
+          estimated_cost?: number
+          id?: string
+          item_id?: string | null
+          kind?: Database["public"]["Enums"]["waste_kind"]
+          notes?: string | null
+          product_name?: string
+          quantity?: number
+          reason?: string | null
+          recipe_id?: string | null
+          run_id?: string | null
+          shift?: Database["public"]["Enums"]["production_shift"]
+          unit?: string
+          updated_at?: string
+          waste_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "production_waste_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "production_waste_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "production_waste_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "stock_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "production_waste_recipe_id_fkey"
+            columns: ["recipe_id"]
+            isOneToOne: false
+            referencedRelation: "recipes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "production_waste_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "production_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           branch_id: string | null
@@ -2153,6 +2673,23 @@ export type Database = {
         Returns: boolean
       }
       next_order_number: { Args: { _company_id: string }; Returns: number }
+      production_run_requirements: {
+        Args: { _run_id: string }
+        Returns: {
+          available_qty: number
+          item_id: string
+          item_name: string
+          required_qty: number
+          shortage: number
+          total_cost: number
+          unit: string
+          unit_cost: number
+        }[]
+      }
+      start_production_run: {
+        Args: { _extra?: Json; _run_id: string }
+        Returns: Json
+      }
     }
     Enums: {
       app_role: "owner" | "admin" | "manager" | "operator" | "finance"
@@ -2181,6 +2718,18 @@ export type Database = {
         | "lanche"
         | "porcao"
         | "adicional"
+      production_shift:
+        | "cafe"
+        | "almoco"
+        | "jantar"
+        | "ceia"
+        | "madrugada"
+        | "personalizado"
+      production_status:
+        | "planejada"
+        | "em_andamento"
+        | "finalizada"
+        | "cancelada"
       schedule_type: "12x36" | "6x1" | "5x2" | "4x2" | "custom"
       stock_movement_type: "entrada" | "saida" | "ajuste"
       table_status: "livre" | "ocupada" | "reservada" | "fechamento_pendente"
@@ -2198,6 +2747,7 @@ export type Database = {
         | "personalizada"
       task_priority: "baixa" | "media" | "alta" | "urgente"
       task_status: "pendente" | "em_andamento" | "concluida" | "nao_realizada"
+      waste_kind: "sobra_limpa" | "sobra_descartada"
       work_sector:
         | "cozinha"
         | "estoque"
@@ -2361,6 +2911,20 @@ export const Constants = {
         "porcao",
         "adicional",
       ],
+      production_shift: [
+        "cafe",
+        "almoco",
+        "jantar",
+        "ceia",
+        "madrugada",
+        "personalizado",
+      ],
+      production_status: [
+        "planejada",
+        "em_andamento",
+        "finalizada",
+        "cancelada",
+      ],
       schedule_type: ["12x36", "6x1", "5x2", "4x2", "custom"],
       stock_movement_type: ["entrada", "saida", "ajuste"],
       table_status: ["livre", "ocupada", "reservada", "fechamento_pendente"],
@@ -2380,6 +2944,7 @@ export const Constants = {
       ],
       task_priority: ["baixa", "media", "alta", "urgente"],
       task_status: ["pendente", "em_andamento", "concluida", "nao_realizada"],
+      waste_kind: ["sobra_limpa", "sobra_descartada"],
       work_sector: [
         "cozinha",
         "estoque",

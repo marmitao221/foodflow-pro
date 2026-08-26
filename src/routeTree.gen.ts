@@ -15,6 +15,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ConviteTokenRouteImport } from './routes/convite.$token'
 import { Route as AuthenticatedRhRouteImport } from './routes/_authenticated/rh'
 import { Route as AuthenticatedRestauranteRouteImport } from './routes/_authenticated/restaurante'
+import { Route as AuthenticatedProducaoRouteImport } from './routes/_authenticated/producao'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedFinanceiroRouteImport } from './routes/_authenticated/financeiro'
 import { Route as AuthenticatedFichasRouteImport } from './routes/_authenticated/fichas'
@@ -32,6 +33,11 @@ import { Route as AuthenticatedRestauranteMesasRouteImport } from './routes/_aut
 import { Route as AuthenticatedRestauranteComandasRouteImport } from './routes/_authenticated/restaurante.comandas'
 import { Route as AuthenticatedRestauranteClientesRouteImport } from './routes/_authenticated/restaurante.clientes'
 import { Route as AuthenticatedRestauranteCaixaRouteImport } from './routes/_authenticated/restaurante.caixa'
+import { Route as AuthenticatedProducaoTurnosRouteImport } from './routes/_authenticated/producao.turnos'
+import { Route as AuthenticatedProducaoPlanejamentoRouteImport } from './routes/_authenticated/producao.planejamento'
+import { Route as AuthenticatedProducaoDesperdicioRouteImport } from './routes/_authenticated/producao.desperdicio'
+import { Route as AuthenticatedProducaoDashboardRouteImport } from './routes/_authenticated/producao.dashboard'
+import { Route as AuthenticatedProducaoContratosRouteImport } from './routes/_authenticated/producao.contratos'
 import { Route as AuthenticatedFinanceiroReceberRouteImport } from './routes/_authenticated/financeiro.receber'
 import { Route as AuthenticatedFinanceiroPagarRouteImport } from './routes/_authenticated/financeiro.pagar'
 import { Route as AuthenticatedFinanceiroFluxoRouteImport } from './routes/_authenticated/financeiro.fluxo'
@@ -84,6 +90,11 @@ const AuthenticatedRestauranteRoute =
     path: '/restaurante',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedProducaoRoute = AuthenticatedProducaoRouteImport.update({
+  id: '/producao',
+  path: '/producao',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
@@ -176,6 +187,36 @@ const AuthenticatedRestauranteCaixaRoute =
     id: '/caixa',
     path: '/caixa',
     getParentRoute: () => AuthenticatedRestauranteRoute,
+  } as any)
+const AuthenticatedProducaoTurnosRoute =
+  AuthenticatedProducaoTurnosRouteImport.update({
+    id: '/turnos',
+    path: '/turnos',
+    getParentRoute: () => AuthenticatedProducaoRoute,
+  } as any)
+const AuthenticatedProducaoPlanejamentoRoute =
+  AuthenticatedProducaoPlanejamentoRouteImport.update({
+    id: '/planejamento',
+    path: '/planejamento',
+    getParentRoute: () => AuthenticatedProducaoRoute,
+  } as any)
+const AuthenticatedProducaoDesperdicioRoute =
+  AuthenticatedProducaoDesperdicioRouteImport.update({
+    id: '/desperdicio',
+    path: '/desperdicio',
+    getParentRoute: () => AuthenticatedProducaoRoute,
+  } as any)
+const AuthenticatedProducaoDashboardRoute =
+  AuthenticatedProducaoDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => AuthenticatedProducaoRoute,
+  } as any)
+const AuthenticatedProducaoContratosRoute =
+  AuthenticatedProducaoContratosRouteImport.update({
+    id: '/contratos',
+    path: '/contratos',
+    getParentRoute: () => AuthenticatedProducaoRoute,
   } as any)
 const AuthenticatedFinanceiroReceberRoute =
   AuthenticatedFinanceiroReceberRouteImport.update({
@@ -313,6 +354,7 @@ export interface FileRoutesByFullPath {
   '/fichas': typeof AuthenticatedFichasRoute
   '/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/producao': typeof AuthenticatedProducaoRouteWithChildren
   '/restaurante': typeof AuthenticatedRestauranteRouteWithChildren
   '/rh': typeof AuthenticatedRhRouteWithChildren
   '/convite/$token': typeof ConviteTokenRoute
@@ -337,6 +379,11 @@ export interface FileRoutesByFullPath {
   '/financeiro/fluxo': typeof AuthenticatedFinanceiroFluxoRoute
   '/financeiro/pagar': typeof AuthenticatedFinanceiroPagarRoute
   '/financeiro/receber': typeof AuthenticatedFinanceiroReceberRoute
+  '/producao/contratos': typeof AuthenticatedProducaoContratosRoute
+  '/producao/dashboard': typeof AuthenticatedProducaoDashboardRoute
+  '/producao/desperdicio': typeof AuthenticatedProducaoDesperdicioRoute
+  '/producao/planejamento': typeof AuthenticatedProducaoPlanejamentoRoute
+  '/producao/turnos': typeof AuthenticatedProducaoTurnosRoute
   '/restaurante/caixa': typeof AuthenticatedRestauranteCaixaRoute
   '/restaurante/clientes': typeof AuthenticatedRestauranteClientesRoute
   '/restaurante/comandas': typeof AuthenticatedRestauranteComandasRoute
@@ -358,6 +405,7 @@ export interface FileRoutesByTo {
   '/fichas': typeof AuthenticatedFichasRoute
   '/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/producao': typeof AuthenticatedProducaoRouteWithChildren
   '/restaurante': typeof AuthenticatedRestauranteRouteWithChildren
   '/rh': typeof AuthenticatedRhRouteWithChildren
   '/convite/$token': typeof ConviteTokenRoute
@@ -382,6 +430,11 @@ export interface FileRoutesByTo {
   '/financeiro/fluxo': typeof AuthenticatedFinanceiroFluxoRoute
   '/financeiro/pagar': typeof AuthenticatedFinanceiroPagarRoute
   '/financeiro/receber': typeof AuthenticatedFinanceiroReceberRoute
+  '/producao/contratos': typeof AuthenticatedProducaoContratosRoute
+  '/producao/dashboard': typeof AuthenticatedProducaoDashboardRoute
+  '/producao/desperdicio': typeof AuthenticatedProducaoDesperdicioRoute
+  '/producao/planejamento': typeof AuthenticatedProducaoPlanejamentoRoute
+  '/producao/turnos': typeof AuthenticatedProducaoTurnosRoute
   '/restaurante/caixa': typeof AuthenticatedRestauranteCaixaRoute
   '/restaurante/clientes': typeof AuthenticatedRestauranteClientesRoute
   '/restaurante/comandas': typeof AuthenticatedRestauranteComandasRoute
@@ -405,6 +458,7 @@ export interface FileRoutesById {
   '/_authenticated/fichas': typeof AuthenticatedFichasRoute
   '/_authenticated/financeiro': typeof AuthenticatedFinanceiroRouteWithChildren
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/_authenticated/producao': typeof AuthenticatedProducaoRouteWithChildren
   '/_authenticated/restaurante': typeof AuthenticatedRestauranteRouteWithChildren
   '/_authenticated/rh': typeof AuthenticatedRhRouteWithChildren
   '/convite/$token': typeof ConviteTokenRoute
@@ -429,6 +483,11 @@ export interface FileRoutesById {
   '/_authenticated/financeiro/fluxo': typeof AuthenticatedFinanceiroFluxoRoute
   '/_authenticated/financeiro/pagar': typeof AuthenticatedFinanceiroPagarRoute
   '/_authenticated/financeiro/receber': typeof AuthenticatedFinanceiroReceberRoute
+  '/_authenticated/producao/contratos': typeof AuthenticatedProducaoContratosRoute
+  '/_authenticated/producao/dashboard': typeof AuthenticatedProducaoDashboardRoute
+  '/_authenticated/producao/desperdicio': typeof AuthenticatedProducaoDesperdicioRoute
+  '/_authenticated/producao/planejamento': typeof AuthenticatedProducaoPlanejamentoRoute
+  '/_authenticated/producao/turnos': typeof AuthenticatedProducaoTurnosRoute
   '/_authenticated/restaurante/caixa': typeof AuthenticatedRestauranteCaixaRoute
   '/_authenticated/restaurante/clientes': typeof AuthenticatedRestauranteClientesRoute
   '/_authenticated/restaurante/comandas': typeof AuthenticatedRestauranteComandasRoute
@@ -452,6 +511,7 @@ export interface FileRouteTypes {
     | '/fichas'
     | '/financeiro'
     | '/onboarding'
+    | '/producao'
     | '/restaurante'
     | '/rh'
     | '/convite/$token'
@@ -476,6 +536,11 @@ export interface FileRouteTypes {
     | '/financeiro/fluxo'
     | '/financeiro/pagar'
     | '/financeiro/receber'
+    | '/producao/contratos'
+    | '/producao/dashboard'
+    | '/producao/desperdicio'
+    | '/producao/planejamento'
+    | '/producao/turnos'
     | '/restaurante/caixa'
     | '/restaurante/clientes'
     | '/restaurante/comandas'
@@ -497,6 +562,7 @@ export interface FileRouteTypes {
     | '/fichas'
     | '/financeiro'
     | '/onboarding'
+    | '/producao'
     | '/restaurante'
     | '/rh'
     | '/convite/$token'
@@ -521,6 +587,11 @@ export interface FileRouteTypes {
     | '/financeiro/fluxo'
     | '/financeiro/pagar'
     | '/financeiro/receber'
+    | '/producao/contratos'
+    | '/producao/dashboard'
+    | '/producao/desperdicio'
+    | '/producao/planejamento'
+    | '/producao/turnos'
     | '/restaurante/caixa'
     | '/restaurante/clientes'
     | '/restaurante/comandas'
@@ -543,6 +614,7 @@ export interface FileRouteTypes {
     | '/_authenticated/fichas'
     | '/_authenticated/financeiro'
     | '/_authenticated/onboarding'
+    | '/_authenticated/producao'
     | '/_authenticated/restaurante'
     | '/_authenticated/rh'
     | '/convite/$token'
@@ -567,6 +639,11 @@ export interface FileRouteTypes {
     | '/_authenticated/financeiro/fluxo'
     | '/_authenticated/financeiro/pagar'
     | '/_authenticated/financeiro/receber'
+    | '/_authenticated/producao/contratos'
+    | '/_authenticated/producao/dashboard'
+    | '/_authenticated/producao/desperdicio'
+    | '/_authenticated/producao/planejamento'
+    | '/_authenticated/producao/turnos'
     | '/_authenticated/restaurante/caixa'
     | '/_authenticated/restaurante/clientes'
     | '/_authenticated/restaurante/comandas'
@@ -629,6 +706,13 @@ declare module '@tanstack/react-router' {
       path: '/restaurante'
       fullPath: '/restaurante'
       preLoaderRoute: typeof AuthenticatedRestauranteRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/producao': {
+      id: '/_authenticated/producao'
+      path: '/producao'
+      fullPath: '/producao'
+      preLoaderRoute: typeof AuthenticatedProducaoRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/onboarding': {
@@ -749,6 +833,41 @@ declare module '@tanstack/react-router' {
       fullPath: '/restaurante/caixa'
       preLoaderRoute: typeof AuthenticatedRestauranteCaixaRouteImport
       parentRoute: typeof AuthenticatedRestauranteRoute
+    }
+    '/_authenticated/producao/turnos': {
+      id: '/_authenticated/producao/turnos'
+      path: '/turnos'
+      fullPath: '/producao/turnos'
+      preLoaderRoute: typeof AuthenticatedProducaoTurnosRouteImport
+      parentRoute: typeof AuthenticatedProducaoRoute
+    }
+    '/_authenticated/producao/planejamento': {
+      id: '/_authenticated/producao/planejamento'
+      path: '/planejamento'
+      fullPath: '/producao/planejamento'
+      preLoaderRoute: typeof AuthenticatedProducaoPlanejamentoRouteImport
+      parentRoute: typeof AuthenticatedProducaoRoute
+    }
+    '/_authenticated/producao/desperdicio': {
+      id: '/_authenticated/producao/desperdicio'
+      path: '/desperdicio'
+      fullPath: '/producao/desperdicio'
+      preLoaderRoute: typeof AuthenticatedProducaoDesperdicioRouteImport
+      parentRoute: typeof AuthenticatedProducaoRoute
+    }
+    '/_authenticated/producao/dashboard': {
+      id: '/_authenticated/producao/dashboard'
+      path: '/dashboard'
+      fullPath: '/producao/dashboard'
+      preLoaderRoute: typeof AuthenticatedProducaoDashboardRouteImport
+      parentRoute: typeof AuthenticatedProducaoRoute
+    }
+    '/_authenticated/producao/contratos': {
+      id: '/_authenticated/producao/contratos'
+      path: '/contratos'
+      fullPath: '/producao/contratos'
+      preLoaderRoute: typeof AuthenticatedProducaoContratosRouteImport
+      parentRoute: typeof AuthenticatedProducaoRoute
     }
     '/_authenticated/financeiro/receber': {
       id: '/_authenticated/financeiro/receber'
@@ -969,6 +1088,28 @@ const AuthenticatedFinanceiroRouteWithChildren =
     AuthenticatedFinanceiroRouteChildren,
   )
 
+interface AuthenticatedProducaoRouteChildren {
+  AuthenticatedProducaoContratosRoute: typeof AuthenticatedProducaoContratosRoute
+  AuthenticatedProducaoDashboardRoute: typeof AuthenticatedProducaoDashboardRoute
+  AuthenticatedProducaoDesperdicioRoute: typeof AuthenticatedProducaoDesperdicioRoute
+  AuthenticatedProducaoPlanejamentoRoute: typeof AuthenticatedProducaoPlanejamentoRoute
+  AuthenticatedProducaoTurnosRoute: typeof AuthenticatedProducaoTurnosRoute
+}
+
+const AuthenticatedProducaoRouteChildren: AuthenticatedProducaoRouteChildren = {
+  AuthenticatedProducaoContratosRoute: AuthenticatedProducaoContratosRoute,
+  AuthenticatedProducaoDashboardRoute: AuthenticatedProducaoDashboardRoute,
+  AuthenticatedProducaoDesperdicioRoute: AuthenticatedProducaoDesperdicioRoute,
+  AuthenticatedProducaoPlanejamentoRoute:
+    AuthenticatedProducaoPlanejamentoRoute,
+  AuthenticatedProducaoTurnosRoute: AuthenticatedProducaoTurnosRoute,
+}
+
+const AuthenticatedProducaoRouteWithChildren =
+  AuthenticatedProducaoRoute._addFileChildren(
+    AuthenticatedProducaoRouteChildren,
+  )
+
 interface AuthenticatedRestauranteRouteChildren {
   AuthenticatedRestauranteCaixaRoute: typeof AuthenticatedRestauranteCaixaRoute
   AuthenticatedRestauranteClientesRoute: typeof AuthenticatedRestauranteClientesRoute
@@ -1023,6 +1164,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedFichasRoute: typeof AuthenticatedFichasRoute
   AuthenticatedFinanceiroRoute: typeof AuthenticatedFinanceiroRouteWithChildren
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
+  AuthenticatedProducaoRoute: typeof AuthenticatedProducaoRouteWithChildren
   AuthenticatedRestauranteRoute: typeof AuthenticatedRestauranteRouteWithChildren
   AuthenticatedRhRoute: typeof AuthenticatedRhRouteWithChildren
   AuthenticatedConfiguracoesEmpresaRoute: typeof AuthenticatedConfiguracoesEmpresaRoute
@@ -1036,6 +1178,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedFichasRoute: AuthenticatedFichasRoute,
   AuthenticatedFinanceiroRoute: AuthenticatedFinanceiroRouteWithChildren,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
+  AuthenticatedProducaoRoute: AuthenticatedProducaoRouteWithChildren,
   AuthenticatedRestauranteRoute: AuthenticatedRestauranteRouteWithChildren,
   AuthenticatedRhRoute: AuthenticatedRhRouteWithChildren,
   AuthenticatedConfiguracoesEmpresaRoute:
