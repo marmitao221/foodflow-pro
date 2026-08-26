@@ -451,6 +451,7 @@ function Dashboard() {
               </div>
 
               {data.estoqueCritico > 0 && (
+                <Reveal>
                 <Card className="shadow-none">
                   <CardHeader className="pb-2">
                     <CardTitle className="flex items-center gap-2 font-display text-base font-normal tracking-tight">
