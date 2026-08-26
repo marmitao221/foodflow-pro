@@ -11,6 +11,7 @@ import { useCompany } from "@/lib/company-context";
 import { SECTORS, sectorLabel, fmtTime } from "@/lib/equipe";
 import { PERMISSIONS, type Permission } from "@/lib/permissions";
 import { createEmployeeAccess } from "@/lib/usuarios.functions";
+import { createTeamInvite, listTeamInvites, revokeTeamInvite } from "@/lib/convites.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
