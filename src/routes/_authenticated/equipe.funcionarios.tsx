@@ -514,6 +514,127 @@ function EquipeFuncionarios() {
         </DialogContent>
       </Dialog>
 
+      <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>
+        <DialogContent className="max-w-xl">
+          <DialogHeader>
+            <DialogTitle>Convidar por link</DialogTitle>
+          </DialogHeader>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label>Filial</Label>
+              <Select value={invite.branch_id || "none"}
+                onValueChange={(v) => setInvite({ ...invite, branch_id: v === "none" ? "" : v })}>
+                <SelectTrigger><SelectValue placeholder="Todas as filiais" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Todas as filiais</SelectItem>
+                  {branches.map((b) => <SelectItem key={b.id} value={b.id}>{b.name}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Validade do link</Label>
+              <Select value={String(invite.days)}
+                onValueChange={(v) => setInvite({ ...invite, days: Number(v) })}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">1 dia</SelectItem>
+                  <SelectItem value="7">7 dias</SelectItem>
+                  <SelectItem value="15">15 dias</SelectItem>
+                  <SelectItem value="30">30 dias</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Nome (opcional)</Label>
+              <Input value={invite.full_name}
+                onChange={(e) => setInvite({ ...invite, full_name: e.target.value })} />
+            </div>
+            <div>
+              <Label>E-mail (opcional)</Label>
+              <Input type="email" value={invite.email}
+                onChange={(e) => setInvite({ ...invite, email: e.target.value })} />
+            </div>
+            <div className="col-span-2 space-y-2">
+              <Label>Módulos liberados para quem aceitar</Label>
+              <div className="grid grid-cols-2 gap-2">
+                {PERMISSIONS.map((p) => (
+                  <label key={p.value}
+                    className="flex cursor-pointer items-start gap-2 rounded-md border border-border p-2">
+                    <Checkbox checked={invite.permissions.includes(p.value)}
+                      onCheckedChange={() => toggleInvitePerm(p.value)} />
+                    <span className="text-sm">
+                      <span className="font-medium">{p.label}</span>
+                      <span className="block text-xs text-muted-foreground">{p.hint}</span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Quem aceitar o convite entra sempre com perfil de funcionário, apenas com estas áreas.
+              </p>
+            </div>
+            {lastLink && (
+              <div className="col-span-2 space-y-1.5 rounded-md border border-border bg-muted/40 p-3">
+                <Label>Link gerado</Label>
+                <div className="flex gap-2">
+                  <Input readOnly value={lastLink} onFocus={(e) => e.currentTarget.select()} />
+                  <Button variant="outline" size="icon"
+                    onClick={() => navigator.clipboard.writeText(lastLink).then(
+                      () => toast.success("Link copiado"),
+                      () => toast.error("Copie manualmente"),
+                    )}>
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {invites.length > 0 && (
+              <div className="col-span-2 space-y-2">
+                <Label>Convites recentes</Label>
+                <div className="max-h-52 space-y-2 overflow-y-auto">
+                  {invites.map((i) => {
+                    const status = inviteStatus(i);
+                    return (
+                      <div key={i.id}
+                        className="flex items-center justify-between gap-2 rounded-md border border-border p-2">
+                        <div className="min-w-0">
+                          <p className="truncate text-sm">
+                            {i.full_name || i.email || "Convite aberto"}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {status} • expira em {new Date(i.expires_at).toLocaleDateString("pt-BR")}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Badge variant="outline">{i.permissions.length} módulo(s)</Badge>
+                          {status === "Pendente" && (
+                            <>
+                              <Button size="icon" variant="ghost" onClick={() => copyLink(i.token)}>
+                                <Copy className="h-4 w-4" />
+                              </Button>
+                              <Button size="icon" variant="ghost" onClick={() => revoke.mutate(i.id)}>
+                                <Ban className="h-4 w-4 text-destructive" />
+                              </Button>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setInviteOpen(false)}>Fechar</Button>
+            <Button onClick={() => generateInvite.mutate()} disabled={generateInvite.isPending}>
+              <Link2 className="mr-2 h-4 w-4" /> Gerar link
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       <AlertDialog open={!!toDelete} onOpenChange={(o) => !o && setToDelete(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
