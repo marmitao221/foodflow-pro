@@ -34,6 +34,7 @@ import { getDashboardData, type DashboardData } from "@/lib/dashboard";
 import { useMembership, type Permission } from "@/lib/permissions";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Reveal } from "@/components/Reveal";
 import {
   Select,
   SelectContent,
@@ -191,9 +192,9 @@ function QuickAccess() {
     <section>
       <h2 className="font-display text-lg tracking-tight">Acesso rápido</h2>
       <div className="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
-        {items.map((item) => (
+        {items.map((item, i) => (
+          <Reveal key={item.to} delay={i * 45}>
           <Link
-            key={item.to}
             to={item.to}
             className="group flex flex-col items-center gap-2 text-center"
           >
@@ -204,6 +205,7 @@ function QuickAccess() {
               {item.label}
             </span>
           </Link>
+          </Reveal>
         ))}
       </div>
     </section>
@@ -269,13 +271,15 @@ function ChartCard({
   children: React.ReactNode;
 }) {
   return (
-    <Card className="border-border shadow-none">
-      <CardHeader className="pb-2">
-        <CardTitle className="font-display text-base font-normal tracking-tight">{title}</CardTitle>
-        <CardDescription className="text-xs">{description}</CardDescription>
-      </CardHeader>
-      <CardContent className="h-52">{children}</CardContent>
-    </Card>
+    <Reveal>
+      <Card className="border-border shadow-none">
+        <CardHeader className="pb-2">
+          <CardTitle className="font-display text-base font-normal tracking-tight">{title}</CardTitle>
+          <CardDescription className="text-xs">{description}</CardDescription>
+        </CardHeader>
+        <CardContent className="h-52">{children}</CardContent>
+      </Card>
+    </Reveal>
   );
 }
 
@@ -366,7 +370,9 @@ function Dashboard() {
         <p className="text-sm text-muted-foreground">Nenhum dado disponível.</p>
       ) : (
         <>
-          <HeroCard data={data} />
+          <Reveal>
+            <HeroCard data={data} />
+          </Reveal>
           <QuickAccess />
 
           {!data.hasAnyData ? (
@@ -380,8 +386,10 @@ function Dashboard() {
           ) : (
             <>
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {kpis.map((k) => (
-                  <Kpi key={k.label} {...k} />
+                {kpis.map((k, i) => (
+                  <Reveal key={k.label} delay={(i % 3) * 60}>
+                    <Kpi {...k} />
+                  </Reveal>
                 ))}
               </div>
 
@@ -443,6 +451,7 @@ function Dashboard() {
               </div>
 
               {data.estoqueCritico > 0 && (
+                <Reveal>
                 <Card className="shadow-none">
                   <CardHeader className="pb-2">
                     <CardTitle className="flex items-center gap-2 font-display text-base font-normal tracking-tight">
@@ -470,6 +479,7 @@ function Dashboard() {
                     </div>
                   </CardContent>
                 </Card>
+                </Reveal>
               )}
             </>
           )}
