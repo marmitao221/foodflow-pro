@@ -338,7 +338,39 @@ function NewOrderDialog({
             </div>
           )}
           <div className="col-span-2">
-            <Label>Cliente</Label>
+            <Label>Cliente cadastrado</Label>
+            <Select
+              value={customerId || "none"}
+              onValueChange={(v) => {
+                if (v === "none") {
+                  setCustomerId("");
+                  return;
+                }
+                setCustomerId(v);
+                const c = customers.find((x) => x.id === v);
+                if (c) setCustomer(c.name);
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Nenhum" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">— Nenhum —</SelectItem>
+                {customers.map((c) => (
+                  <SelectItem key={c.id} value={c.id}>
+                    {c.name} — saldo {formatBRL(Number(c.balance))}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {selected && (
+              <p className="mt-1 text-xs text-muted-foreground">
+                Saldo disponível: {formatBRL(Number(selected.balance))}
+              </p>
+            )}
+          </div>
+          <div className="col-span-2">
+            <Label>Nome do cliente (avulso)</Label>
             <Input value={customer} onChange={(e) => setCustomer(e.target.value)} />
           </div>
           <div className="col-span-2">
@@ -359,6 +391,7 @@ function NewOrderDialog({
               onCreate({
                 type,
                 table_id: type === "mesa" ? tableId || null : null,
+                customer_id: customerId || null,
                 customer_name: customer,
                 waiter_name: waiter,
                 notes,
