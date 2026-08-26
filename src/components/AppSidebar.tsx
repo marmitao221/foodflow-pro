@@ -95,10 +95,15 @@ export function AppSidebar() {
 
             return (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild isActive={active} tooltip={item.title}>
+                <SidebarMenuButton
+                  asChild
+                  isActive={active}
+                  tooltip={item.title}
+                  className="relative font-normal data-[active=true]:font-medium data-[active=true]:before:absolute data-[active=true]:before:left-0 data-[active=true]:before:top-1/2 data-[active=true]:before:h-4 data-[active=true]:before:w-[2px] data-[active=true]:before:-translate-y-1/2 data-[active=true]:before:rounded-full data-[active=true]:before:bg-sidebar-primary"
+                >
                   {item.disabled ? (
-                    <span className="flex items-center gap-2 opacity-50 cursor-not-allowed">
-                      <item.icon className="h-4 w-4" />
+                    <span className="flex items-center gap-2 opacity-45 cursor-not-allowed">
+                      <item.icon className="h-4 w-4" strokeWidth={1.5} />
                       {!collapsed && (
                         <span className="flex-1 flex items-center justify-between">
                           {item.title}
@@ -110,13 +115,14 @@ export function AppSidebar() {
                     </span>
                   ) : (
                     <Link to={item.url} className="flex items-center gap-2">
-                      <item.icon className="h-4 w-4" />
+                      <item.icon className="h-4 w-4" strokeWidth={1.5} />
                       {!collapsed && <span>{item.title}</span>}
                     </Link>
                   )}
                 </SidebarMenuButton>
               </SidebarMenuItem>
             );
+
           })}
         </SidebarMenu>
       </SidebarGroupContent>
