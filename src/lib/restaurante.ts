@@ -42,6 +42,7 @@ export const paymentMethodLabel: Record<PaymentMethod, string> = {
   ifood_online: "iFood Online",
   keeta_online: "Keeta Online",
   aiqfome_online: "Aiqfome Online",
+  conta_cliente: "Conta do cliente",
 };
 
 export const cashMovementLabel: Record<CashMovementType, string> = {
