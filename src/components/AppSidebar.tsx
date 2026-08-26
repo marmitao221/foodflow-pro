@@ -96,7 +96,7 @@ export function AppSidebar() {
             const active =
               prefix === "/equipe"
                 ? currentPath.startsWith(item.url)
-                : prefix === "/financeiro" || prefix === "/restaurante" || prefix === "/estoque" || prefix === "/rh" || prefix === "/configuracoes"
+                : prefix === "/financeiro" || prefix === "/restaurante" || prefix === "/estoque" || prefix === "/rh" || prefix === "/producao" || prefix === "/configuracoes"
                   ? currentPath.startsWith(prefix)
                   : currentPath === item.url;
 
