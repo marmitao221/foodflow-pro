@@ -368,7 +368,9 @@ function Dashboard() {
         <p className="text-sm text-muted-foreground">Nenhum dado disponível.</p>
       ) : (
         <>
-          <HeroCard data={data} />
+          <Reveal>
+            <HeroCard data={data} />
+          </Reveal>
           <QuickAccess />
 
           {!data.hasAnyData ? (
@@ -382,8 +384,10 @@ function Dashboard() {
           ) : (
             <>
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {kpis.map((k) => (
-                  <Kpi key={k.label} {...k} />
+                {kpis.map((k, i) => (
+                  <Reveal key={k.label} delay={(i % 3) * 60}>
+                    <Kpi {...k} />
+                  </Reveal>
                 ))}
               </div>
 
