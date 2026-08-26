@@ -22,7 +22,8 @@ export type PaymentMethod =
   | "credito"
   | "ifood_online"
   | "keeta_online"
-  | "aiqfome_online";
+  | "aiqfome_online"
+  | "conta_cliente";
 export type CashMovementType = "sangria" | "suprimento" | "retirada" | "ajuste";
 export type CashSessionStatus = "aberto" | "fechado";
 
