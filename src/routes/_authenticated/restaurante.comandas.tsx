@@ -668,6 +668,13 @@ function OrderDialog({
               <Trash2 className="h-4 w-4 mr-1" /> Cancelar comanda
             </Button>
             <Button
+              variant="outline"
+              onClick={() => order && printOrder(order, items)}
+              disabled={!order || !items.length}
+            >
+              <Printer className="h-4 w-4 mr-1" /> Imprimir comanda
+            </Button>
+            <Button
               onClick={() => setClosing(true)}
               disabled={!items.length || Number(order?.total ?? 0) <= 0}
             >
