@@ -883,13 +883,29 @@ function ClosePaymentDialog({
           </div>
         </div>
 
+        {customer && (
+          <div className="rounded-md border border-border p-3 text-sm">
+            <p className="text-xs text-muted-foreground">Conta de {customer.name}</p>
+            <p className="font-semibold">
+              Saldo atual: {formatBRL(balance)}
+              {onAccount > 0 && (
+                <span className="text-muted-foreground">
+                  {" "}
+                  → após: {formatBRL(balance - onAccount)}
+                </span>
+              )}
+            </p>
+          </div>
+        )}
+        {accountError && <p className="text-xs text-destructive">{accountError}</p>}
+
         <DialogFooter>
           <Button variant="outline" onClick={onCancel}>
             Voltar
           </Button>
           <Button
             onClick={() => close.mutate()}
-            disabled={close.isPending || diff > 0.001 || paid <= 0}
+            disabled={close.isPending || diff > 0.001 || paid <= 0 || !!accountError}
           >
             Confirmar fechamento
           </Button>
