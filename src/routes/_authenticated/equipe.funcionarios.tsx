@@ -306,9 +306,24 @@ function EquipeFuncionarios() {
           </Select>
           <p className="text-sm text-muted-foreground">{filtered.length} funcionário(s)</p>
         </div>
-        <Button onClick={() => { reset(); setOpen(true); }}>
-          <Plus className="mr-2 h-4 w-4" /> Novo funcionário
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => {
+            setLastLink(null);
+            setInvite({
+              branch_id: activeBranchId ?? "",
+              days: 7,
+              full_name: "",
+              email: "",
+              permissions: ["rotina"],
+            });
+            setInviteOpen(true);
+          }}>
+            <Link2 className="mr-2 h-4 w-4" /> Convidar por link
+          </Button>
+          <Button onClick={() => { reset(); setOpen(true); }}>
+            <Plus className="mr-2 h-4 w-4" /> Novo funcionário
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
