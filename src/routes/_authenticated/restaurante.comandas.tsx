@@ -120,10 +120,27 @@ function ComandasPage() {
     },
   });
 
+  const { data: customers = [] } = useQuery({
+    queryKey: ["customers", companyId, activeBranchId],
+    enabled: !!companyId,
+    queryFn: async () => {
+      let q = supabase
+        .from("customers")
+        .select("*")
+        .eq("company_id", companyId!)
+        .eq("is_active", true);
+      if (activeBranchId) q = q.eq("branch_id", activeBranchId);
+      const { data, error } = await q.order("name");
+      if (error) throw error;
+      return data as Customer[];
+    },
+  });
+
   const createOrder = useMutation({
     mutationFn: async (payload: {
       type: OrderType;
       table_id: string | null;
+      customer_id: string | null;
       customer_name: string;
       waiter_name: string;
       notes: string;
@@ -141,6 +158,7 @@ function ComandasPage() {
           number: numberData as number,
           type: payload.type,
           table_id: payload.table_id,
+          customer_id: payload.customer_id,
           customer_name: payload.customer_name || null,
           waiter_name: payload.waiter_name || null,
           notes: payload.notes || null,
@@ -177,10 +195,12 @@ function ComandasPage() {
           open={createOpen}
           onOpenChange={setCreateOpen}
           tables={tables}
+          customers={customers}
           onCreate={(p) => createOrder.mutate(p)}
           pending={createOrder.isPending}
         />
       </div>
+
 
       {isLoading ? (
         <p className="text-muted-foreground text-sm">Carregando...</p>
