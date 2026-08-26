@@ -1810,6 +1810,72 @@ export type Database = {
           },
         ]
       }
+      team_invites: {
+        Row: {
+          accepted_at: string | null
+          accepted_user_id: string | null
+          branch_id: string | null
+          company_id: string
+          created_at: string
+          created_by: string | null
+          email: string | null
+          expires_at: string
+          full_name: string | null
+          id: string
+          permissions: string[]
+          revoked_at: string | null
+          token: string
+          updated_at: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          accepted_user_id?: string | null
+          branch_id?: string | null
+          company_id: string
+          created_at?: string
+          created_by?: string | null
+          email?: string | null
+          expires_at?: string
+          full_name?: string | null
+          id?: string
+          permissions?: string[]
+          revoked_at?: string | null
+          token: string
+          updated_at?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          accepted_user_id?: string | null
+          branch_id?: string | null
+          company_id?: string
+          created_at?: string
+          created_by?: string | null
+          email?: string | null
+          expires_at?: string
+          full_name?: string | null
+          id?: string
+          permissions?: string[]
+          revoked_at?: string | null
+          token?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_invites_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_invites_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       time_entries: {
         Row: {
           bank_balance_hours: number
