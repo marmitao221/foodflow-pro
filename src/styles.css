@@ -231,3 +231,6 @@
     }
   }
 }
+
+/* Oculta badge do Lovable no preview */
+#lovable-badge { display: none !important; }
