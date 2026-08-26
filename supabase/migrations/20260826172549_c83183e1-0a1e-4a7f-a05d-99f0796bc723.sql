@@ -1,0 +1,35 @@
+DO $$
+DECLARE _ids uuid[] := ARRAY['107ad24a-44b0-4965-9938-3dfac4bb262b'::uuid,'ddea8c73-ed31-4ace-a588-f527bac2d393'::uuid];
+BEGIN
+  DELETE FROM public.order_payments WHERE company_id = ANY(_ids);
+  DELETE FROM public.order_items WHERE company_id = ANY(_ids);
+  DELETE FROM public.orders WHERE company_id = ANY(_ids);
+  DELETE FROM public.cash_movements WHERE company_id = ANY(_ids);
+  DELETE FROM public.cash_sessions WHERE company_id = ANY(_ids);
+  DELETE FROM public.order_counters WHERE company_id = ANY(_ids);
+  DELETE FROM public.restaurant_tables WHERE company_id = ANY(_ids);
+  DELETE FROM public.recipe_ingredients WHERE recipe_id IN (SELECT id FROM public.recipes WHERE company_id = ANY(_ids));
+  DELETE FROM public.recipes WHERE company_id = ANY(_ids);
+  DELETE FROM public.products WHERE company_id = ANY(_ids);
+  DELETE FROM public.stock_movements WHERE company_id = ANY(_ids);
+  DELETE FROM public.stock_items WHERE company_id = ANY(_ids);
+  DELETE FROM public.stock_categories WHERE company_id = ANY(_ids);
+  DELETE FROM public.suppliers WHERE company_id = ANY(_ids);
+  DELETE FROM public.benefit_payments WHERE company_id = ANY(_ids);
+  DELETE FROM public.employee_benefits WHERE company_id = ANY(_ids);
+  DELETE FROM public.benefit_types WHERE company_id = ANY(_ids);
+  DELETE FROM public.task_instances WHERE company_id = ANY(_ids);
+  DELETE FROM public.tasks WHERE company_id = ANY(_ids);
+  DELETE FROM public.checklist_template_items WHERE company_id = ANY(_ids);
+  DELETE FROM public.checklist_templates WHERE company_id = ANY(_ids);
+  DELETE FROM public.time_entries WHERE company_id = ANY(_ids);
+  DELETE FROM public.schedule_assignments WHERE company_id = ANY(_ids);
+  DELETE FROM public.work_schedules WHERE company_id = ANY(_ids);
+  DELETE FROM public.employees WHERE company_id = ANY(_ids);
+  DELETE FROM public.employee_roles WHERE company_id = ANY(_ids);
+  DELETE FROM public.financial_transactions WHERE company_id = ANY(_ids);
+  DELETE FROM public.financial_categories WHERE company_id = ANY(_ids);
+  DELETE FROM public.memberships WHERE company_id = ANY(_ids);
+  DELETE FROM public.branches WHERE company_id = ANY(_ids);
+  DELETE FROM public.companies WHERE id = ANY(_ids);
+END $$;
