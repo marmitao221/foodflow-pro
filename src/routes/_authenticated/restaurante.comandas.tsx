@@ -419,8 +419,39 @@ function OrderDialog({
   onClose: () => void;
 }) {
   const qc = useQueryClient();
+  const { activeBranchId } = useCompany();
   const [search, setSearch] = useState("");
   const [closing, setClosing] = useState(false);
+
+  const { data: receiptHeader } = useQuery({
+    queryKey: ["receipt-header", companyId, activeBranchId],
+    queryFn: async () => {
+      const { data: company } = await supabase
+        .from("companies")
+        .select("name, cnpj, phone, city, state")
+        .eq("id", companyId)
+        .maybeSingle();
+      let branch: { address: string | null; city: string | null; state: string | null } | null =
+        null;
+      if (activeBranchId) {
+        const { data } = await supabase
+          .from("branches")
+          .select("address, city, state")
+          .eq("id", activeBranchId)
+          .maybeSingle();
+        branch = data ?? null;
+      }
+      return {
+        name: company?.name ?? "",
+        cnpj: company?.cnpj ?? null,
+        phone: company?.phone ?? null,
+        address: branch?.address ?? null,
+        city: branch?.city ?? company?.city ?? null,
+        state: branch?.state ?? company?.state ?? null,
+      } satisfies ReceiptHeader;
+    },
+  });
+
 
   const { data: order, refetch: refetchOrder } = useQuery({
     queryKey: ["order", orderId],
