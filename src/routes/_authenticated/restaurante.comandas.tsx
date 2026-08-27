@@ -493,6 +493,21 @@ function OrderDialog({
     },
   });
 
+  const { data: tableName } = useQuery({
+    queryKey: ["order-table-name", order?.table_id],
+    enabled: !!order?.table_id,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("restaurant_tables")
+        .select("name")
+        .eq("id", order!.table_id!)
+        .maybeSingle();
+      return data?.name ?? null;
+    },
+  });
+
+
+
   const filteredProducts = useMemo(() => {
     const s = search.trim().toLowerCase();
     if (!s) return products.slice(0, 12);
