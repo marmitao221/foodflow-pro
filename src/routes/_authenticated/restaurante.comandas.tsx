@@ -419,8 +419,39 @@ function OrderDialog({
   onClose: () => void;
 }) {
   const qc = useQueryClient();
+  const { activeBranchId } = useCompany();
   const [search, setSearch] = useState("");
   const [closing, setClosing] = useState(false);
+
+  const { data: receiptHeader } = useQuery({
+    queryKey: ["receipt-header", companyId, activeBranchId],
+    queryFn: async () => {
+      const { data: company } = await supabase
+        .from("companies")
+        .select("name, cnpj, phone, city, state")
+        .eq("id", companyId)
+        .maybeSingle();
+      let branch: { address: string | null; city: string | null; state: string | null } | null =
+        null;
+      if (activeBranchId) {
+        const { data } = await supabase
+          .from("branches")
+          .select("address, city, state")
+          .eq("id", activeBranchId)
+          .maybeSingle();
+        branch = data ?? null;
+      }
+      return {
+        name: company?.name ?? "",
+        cnpj: company?.cnpj ?? null,
+        phone: company?.phone ?? null,
+        address: branch?.address ?? null,
+        city: branch?.city ?? company?.city ?? null,
+        state: branch?.state ?? company?.state ?? null,
+      } satisfies ReceiptHeader;
+    },
+  });
+
 
   const { data: order, refetch: refetchOrder } = useQuery({
     queryKey: ["order", orderId],
@@ -461,6 +492,21 @@ function OrderDialog({
       return data as Product[];
     },
   });
+
+  const { data: tableName } = useQuery({
+    queryKey: ["order-table-name", order?.table_id],
+    enabled: !!order?.table_id,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("restaurant_tables")
+        .select("name")
+        .eq("id", order!.table_id!)
+        .maybeSingle();
+      return data?.name ?? null;
+    },
+  });
+
+
 
   const filteredProducts = useMemo(() => {
     const s = search.trim().toLowerCase();
@@ -669,7 +715,11 @@ function OrderDialog({
             </Button>
             <Button
               variant="outline"
-              onClick={() => order && printOrder(order, items)}
+              onClick={() =>
+                order &&
+                printOrder(order, items, receiptHeader ?? null, tableName ?? null, operatorName)
+              }
+
               disabled={!order || !items.length}
             >
               <Printer className="h-4 w-4 mr-1" /> Imprimir comanda
@@ -925,55 +975,122 @@ function ClosePaymentDialog({
   );
 }
 
-function printOrder(order: Order, items: OrderItem[]) {
-  const esc = (s: string) =>
-    s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  const rows = items
-    .map(
-      (it) => `<tr>
-        <td>${esc(it.product_name)}</td>
-        <td class="c">${Number(it.quantity).toLocaleString("pt-BR", { maximumFractionDigits: 3 })}</td>
-        <td class="r">${formatBRL(Number(it.unit_price))}</td>
-        <td class="r">${formatBRL(Number(it.total))}</td>
-      </tr>`,
-    )
-    .join("");
+type ReceiptHeader = {
+  name: string;
+  cnpj: string | null;
+  phone: string | null;
+  address: string | null;
+  city: string | null;
+  state: string | null;
+};
+
+const W = 34;
+
+const money = (v: number) =>
+  Number(v).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+function wrap(text: string, width = W): string[] {
+  const words = text.split(/\s+/).filter(Boolean);
+  const lines: string[] = [];
+  let cur = "";
+  for (const w of words) {
+    if (!cur.length) cur = w;
+    else if (cur.length + 1 + w.length <= width) cur += ` ${w}`;
+    else {
+      lines.push(cur);
+      cur = w;
+    }
+  }
+  if (cur.length) lines.push(cur);
+  return lines.length ? lines : [""];
+}
+
+const center = (text: string) =>
+  wrap(text).map((l) => " ".repeat(Math.max(0, Math.floor((W - l.length) / 2))) + l);
+
+const pair = (label: string, value: string) => {
+  const gap = Math.max(1, W - label.length - value.length);
+  return label + " ".repeat(gap) + value;
+};
+
+function printOrder(
+  order: Order,
+  items: OrderItem[],
+  header: ReceiptHeader | null,
+  tableName: string | null,
+  operatorName: string | null,
+) {
+  const now = new Date();
+  const opened = new Date(order.opened_at);
+  const mins = Math.max(0, Math.floor((now.getTime() - opened.getTime()) / 60000));
+  const tempo = `${String(Math.floor(mins / 60)).padStart(2, "0")}h${String(mins % 60).padStart(2, "0")}m`;
+  const dt = (d: Date) =>
+    `${d.toLocaleDateString("pt-BR")} ${d.toLocaleTimeString("pt-BR", { hour12: false })}`;
+
+  const L: string[] = [];
+  if (header?.name) L.push(...center(header.name.toUpperCase()));
+  if (header?.address) L.push(...center(header.address));
+  const local = [header?.city, header?.state].filter(Boolean).join(" - ");
+  if (local) L.push(...center(local));
+  if (header?.phone) L.push(...center(header.phone));
+  if (header?.cnpj) L.push(...center(`CNPJ: ${header.cnpj}`));
+  L.push("-".repeat(W));
+  L.push(...center(`IMPRESSO EM ${dt(now)}`));
+  L.push("");
+  L.push(...center("*** NAO E DOCUMENTO FISCAL ***"));
+  L.push("");
+  L.push(...center(`ABERTO EM ${dt(opened)}`));
+  L.push(...center(`(Pedido N.: ${order.number})`));
+  const ident = [
+    `COMANDA ${order.number}`,
+    tableName ? `MESA ${tableName}` : orderTypeLabel[order.type].toUpperCase(),
+  ].join("  /  ");
+  L.push(...center(ident));
+  if (order.customer_name) L.push(...center(order.customer_name));
+  L.push(pair("ITEM (V.Unit)", "Total"));
+  for (const it of items) {
+    const qty = Number(it.quantity).toLocaleString("pt-BR", { maximumFractionDigits: 3 });
+    const label = `${qty} ${it.product_name} (${money(Number(it.unit_price))})`;
+    const total = money(Number(it.total));
+    const lines = wrap(label, W - total.length - 1);
+    lines.forEach((l, i) => {
+      L.push(i === lines.length - 1 ? pair(l, total) : l);
+    });
+    if (it.notes) L.push(...wrap(`  obs: ${it.notes}`));
+  }
+  L.push("-".repeat(W));
+  L.push(pair("TOTAL:", money(Number(order.subtotal))));
+  if (Number(order.service_fee) > 0)
+    L.push(pair("Taxa de servico:", money(Number(order.service_fee))));
+  if (Number(order.discount) > 0) L.push(pair("Desconto:", `-${money(Number(order.discount))}`));
+  L.push(pair("= TOTAL A PAGAR:", money(Number(order.total))));
+  L.push("");
+  L.push(`Tempo: ${tempo}`);
+  const atendente = order.waiter_name || operatorName;
+  if (atendente) L.push(`Atendente: ${atendente}`);
+  if (order.notes) {
+    L.push("");
+    L.push(...wrap(`Obs.: ${order.notes}`));
+  }
+  L.push("");
+  L.push(...center("* Obrigado pela Preferencia *"));
+  L.push(...center("Volte Sempre!"));
+
+  const text = L.join("\n")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 
   const html = `<!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8" />
 <title>Comanda ${order.number}</title>
 <style>
-  * { box-sizing: border-box; }
-  body { font-family: ui-monospace, "Courier New", monospace; font-size: 12px; color: #000; margin: 0; padding: 12px; width: 80mm; }
-  h1 { font-size: 15px; margin: 0 0 2px; }
-  .muted { color: #444; font-size: 11px; }
-  hr { border: none; border-top: 1px dashed #000; margin: 8px 0; }
-  table { width: 100%; border-collapse: collapse; }
-  th, td { padding: 2px 0; text-align: left; font-size: 11px; vertical-align: top; }
-  .r { text-align: right; }
-  .c { text-align: center; }
-  .tot { display: flex; justify-content: space-between; font-size: 12px; }
-  .tot.big { font-size: 15px; font-weight: bold; margin-top: 4px; }
-  @page { margin: 4mm; }
+  @page { margin: 3mm; }
+  body { margin: 0; padding: 4mm; width: 80mm; color: #000; }
+  pre { font-family: ui-monospace, "Courier New", monospace; font-size: 12px;
+        line-height: 1.35; margin: 0; white-space: pre; }
 </style></head>
-<body>
-  <h1>Comanda #${order.number}</h1>
-  <div class="muted">${esc(orderTypeLabel[order.type])}${order.customer_name ? ` — ${esc(order.customer_name)}` : ""}</div>
-  <div class="muted">Aberta: ${new Date(order.opened_at).toLocaleString("pt-BR")}</div>
-  <div class="muted">Impresso: ${new Date().toLocaleString("pt-BR")}</div>
-  ${order.waiter_name ? `<div class="muted">Atendente: ${esc(order.waiter_name)}</div>` : ""}
-  <hr />
-  <table>
-    <thead><tr><th>Item</th><th class="c">Qtd</th><th class="r">Un.</th><th class="r">Total</th></tr></thead>
-    <tbody>${rows}</tbody>
-  </table>
-  <hr />
-  <div class="tot"><span>Subtotal</span><span>${formatBRL(Number(order.subtotal))}</span></div>
-  <div class="tot"><span>Taxa de serviço</span><span>${formatBRL(Number(order.service_fee))}</span></div>
-  <div class="tot"><span>Desconto</span><span>- ${formatBRL(Number(order.discount))}</span></div>
-  <div class="tot big"><span>TOTAL</span><span>${formatBRL(Number(order.total))}</span></div>
-  ${order.notes ? `<hr /><div class="muted">Obs.: ${esc(order.notes)}</div>` : ""}
-</body></html>`;
+<body><pre>${text}</pre></body></html>`;
 
   const w = window.open("", "_blank", "width=420,height=640");
   if (!w) {
@@ -985,3 +1102,4 @@ function printOrder(order: Order, items: OrderItem[]) {
   w.focus();
   setTimeout(() => w.print(), 250);
 }
+
