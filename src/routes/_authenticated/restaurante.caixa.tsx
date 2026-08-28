@@ -300,7 +300,7 @@ function ActiveSessionPanel({
   const ret = movements.filter((m) => m.type === "retirada").reduce((s, m) => s + Number(m.amount), 0);
 
   const calculated =
-    Number(session.opening_balance) + byMethod.dinheiro + sup + aju - san - ret;
+    Number(session.opening_balance) + totalVendas + sup + aju - san - ret;
 
   return (
     <>
@@ -346,7 +346,7 @@ function ActiveSessionPanel({
           <Stat label="Vendas (todas formas)" value={formatBRL(totalVendas)} />
           <Stat label="Suprimentos - Sangrias" value={formatBRL(sup - san - ret + aju)} />
           <Stat
-            label="Saldo esperado (dinheiro)"
+            label="Saldo esperado (todas as formas)"
             value={formatBRL(calculated)}
             highlight
           />
