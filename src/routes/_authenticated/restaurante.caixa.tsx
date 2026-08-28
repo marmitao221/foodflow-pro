@@ -410,6 +410,8 @@ function ActiveSessionPanel({
         <CloseSessionDialog
           session={session}
           calculated={calculated}
+          byMethod={byMethod}
+          movements={movements}
           onCancel={() => setCloseOpen(false)}
           onClosed={() => {
             setCloseOpen(false);
@@ -508,36 +510,130 @@ function MovementDialog({
   );
 }
 
+async function ensureCategory(
+  companyId: string,
+  name: string,
+  type: "receita" | "despesa",
+) {
+  const { data: found } = await supabase
+    .from("financial_categories")
+    .select("id")
+    .eq("company_id", companyId)
+    .eq("name", name)
+    .eq("type", type)
+    .maybeSingle();
+  if (found?.id) return found.id as string;
+  const { data: created, error } = await supabase
+    .from("financial_categories")
+    .insert({ company_id: companyId, name, type })
+    .select("id")
+    .single();
+  if (error) throw error;
+  return created.id as string;
+}
+
 function CloseSessionDialog({
   session,
   calculated,
+  byMethod,
+  movements,
   onCancel,
   onClosed,
 }: {
   session: CashSession;
   calculated: number;
+  byMethod: Record<PaymentMethod, number>;
+  movements: CashMovement[];
   onCancel: () => void;
   onClosed: () => void;
 }) {
+  const { data: companyId } = useMyCompanyId();
   const [informed, setInformed] = useState<number>(Number(calculated.toFixed(2)));
   const [notes, setNotes] = useState("");
   const diff = informed - calculated;
 
   const close = useMutation({
     mutationFn: async () => {
+      const closedAt = new Date();
       const { error } = await supabase
         .from("cash_sessions")
         .update({
           status: "fechado",
-          closed_at: new Date().toISOString(),
+          closed_at: closedAt.toISOString(),
           closing_balance_informed: informed,
           closing_balance_calculated: calculated,
           notes: notes || session.notes,
         })
         .eq("id", session.id);
       if (error) throw error;
+
+      if (!companyId) return 0;
+
+      const day = closedAt.toISOString().slice(0, 10);
+      const dayLabel = closedAt.toLocaleDateString("pt-BR");
+      const operator = session.operator_name ?? "operador";
+
+      const receitas = (Object.keys(byMethod) as PaymentMethod[]).filter(
+        (m) => m !== "conta_cliente" && Number(byMethod[m]) > 0,
+      );
+      const saidas = movements.filter(
+        (m) => m.type === "sangria" || m.type === "retirada",
+      );
+
+      const rows: Record<string, unknown>[] = [];
+
+      if (receitas.length > 0) {
+        const catReceita = await ensureCategory(companyId, "Vendas", "receita");
+        receitas.forEach((m) => {
+          rows.push({
+            company_id: companyId,
+            branch_id: session.branch_id,
+            category_id: catReceita,
+            description: `Caixa ${dayLabel} — ${paymentMethodLabel[m]} (${operator})`,
+            amount: Number(byMethod[m]),
+            type: "receita",
+            status: "recebido",
+            due_date: day,
+            payment_date: day,
+          });
+        });
+      }
+
+      if (saidas.length > 0) {
+        const catDespesa = await ensureCategory(
+          companyId,
+          "Movimentações de caixa",
+          "despesa",
+        );
+        saidas.forEach((m) => {
+          rows.push({
+            company_id: companyId,
+            branch_id: session.branch_id,
+            category_id: catDespesa,
+            description: `Caixa ${dayLabel} — ${cashMovementLabel[m.type]}${m.reason ? `: ${m.reason}` : ""} (${operator})`,
+            amount: Number(m.amount),
+            type: "despesa",
+            status: "pago",
+            due_date: day,
+            payment_date: day,
+          });
+        });
+      }
+
+      if (rows.length > 0) {
+        const { error: finErr } = await supabase
+          .from("financial_transactions")
+          .insert(rows as never);
+        if (finErr) throw finErr;
+      }
+      return rows.length;
     },
-    onSuccess: onClosed,
+    onSuccess: (count) => {
+      if (count && count > 0) {
+        toast.success(`${count} lançamento(s) enviados ao financeiro`);
+      }
+      onClosed();
+    },
     onError: (e: Error) => toast.error(e.message),
   });
 
