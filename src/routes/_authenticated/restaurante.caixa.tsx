@@ -410,6 +410,8 @@ function ActiveSessionPanel({
         <CloseSessionDialog
           session={session}
           calculated={calculated}
+          byMethod={byMethod}
+          movements={movements}
           onCancel={() => setCloseOpen(false)}
           onClosed={() => {
             setCloseOpen(false);
