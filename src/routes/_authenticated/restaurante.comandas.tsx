@@ -1100,14 +1100,47 @@ function printOrder(
 
 <body><pre>${text}</pre></body></html>`;
 
-  const w = window.open("", "_blank", "width=420,height=640");
-  if (!w) {
-    toast.error("Permita pop-ups para imprimir a comanda.");
+  // Impressão direta via iframe oculto (sem abrir aba/janela intermediária)
+  const iframe = document.createElement("iframe");
+  iframe.setAttribute("aria-hidden", "true");
+  iframe.style.position = "fixed";
+  iframe.style.right = "0";
+  iframe.style.bottom = "0";
+  iframe.style.width = "0";
+  iframe.style.height = "0";
+  iframe.style.border = "0";
+  iframe.style.visibility = "hidden";
+  document.body.appendChild(iframe);
+
+  const cleanup = () => {
+    setTimeout(() => iframe.remove(), 1000);
+  };
+
+  iframe.onload = () => {
+    try {
+      const win = iframe.contentWindow;
+      if (!win) {
+        toast.error("Não foi possível preparar a impressão.");
+        cleanup();
+        return;
+      }
+      win.focus();
+      win.print();
+    } catch {
+      toast.error("Não foi possível imprimir a comanda.");
+    } finally {
+      cleanup();
+    }
+  };
+
+  const doc = iframe.contentDocument;
+  if (!doc) {
+    toast.error("Não foi possível preparar a impressão.");
+    iframe.remove();
     return;
   }
-  w.document.write(html);
-  w.document.close();
-  w.focus();
-  setTimeout(() => w.print(), 250);
+  doc.open();
+  doc.write(html);
+  doc.close();
 }
 
