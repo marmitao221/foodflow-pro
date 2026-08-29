@@ -40,6 +40,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { DecimalInput } from "@/components/ui/decimal-input";
+import {
+  DirectPrintHelpDialog,
+  isDirectPrintConfigured,
+} from "@/components/restaurante/DirectPrintHelp";
+
 
 export const Route = createFileRoute("/_authenticated/restaurante/comandas")({
   component: ComandasPage,
