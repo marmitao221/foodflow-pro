@@ -1085,11 +1085,18 @@ function printOrder(
 <html lang="pt-BR"><head><meta charset="utf-8" />
 <title>Comanda ${order.number}</title>
 <style>
-  @page { margin: 3mm; }
-  body { margin: 0; padding: 4mm; width: 80mm; color: #000; }
-  pre { font-family: ui-monospace, "Courier New", monospace; font-size: 12px;
-        line-height: 1.35; margin: 0; white-space: pre; }
+  @page { margin: 2mm; size: 80mm auto; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  html, body { background: #fff; }
+  body { margin: 0; padding: 2mm; width: 76mm; color: #000; }
+  pre { font-family: "Courier New", ui-monospace, monospace; font-size: 13px;
+        line-height: 1.3; margin: 0; white-space: pre;
+        color: #000; font-weight: 700;
+        -webkit-font-smoothing: none; -moz-osx-font-smoothing: grayscale;
+        text-rendering: geometricPrecision;
+        text-shadow: 0 0 0 #000, 0.2px 0 0 #000, 0 0.2px 0 #000; }
 </style></head>
+
 <body><pre>${text}</pre></body></html>`;
 
   const w = window.open("", "_blank", "width=420,height=640");
