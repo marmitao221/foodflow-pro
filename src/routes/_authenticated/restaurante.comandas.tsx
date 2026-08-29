@@ -984,7 +984,7 @@ type ReceiptHeader = {
   state: string | null;
 };
 
-const W = 34;
+const W = 30;
 
 const money = (v: number) =>
   Number(v).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -1089,9 +1089,9 @@ function printOrder(
   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
   html, body { background: #fff; }
   body { margin: 0; padding: 2mm; width: 76mm; color: #000; }
-  pre { font-family: "Courier New", ui-monospace, monospace; font-size: 17px;
+  pre { font-family: "Courier New", ui-monospace, monospace; font-size: 16px;
         line-height: 1.5; margin: 0; white-space: pre;
-        letter-spacing: 0.2px;
+        letter-spacing: 0.1px;
         color: #000; font-weight: 700;
         -webkit-font-smoothing: none; -moz-osx-font-smoothing: grayscale;
         text-rendering: geometricPrecision;
