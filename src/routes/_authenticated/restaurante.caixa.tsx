@@ -37,6 +37,45 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { DecimalInput } from "@/components/ui/decimal-input";
+import { CashLedger, fetchLedgerPayments } from "@/components/restaurante/CashLedger";
+
+function ClosedSessionDialog({ session, onClose }: { session: CashSession; onClose: () => void }) {
+  const { data: payments = [] } = useQuery({
+    queryKey: ["order_payments", session.id],
+    queryFn: () => fetchLedgerPayments(session.id),
+  });
+  const { data: movements = [] } = useQuery({
+    queryKey: ["cash_movements", session.id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("cash_movements")
+        .select("*")
+        .eq("session_id", session.id)
+        .order("created_at");
+      if (error) throw error;
+      return data as CashMovement[];
+    },
+  });
+  return (
+    <Dialog open onOpenChange={(o) => !o && onClose()}>
+      <DialogContent className="max-w-4xl">
+        <DialogHeader>
+          <DialogTitle>
+            Caixa de {session.operator_name ?? "operador"} —{" "}
+            {new Date(session.opened_at).toLocaleDateString("pt-BR")}
+          </DialogTitle>
+        </DialogHeader>
+        <CashLedger
+          openedAt={session.opened_at}
+          openingBalance={Number(session.opening_balance)}
+          payments={payments}
+          movements={movements}
+          branchId={session.branch_id}
+        />
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 export const Route = createFileRoute("/_authenticated/restaurante/caixa")({
   component: CaixaPage,
@@ -78,6 +117,7 @@ function CaixaPage() {
   const { activeBranchId } = useCompany();
   const { user } = useAuth();
   const qc = useQueryClient();
+  const [viewSession, setViewSession] = useState<CashSession | null>(null);
 
   const sessionKey = ["cash_session", companyId, user?.id];
 
@@ -141,12 +181,19 @@ function CaixaPage() {
           </Card>
         ) : (
           <div className="space-y-2">
+            {viewSession && (
+              <ClosedSessionDialog session={viewSession} onClose={() => setViewSession(null)} />
+            )}
             {history.map((s) => {
               const diff =
                 (Number(s.closing_balance_informed) || 0) -
                 (Number(s.closing_balance_calculated) || 0);
               return (
-                <Card key={s.id} className="p-3 flex items-center justify-between text-sm">
+                <Card
+                  key={s.id}
+                  className="p-3 flex items-center justify-between text-sm cursor-pointer hover:bg-muted/40"
+                  onClick={() => setViewSession(s)}
+                >
                   <div>
                     <p className="font-medium">
                       {s.operator_name ?? "Operador"} —{" "}
@@ -271,14 +318,7 @@ function ActiveSessionPanel({
 
   const { data: payments = [] } = useQuery({
     queryKey: ["order_payments", session.id],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("order_payments")
-        .select("id, method, amount, created_at")
-        .eq("session_id", session.id);
-      if (error) throw error;
-      return data as Payment[];
-    },
+    queryFn: () => fetchLedgerPayments(session.id),
   });
 
   const byMethod: Record<PaymentMethod, number> = {
@@ -352,57 +392,53 @@ function ActiveSessionPanel({
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <h3 className="font-medium text-sm mb-2">Vendas por forma</h3>
-            <div className="space-y-1 text-sm">
-              {(Object.keys(byMethod) as PaymentMethod[]).map((m) => (
-                <div
-                  key={m}
-                  className="flex items-center justify-between border-b border-border py-1"
-                >
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-4">
+          <CashLedger
+            openedAt={session.opened_at}
+            openingBalance={Number(session.opening_balance)}
+            payments={payments}
+            movements={movements}
+            branchId={session.branch_id}
+          />
+          <Card className="p-4 space-y-2 text-sm">
+            <h3 className="font-medium">Resumo</h3>
+            <div className="flex justify-between">
+              <span>(+) Saldo inicial</span>
+              <span>{formatBRL(Number(session.opening_balance))}</span>
+            </div>
+            <p className="text-xs text-muted-foreground pt-2">(+) ENTRADAS — PEDIDOS</p>
+            {(Object.keys(byMethod) as PaymentMethod[])
+              .filter((m) => byMethod[m] > 0)
+              .map((m) => (
+                <div key={m} className="flex justify-between">
                   <span>{paymentMethodLabel[m]}</span>
-                  <span className="font-medium">{formatBRL(byMethod[m])}</span>
+                  <span className="font-medium text-primary">{formatBRL(byMethod[m])}</span>
                 </div>
               ))}
-            </div>
-          </div>
-          <div>
-            <h3 className="font-medium text-sm mb-2">Movimentações</h3>
-            {movements.length === 0 ? (
-              <p className="text-xs text-muted-foreground">Sem movimentações</p>
-            ) : (
-              <div className="space-y-1 text-sm max-h-48 overflow-y-auto">
-                {movements.map((m) => {
-                  const isOut = m.type === "sangria" || m.type === "retirada";
-                  return (
-                    <div
-                      key={m.id}
-                      className="flex items-center justify-between border-b border-border py-1"
-                    >
-                      <div className="flex items-center gap-2">
-                        {isOut ? (
-                          <ArrowDown className="h-3 w-3 text-destructive" />
-                        ) : (
-                          <ArrowUp className="h-3 w-3 text-emerald-600" />
-                        )}
-                        <span>{cashMovementLabel[m.type]}</span>
-                        {m.reason && (
-                          <span className="text-xs text-muted-foreground">— {m.reason}</span>
-                        )}
-                      </div>
-                      <span
-                        className={`font-medium ${isOut ? "text-destructive" : "text-emerald-600"}`}
-                      >
-                        {isOut ? "-" : "+"}
-                        {formatBRL(Number(m.amount))}
-                      </span>
-                    </div>
-                  );
-                })}
+            {sup + aju > 0 && (
+              <div className="flex justify-between">
+                <span>Suprimentos/ajustes</span>
+                <span>{formatBRL(sup + aju)}</span>
               </div>
             )}
-          </div>
+            <div className="flex justify-between font-semibold border-t border-border pt-1">
+              <span>Total entradas</span>
+              <span>{formatBRL(totalVendas + sup + aju)}</span>
+            </div>
+            <p className="text-xs text-muted-foreground pt-2">(-) SAÍDAS DO CAIXA</p>
+            {san + ret > 0 ? (
+              <div className="flex justify-between text-destructive">
+                <span>Sangrias/retiradas</span>
+                <span>-{formatBRL(san + ret)}</span>
+              </div>
+            ) : (
+              <p className="text-xs text-muted-foreground">Não há registros de saída</p>
+            )}
+            <div className="flex justify-between font-semibold text-base border-t border-border pt-2">
+              <span>(=) Saldo final</span>
+              <span>{formatBRL(calculated)}</span>
+            </div>
+          </Card>
         </div>
       </Card>
 
