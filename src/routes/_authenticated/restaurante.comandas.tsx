@@ -1028,6 +1028,16 @@ function printOrder(
 ) {
   const now = new Date();
   const opened = new Date(order.opened_at);
+  const itemSubtotal = items.reduce((sum, item) => sum + Number(item.total || 0), 0);
+  const storedSubtotal = Number(order.subtotal);
+  const receiptSubtotal =
+    Number.isFinite(storedSubtotal) && storedSubtotal > 0 ? storedSubtotal : itemSubtotal;
+  const serviceFee = Number(order.service_fee || 0);
+  const discount = Number(order.discount || 0);
+  const storedTotal = Number(order.total);
+  const calculatedTotal = Math.max(0, receiptSubtotal + serviceFee - discount);
+  const receiptTotal =
+    Number.isFinite(storedTotal) && storedTotal > 0 ? storedTotal : calculatedTotal;
   const mins = Math.max(0, Math.floor((now.getTime() - opened.getTime()) / 60000));
   const tempo = `${String(Math.floor(mins / 60)).padStart(2, "0")}h${String(mins % 60).padStart(2, "0")}m`;
   const dt = (d: Date) =>
@@ -1065,11 +1075,10 @@ function printOrder(
     if (it.notes) L.push(...wrap(`  obs: ${it.notes}`));
   }
   L.push("-".repeat(W));
-  L.push(pair("TOTAL:", money(Number(order.subtotal))));
-  if (Number(order.service_fee) > 0)
-    L.push(pair("Taxa de servico:", money(Number(order.service_fee))));
-  if (Number(order.discount) > 0) L.push(pair("Desconto:", `-${money(Number(order.discount))}`));
-  L.push(pair("= TOTAL A PAGAR:", money(Number(order.total))));
+  L.push(pair("TOTAL:", money(receiptSubtotal)));
+  if (serviceFee > 0) L.push(pair("Taxa de servico:", money(serviceFee)));
+  if (discount > 0) L.push(pair("Desconto:", `-${money(discount)}`));
+  L.push(`TOTAL A PAGAR: ${money(receiptTotal)}`);
   L.push("");
   L.push(`Tempo: ${tempo}`);
   const atendente = order.waiter_name || operatorName;
