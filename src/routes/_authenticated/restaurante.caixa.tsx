@@ -245,7 +245,9 @@ function OpenCashCard({
   const open = useMutation({
     mutationFn: async () => {
       if (!companyId || !userId) throw new Error("Sessão inválida");
+      const id = crypto.randomUUID();
       const { error } = await supabase.from("cash_sessions").insert({
+        id,
         company_id: companyId,
         branch_id: branchId,
         operator_id: userId,
@@ -254,9 +256,13 @@ function OpenCashCard({
         notes: notes || null,
       });
       if (error) throw error;
+      const { data: n } = await supabase.rpc("flush_pending_delivery", { _session_id: id });
+      return (n as number | null) ?? 0;
     },
-    onSuccess: () => {
-      toast.success("Caixa aberto");
+    onSuccess: (n) => {
+      toast.success(
+        n ? `Caixa aberto — ${n} venda(s) de delivery pendente(s) lançada(s)` : "Caixa aberto",
+      );
       onOpened();
     },
     onError: (e: Error) => toast.error(e.message),
@@ -329,6 +335,7 @@ function ActiveSessionPanel({
     ifood_online: 0,
     keeta_online: 0,
     aiqfome_online: 0,
+    ninetynine_online: 0,
     conta_cliente: 0,
   };
   payments.forEach((p) => (byMethod[p.method] += Number(p.amount)));
@@ -391,6 +398,8 @@ function ActiveSessionPanel({
             highlight
           />
         </div>
+
+        <DeliveryQuickSale sessionId={session.id} />
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-4">
           <CashLedger

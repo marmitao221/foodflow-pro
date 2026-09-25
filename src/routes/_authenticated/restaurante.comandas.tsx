@@ -87,6 +87,7 @@ const methods: PaymentMethod[] = [
   "ifood_online",
   "keeta_online",
   "aiqfome_online",
+  "ninetynine_online",
   "conta_cliente",
 ];
 

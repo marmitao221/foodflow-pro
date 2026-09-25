@@ -23,6 +23,7 @@ export type PaymentMethod =
   | "ifood_online"
   | "keeta_online"
   | "aiqfome_online"
+  | "ninetynine_online"
   | "conta_cliente";
 export type CashMovementType = "sangria" | "suprimento" | "retirada" | "ajuste";
 export type CashSessionStatus = "aberto" | "fechado";
@@ -42,6 +43,7 @@ export const paymentMethodLabel: Record<PaymentMethod, string> = {
   ifood_online: "iFood Online",
   keeta_online: "Keeta Online",
   aiqfome_online: "Aiqfome Online",
+  ninetynine_online: "99Food Online",
   conta_cliente: "Conta do cliente",
 };
 
