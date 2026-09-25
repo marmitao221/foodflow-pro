@@ -325,6 +325,7 @@ function ActiveSessionPanel({
   const { data: payments = [] } = useQuery({
     queryKey: ["order_payments", session.id],
     queryFn: () => fetchLedgerPayments(session.id),
+    refetchInterval: 20000,
   });
 
   const byMethod: Record<PaymentMethod, number> = {
@@ -728,5 +729,80 @@ function CloseSessionDialog({
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  );
+}
+
+const deliveryApps: { method: PaymentMethod; label: string }[] = [
+  { method: "ifood_online", label: "iFood" },
+  { method: "ninetynine_online", label: "99Food" },
+  { method: "keeta_online", label: "Keeta" },
+  { method: "aiqfome_online", label: "Aiqfome" },
+];
+
+function DeliveryQuickSale({ sessionId }: { sessionId: string }) {
+  const qc = useQueryClient();
+  const [app, setApp] = useState<{ method: PaymentMethod; label: string } | null>(null);
+  const [amount, setAmount] = useState(0);
+  const [ref, setRef] = useState("");
+
+  const save = useMutation({
+    mutationFn: async () => {
+      if (!app) return;
+      if (!(amount > 0)) throw new Error("Informe o valor da venda");
+      const { error } = await supabase.rpc("register_delivery_sale", {
+        _session_id: sessionId,
+        _method: app.method,
+        _amount: amount,
+        _ref: ref.trim(),
+      });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success(`Venda ${app?.label} de ${formatBRL(amount)} lançada no caixa`);
+      qc.invalidateQueries({ queryKey: ["order_payments", sessionId] });
+      setApp(null);
+      setAmount(0);
+      setRef("");
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  return (
+    <div className="flex flex-wrap items-center gap-2 rounded-md border border-border bg-muted/30 p-3">
+      <span className="text-sm font-medium mr-2">Venda de delivery:</span>
+      {deliveryApps.map((a) => (
+        <Button key={a.method} size="sm" variant="outline" onClick={() => setApp(a)}>
+          {a.label}
+        </Button>
+      ))}
+      <Dialog open={!!app} onOpenChange={(o) => !o && setApp(null)}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Venda {app?.label}</DialogTitle>
+          </DialogHeader>
+          <form
+            className="space-y-3"
+            onSubmit={(e) => {
+              e.preventDefault();
+              save.mutate();
+            }}
+          >
+            <div>
+              <Label>Valor (R$)</Label>
+              <DecimalInput decimals={2} value={amount} onValueChange={setAmount} autoFocus />
+            </div>
+            <div>
+              <Label>Nº do pedido (opcional)</Label>
+              <Input value={ref} onChange={(e) => setRef(e.target.value)} />
+            </div>
+            <DialogFooter>
+              <Button type="submit" disabled={save.isPending}>
+                Lançar no caixa
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }
