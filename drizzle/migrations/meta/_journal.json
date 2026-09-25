@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1790366050291,
+      "tag": "0000_add_99food_payment",
+      "breakpoints": true
+    }
+  ]
+}

@@ -2709,6 +2709,7 @@ export type Database = {
         | "ifood_online"
         | "keeta_online"
         | "aiqfome_online"
+        | "ninetynine_online"
         | "conta_cliente"
       product_category:
         | "refeicao"
@@ -2900,6 +2901,7 @@ export const Constants = {
         "ifood_online",
         "keeta_online",
         "aiqfome_online",
+        "ninetynine_online",
         "conta_cliente",
       ],
       product_category: [
