@@ -570,6 +570,122 @@ export type Database = {
           },
         ]
       }
+      delivery_integrations: {
+        Row: {
+          branch_id: string
+          company_id: string
+          created_at: string
+          id: string
+          is_active: boolean
+          merchant_id: string
+          provider: string
+          updated_at: string
+        }
+        Insert: {
+          branch_id: string
+          company_id: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          merchant_id: string
+          provider?: string
+          updated_at?: string
+        }
+        Update: {
+          branch_id?: string
+          company_id?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          merchant_id?: string
+          provider?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "delivery_integrations_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "delivery_integrations_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      delivery_orders: {
+        Row: {
+          amount: number
+          branch_id: string
+          company_id: string
+          created_at: string
+          display_id: string | null
+          external_id: string
+          id: string
+          order_id: string | null
+          provider: string
+          session_id: string | null
+        }
+        Insert: {
+          amount?: number
+          branch_id: string
+          company_id: string
+          created_at?: string
+          display_id?: string | null
+          external_id: string
+          id?: string
+          order_id?: string | null
+          provider: string
+          session_id?: string | null
+        }
+        Update: {
+          amount?: number
+          branch_id?: string
+          company_id?: string
+          created_at?: string
+          display_id?: string | null
+          external_id?: string
+          id?: string
+          order_id?: string | null
+          provider?: string
+          session_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "delivery_orders_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "delivery_orders_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "delivery_orders_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "delivery_orders_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "cash_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employee_benefits: {
         Row: {
           active: boolean
@@ -2656,6 +2772,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      flush_pending_delivery: { Args: { _session_id: string }; Returns: number }
       generate_task_instances: {
         Args: { _company_id: string; _date: string }
         Returns: number
@@ -2686,6 +2803,15 @@ export type Database = {
           unit_cost: number
         }[]
       }
+      register_delivery_sale: {
+        Args: {
+          _amount: number
+          _method: Database["public"]["Enums"]["payment_method"]
+          _ref: string
+          _session_id: string
+        }
+        Returns: string
+      }
       start_production_run: {
         Args: { _extra?: Json; _run_id: string }
         Returns: Json
@@ -2709,6 +2835,7 @@ export type Database = {
         | "ifood_online"
         | "keeta_online"
         | "aiqfome_online"
+        | "ninetynine_online"
         | "conta_cliente"
       product_category:
         | "refeicao"
@@ -2900,6 +3027,7 @@ export const Constants = {
         "ifood_online",
         "keeta_online",
         "aiqfome_online",
+        "ninetynine_online",
         "conta_cliente",
       ],
       product_category: [

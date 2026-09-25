@@ -57,8 +57,10 @@ import { Route as AuthenticatedEquipeGestaoRouteImport } from './routes/_authent
 import { Route as AuthenticatedEquipeFuncoesRouteImport } from './routes/_authenticated/equipe.funcoes'
 import { Route as AuthenticatedEquipeFuncionariosRouteImport } from './routes/_authenticated/equipe.funcionarios'
 import { Route as AuthenticatedEquipeDashboardRouteImport } from './routes/_authenticated/equipe.dashboard'
+import { Route as AuthenticatedConfiguracoesIntegracoesRouteImport } from './routes/_authenticated/configuracoes.integracoes'
 import { Route as AuthenticatedConfiguracoesFiliaisRouteImport } from './routes/_authenticated/configuracoes.filiais'
 import { Route as AuthenticatedConfiguracoesEmpresaRouteImport } from './routes/_authenticated/configuracoes.empresa'
+import { Route as ApiPublicIfoodWebhookRouteImport } from './routes/api/public/ifood/webhook'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -332,6 +334,12 @@ const AuthenticatedEquipeDashboardRoute =
     path: '/dashboard',
     getParentRoute: () => AuthenticatedEquipeRoute,
   } as any)
+const AuthenticatedConfiguracoesIntegracoesRoute =
+  AuthenticatedConfiguracoesIntegracoesRouteImport.update({
+    id: '/configuracoes/integracoes',
+    path: '/configuracoes/integracoes',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedConfiguracoesFiliaisRoute =
   AuthenticatedConfiguracoesFiliaisRouteImport.update({
     id: '/configuracoes/filiais',
@@ -344,6 +352,11 @@ const AuthenticatedConfiguracoesEmpresaRoute =
     path: '/configuracoes/empresa',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const ApiPublicIfoodWebhookRoute = ApiPublicIfoodWebhookRouteImport.update({
+  id: '/api/public/ifood/webhook',
+  path: '/api/public/ifood/webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -360,6 +373,7 @@ export interface FileRoutesByFullPath {
   '/convite/$token': typeof ConviteTokenRoute
   '/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
+  '/configuracoes/integracoes': typeof AuthenticatedConfiguracoesIntegracoesRoute
   '/equipe/dashboard': typeof AuthenticatedEquipeDashboardRoute
   '/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
   '/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
@@ -395,6 +409,7 @@ export interface FileRoutesByFullPath {
   '/rh/escalas': typeof AuthenticatedRhEscalasRoute
   '/rh/funcionarios': typeof AuthenticatedRhFuncionariosRoute
   '/rh/ponto': typeof AuthenticatedRhPontoRoute
+  '/api/public/ifood/webhook': typeof ApiPublicIfoodWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -411,6 +426,7 @@ export interface FileRoutesByTo {
   '/convite/$token': typeof ConviteTokenRoute
   '/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
+  '/configuracoes/integracoes': typeof AuthenticatedConfiguracoesIntegracoesRoute
   '/equipe/dashboard': typeof AuthenticatedEquipeDashboardRoute
   '/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
   '/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
@@ -446,6 +462,7 @@ export interface FileRoutesByTo {
   '/rh/escalas': typeof AuthenticatedRhEscalasRoute
   '/rh/funcionarios': typeof AuthenticatedRhFuncionariosRoute
   '/rh/ponto': typeof AuthenticatedRhPontoRoute
+  '/api/public/ifood/webhook': typeof ApiPublicIfoodWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -464,6 +481,7 @@ export interface FileRoutesById {
   '/convite/$token': typeof ConviteTokenRoute
   '/_authenticated/configuracoes/empresa': typeof AuthenticatedConfiguracoesEmpresaRoute
   '/_authenticated/configuracoes/filiais': typeof AuthenticatedConfiguracoesFiliaisRoute
+  '/_authenticated/configuracoes/integracoes': typeof AuthenticatedConfiguracoesIntegracoesRoute
   '/_authenticated/equipe/dashboard': typeof AuthenticatedEquipeDashboardRoute
   '/_authenticated/equipe/funcionarios': typeof AuthenticatedEquipeFuncionariosRoute
   '/_authenticated/equipe/funcoes': typeof AuthenticatedEquipeFuncoesRoute
@@ -499,6 +517,7 @@ export interface FileRoutesById {
   '/_authenticated/rh/escalas': typeof AuthenticatedRhEscalasRoute
   '/_authenticated/rh/funcionarios': typeof AuthenticatedRhFuncionariosRoute
   '/_authenticated/rh/ponto': typeof AuthenticatedRhPontoRoute
+  '/api/public/ifood/webhook': typeof ApiPublicIfoodWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -517,6 +536,7 @@ export interface FileRouteTypes {
     | '/convite/$token'
     | '/configuracoes/empresa'
     | '/configuracoes/filiais'
+    | '/configuracoes/integracoes'
     | '/equipe/dashboard'
     | '/equipe/funcionarios'
     | '/equipe/funcoes'
@@ -552,6 +572,7 @@ export interface FileRouteTypes {
     | '/rh/escalas'
     | '/rh/funcionarios'
     | '/rh/ponto'
+    | '/api/public/ifood/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -568,6 +589,7 @@ export interface FileRouteTypes {
     | '/convite/$token'
     | '/configuracoes/empresa'
     | '/configuracoes/filiais'
+    | '/configuracoes/integracoes'
     | '/equipe/dashboard'
     | '/equipe/funcionarios'
     | '/equipe/funcoes'
@@ -603,6 +625,7 @@ export interface FileRouteTypes {
     | '/rh/escalas'
     | '/rh/funcionarios'
     | '/rh/ponto'
+    | '/api/public/ifood/webhook'
   id:
     | '__root__'
     | '/'
@@ -620,6 +643,7 @@ export interface FileRouteTypes {
     | '/convite/$token'
     | '/_authenticated/configuracoes/empresa'
     | '/_authenticated/configuracoes/filiais'
+    | '/_authenticated/configuracoes/integracoes'
     | '/_authenticated/equipe/dashboard'
     | '/_authenticated/equipe/funcionarios'
     | '/_authenticated/equipe/funcoes'
@@ -655,6 +679,7 @@ export interface FileRouteTypes {
     | '/_authenticated/rh/escalas'
     | '/_authenticated/rh/funcionarios'
     | '/_authenticated/rh/ponto'
+    | '/api/public/ifood/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -662,6 +687,7 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   LoginRoute: typeof LoginRoute
   ConviteTokenRoute: typeof ConviteTokenRoute
+  ApiPublicIfoodWebhookRoute: typeof ApiPublicIfoodWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1002,6 +1028,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEquipeDashboardRouteImport
       parentRoute: typeof AuthenticatedEquipeRoute
     }
+    '/_authenticated/configuracoes/integracoes': {
+      id: '/_authenticated/configuracoes/integracoes'
+      path: '/configuracoes/integracoes'
+      fullPath: '/configuracoes/integracoes'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesIntegracoesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/configuracoes/filiais': {
       id: '/_authenticated/configuracoes/filiais'
       path: '/configuracoes/filiais'
@@ -1015,6 +1048,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/configuracoes/empresa'
       preLoaderRoute: typeof AuthenticatedConfiguracoesEmpresaRouteImport
       parentRoute: typeof AuthenticatedRoute
+    }
+    '/api/public/ifood/webhook': {
+      id: '/api/public/ifood/webhook'
+      path: '/api/public/ifood/webhook'
+      fullPath: '/api/public/ifood/webhook'
+      preLoaderRoute: typeof ApiPublicIfoodWebhookRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -1169,6 +1209,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedRhRoute: typeof AuthenticatedRhRouteWithChildren
   AuthenticatedConfiguracoesEmpresaRoute: typeof AuthenticatedConfiguracoesEmpresaRoute
   AuthenticatedConfiguracoesFiliaisRoute: typeof AuthenticatedConfiguracoesFiliaisRoute
+  AuthenticatedConfiguracoesIntegracoesRoute: typeof AuthenticatedConfiguracoesIntegracoesRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -1185,6 +1226,8 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
     AuthenticatedConfiguracoesEmpresaRoute,
   AuthenticatedConfiguracoesFiliaisRoute:
     AuthenticatedConfiguracoesFiliaisRoute,
+  AuthenticatedConfiguracoesIntegracoesRoute:
+    AuthenticatedConfiguracoesIntegracoesRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
@@ -1196,6 +1239,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   LoginRoute: LoginRoute,
   ConviteTokenRoute: ConviteTokenRoute,
+  ApiPublicIfoodWebhookRoute: ApiPublicIfoodWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

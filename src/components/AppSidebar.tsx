@@ -65,6 +65,7 @@ const negocio: NavItem[] = [
 const sistema: NavItem[] = [
   { title: "Empresa", url: "/configuracoes/empresa", icon: Settings },
   { title: "Filiais", url: "/configuracoes/filiais", icon: Building },
+  { title: "Integrações", url: "/configuracoes/integracoes", icon: Wallet },
 ];
 
 export function AppSidebar() {
