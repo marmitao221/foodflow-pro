@@ -9,81 +9,106 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ConviteTokenRouteImport } from './routes/convite.$token'
-import { Route as AuthenticatedRhRouteImport } from './routes/_authenticated/rh'
-import { Route as AuthenticatedRestauranteRouteImport } from './routes/_authenticated/restaurante'
-import { Route as AuthenticatedProducaoRouteImport } from './routes/_authenticated/producao'
-import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
-import { Route as AuthenticatedFinanceiroRouteImport } from './routes/_authenticated/financeiro'
-import { Route as AuthenticatedFichasRouteImport } from './routes/_authenticated/fichas'
-import { Route as AuthenticatedEstoqueRouteImport } from './routes/_authenticated/estoque'
-import { Route as AuthenticatedEquipeRouteImport } from './routes/_authenticated/equipe'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
-import { Route as AuthenticatedRhPontoRouteImport } from './routes/_authenticated/rh.ponto'
-import { Route as AuthenticatedRhFuncionariosRouteImport } from './routes/_authenticated/rh.funcionarios'
-import { Route as AuthenticatedRhEscalasRouteImport } from './routes/_authenticated/rh.escalas'
-import { Route as AuthenticatedRhDashboardRouteImport } from './routes/_authenticated/rh.dashboard'
-import { Route as AuthenticatedRhCargosRouteImport } from './routes/_authenticated/rh.cargos'
-import { Route as AuthenticatedRhBeneficiosRouteImport } from './routes/_authenticated/rh.beneficios'
-import { Route as AuthenticatedRestauranteProdutosRouteImport } from './routes/_authenticated/restaurante.produtos'
-import { Route as AuthenticatedRestauranteMesasRouteImport } from './routes/_authenticated/restaurante.mesas'
-import { Route as AuthenticatedRestauranteComandasRouteImport } from './routes/_authenticated/restaurante.comandas'
-import { Route as AuthenticatedRestauranteClientesRouteImport } from './routes/_authenticated/restaurante.clientes'
-import { Route as AuthenticatedRestauranteCaixaRouteImport } from './routes/_authenticated/restaurante.caixa'
-import { Route as AuthenticatedProducaoTurnosRouteImport } from './routes/_authenticated/producao.turnos'
-import { Route as AuthenticatedProducaoPlanejamentoRouteImport } from './routes/_authenticated/producao.planejamento'
-import { Route as AuthenticatedProducaoDesperdicioRouteImport } from './routes/_authenticated/producao.desperdicio'
-import { Route as AuthenticatedProducaoDashboardRouteImport } from './routes/_authenticated/producao.dashboard'
-import { Route as AuthenticatedProducaoContratosRouteImport } from './routes/_authenticated/producao.contratos'
-import { Route as AuthenticatedFinanceiroReceberRouteImport } from './routes/_authenticated/financeiro.receber'
-import { Route as AuthenticatedFinanceiroPagarRouteImport } from './routes/_authenticated/financeiro.pagar'
-import { Route as AuthenticatedFinanceiroFluxoRouteImport } from './routes/_authenticated/financeiro.fluxo'
-import { Route as AuthenticatedFinanceiroDreRouteImport } from './routes/_authenticated/financeiro.dre'
-import { Route as AuthenticatedFinanceiroCategoriasRouteImport } from './routes/_authenticated/financeiro.categorias'
-import { Route as AuthenticatedEstoqueSaidasRouteImport } from './routes/_authenticated/estoque.saidas'
-import { Route as AuthenticatedEstoqueItensRouteImport } from './routes/_authenticated/estoque.itens'
-import { Route as AuthenticatedEstoqueFornecedoresRouteImport } from './routes/_authenticated/estoque.fornecedores'
-import { Route as AuthenticatedEstoqueEntradasRouteImport } from './routes/_authenticated/estoque.entradas'
-import { Route as AuthenticatedEstoqueDashboardRouteImport } from './routes/_authenticated/estoque.dashboard'
-import { Route as AuthenticatedEstoqueCategoriasRouteImport } from './routes/_authenticated/estoque.categorias'
-import { Route as AuthenticatedEquipeTarefasRouteImport } from './routes/_authenticated/equipe.tarefas'
-import { Route as AuthenticatedEquipeRotinaRouteImport } from './routes/_authenticated/equipe.rotina'
-import { Route as AuthenticatedEquipeModelosRouteImport } from './routes/_authenticated/equipe.modelos'
-import { Route as AuthenticatedEquipeHistoricoRouteImport } from './routes/_authenticated/equipe.historico'
-import { Route as AuthenticatedEquipeGestaoRouteImport } from './routes/_authenticated/equipe.gestao'
-import { Route as AuthenticatedEquipeFuncoesRouteImport } from './routes/_authenticated/equipe.funcoes'
-import { Route as AuthenticatedEquipeFuncionariosRouteImport } from './routes/_authenticated/equipe.funcionarios'
-import { Route as AuthenticatedEquipeDashboardRouteImport } from './routes/_authenticated/equipe.dashboard'
-import { Route as AuthenticatedConfiguracoesIntegracoesRouteImport } from './routes/_authenticated/configuracoes.integracoes'
-import { Route as AuthenticatedConfiguracoesFiliaisRouteImport } from './routes/_authenticated/configuracoes.filiais'
+import { Route as AuthenticatedEquipeRouteImport } from './routes/_authenticated/equipe'
+import { Route as AuthenticatedEstoqueRouteImport } from './routes/_authenticated/estoque'
+import { Route as AuthenticatedFichasRouteImport } from './routes/_authenticated/fichas'
+import { Route as AuthenticatedFinanceiroRouteImport } from './routes/_authenticated/financeiro'
+import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
+import { Route as AuthenticatedProducaoRouteImport } from './routes/_authenticated/producao'
+import { Route as AuthenticatedRestauranteRouteImport } from './routes/_authenticated/restaurante'
+import { Route as AuthenticatedRhRouteImport } from './routes/_authenticated/rh'
+import { Route as ConviteTokenRouteImport } from './routes/convite.$token'
 import { Route as AuthenticatedConfiguracoesEmpresaRouteImport } from './routes/_authenticated/configuracoes.empresa'
+import { Route as AuthenticatedConfiguracoesFiliaisRouteImport } from './routes/_authenticated/configuracoes.filiais'
+import { Route as AuthenticatedConfiguracoesIntegracoesRouteImport } from './routes/_authenticated/configuracoes.integracoes'
+import { Route as AuthenticatedEquipeDashboardRouteImport } from './routes/_authenticated/equipe.dashboard'
+import { Route as AuthenticatedEquipeFuncionariosRouteImport } from './routes/_authenticated/equipe.funcionarios'
+import { Route as AuthenticatedEquipeFuncoesRouteImport } from './routes/_authenticated/equipe.funcoes'
+import { Route as AuthenticatedEquipeGestaoRouteImport } from './routes/_authenticated/equipe.gestao'
+import { Route as AuthenticatedEquipeHistoricoRouteImport } from './routes/_authenticated/equipe.historico'
+import { Route as AuthenticatedEquipeModelosRouteImport } from './routes/_authenticated/equipe.modelos'
+import { Route as AuthenticatedEquipeRotinaRouteImport } from './routes/_authenticated/equipe.rotina'
+import { Route as AuthenticatedEquipeTarefasRouteImport } from './routes/_authenticated/equipe.tarefas'
+import { Route as AuthenticatedEstoqueCategoriasRouteImport } from './routes/_authenticated/estoque.categorias'
+import { Route as AuthenticatedEstoqueDashboardRouteImport } from './routes/_authenticated/estoque.dashboard'
+import { Route as AuthenticatedEstoqueEntradasRouteImport } from './routes/_authenticated/estoque.entradas'
+import { Route as AuthenticatedEstoqueFornecedoresRouteImport } from './routes/_authenticated/estoque.fornecedores'
+import { Route as AuthenticatedEstoqueItensRouteImport } from './routes/_authenticated/estoque.itens'
+import { Route as AuthenticatedEstoqueSaidasRouteImport } from './routes/_authenticated/estoque.saidas'
+import { Route as AuthenticatedFinanceiroCategoriasRouteImport } from './routes/_authenticated/financeiro.categorias'
+import { Route as AuthenticatedFinanceiroDreRouteImport } from './routes/_authenticated/financeiro.dre'
+import { Route as AuthenticatedFinanceiroFluxoRouteImport } from './routes/_authenticated/financeiro.fluxo'
+import { Route as AuthenticatedFinanceiroPagarRouteImport } from './routes/_authenticated/financeiro.pagar'
+import { Route as AuthenticatedFinanceiroReceberRouteImport } from './routes/_authenticated/financeiro.receber'
+import { Route as AuthenticatedProducaoContratosRouteImport } from './routes/_authenticated/producao.contratos'
+import { Route as AuthenticatedProducaoDashboardRouteImport } from './routes/_authenticated/producao.dashboard'
+import { Route as AuthenticatedProducaoDesperdicioRouteImport } from './routes/_authenticated/producao.desperdicio'
+import { Route as AuthenticatedProducaoPlanejamentoRouteImport } from './routes/_authenticated/producao.planejamento'
+import { Route as AuthenticatedProducaoTurnosRouteImport } from './routes/_authenticated/producao.turnos'
+import { Route as AuthenticatedRestauranteCaixaRouteImport } from './routes/_authenticated/restaurante.caixa'
+import { Route as AuthenticatedRestauranteClientesRouteImport } from './routes/_authenticated/restaurante.clientes'
+import { Route as AuthenticatedRestauranteComandasRouteImport } from './routes/_authenticated/restaurante.comandas'
+import { Route as AuthenticatedRestauranteMesasRouteImport } from './routes/_authenticated/restaurante.mesas'
+import { Route as AuthenticatedRestauranteProdutosRouteImport } from './routes/_authenticated/restaurante.produtos'
+import { Route as AuthenticatedRhBeneficiosRouteImport } from './routes/_authenticated/rh.beneficios'
+import { Route as AuthenticatedRhCargosRouteImport } from './routes/_authenticated/rh.cargos'
+import { Route as AuthenticatedRhDashboardRouteImport } from './routes/_authenticated/rh.dashboard'
+import { Route as AuthenticatedRhEscalasRouteImport } from './routes/_authenticated/rh.escalas'
+import { Route as AuthenticatedRhFuncionariosRouteImport } from './routes/_authenticated/rh.funcionarios'
+import { Route as AuthenticatedRhPontoRouteImport } from './routes/_authenticated/rh.ponto'
 import { Route as ApiPublicIfoodWebhookRouteImport } from './routes/api/public/ifood/webhook'
 
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ConviteTokenRoute = ConviteTokenRouteImport.update({
-  id: '/convite/$token',
-  path: '/convite/$token',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedRhRoute = AuthenticatedRhRouteImport.update({
-  id: '/rh',
-  path: '/rh',
+const AuthenticatedEquipeRoute = AuthenticatedEquipeRouteImport.update({
+  id: '/equipe',
+  path: '/equipe',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedEstoqueRoute = AuthenticatedEstoqueRouteImport.update({
+  id: '/estoque',
+  path: '/estoque',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedFichasRoute = AuthenticatedFichasRouteImport.update({
+  id: '/fichas',
+  path: '/fichas',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedFinanceiroRoute = AuthenticatedFinanceiroRouteImport.update({
+  id: '/financeiro',
+  path: '/financeiro',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedProducaoRoute = AuthenticatedProducaoRouteImport.update({
+  id: '/producao',
+  path: '/producao',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedRestauranteRoute =
@@ -92,252 +117,20 @@ const AuthenticatedRestauranteRoute =
     path: '/restaurante',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-const AuthenticatedProducaoRoute = AuthenticatedProducaoRouteImport.update({
-  id: '/producao',
-  path: '/producao',
+const AuthenticatedRhRoute = AuthenticatedRhRouteImport.update({
+  id: '/rh',
+  path: '/rh',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
-  id: '/onboarding',
-  path: '/onboarding',
-  getParentRoute: () => AuthenticatedRoute,
+const ConviteTokenRoute = ConviteTokenRouteImport.update({
+  id: '/convite/$token',
+  path: '/convite/$token',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedFinanceiroRoute = AuthenticatedFinanceiroRouteImport.update({
-  id: '/financeiro',
-  path: '/financeiro',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedFichasRoute = AuthenticatedFichasRouteImport.update({
-  id: '/fichas',
-  path: '/fichas',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedEstoqueRoute = AuthenticatedEstoqueRouteImport.update({
-  id: '/estoque',
-  path: '/estoque',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedEquipeRoute = AuthenticatedEquipeRouteImport.update({
-  id: '/equipe',
-  path: '/equipe',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedRhPontoRoute = AuthenticatedRhPontoRouteImport.update({
-  id: '/ponto',
-  path: '/ponto',
-  getParentRoute: () => AuthenticatedRhRoute,
-} as any)
-const AuthenticatedRhFuncionariosRoute =
-  AuthenticatedRhFuncionariosRouteImport.update({
-    id: '/funcionarios',
-    path: '/funcionarios',
-    getParentRoute: () => AuthenticatedRhRoute,
-  } as any)
-const AuthenticatedRhEscalasRoute = AuthenticatedRhEscalasRouteImport.update({
-  id: '/escalas',
-  path: '/escalas',
-  getParentRoute: () => AuthenticatedRhRoute,
-} as any)
-const AuthenticatedRhDashboardRoute =
-  AuthenticatedRhDashboardRouteImport.update({
-    id: '/dashboard',
-    path: '/dashboard',
-    getParentRoute: () => AuthenticatedRhRoute,
-  } as any)
-const AuthenticatedRhCargosRoute = AuthenticatedRhCargosRouteImport.update({
-  id: '/cargos',
-  path: '/cargos',
-  getParentRoute: () => AuthenticatedRhRoute,
-} as any)
-const AuthenticatedRhBeneficiosRoute =
-  AuthenticatedRhBeneficiosRouteImport.update({
-    id: '/beneficios',
-    path: '/beneficios',
-    getParentRoute: () => AuthenticatedRhRoute,
-  } as any)
-const AuthenticatedRestauranteProdutosRoute =
-  AuthenticatedRestauranteProdutosRouteImport.update({
-    id: '/produtos',
-    path: '/produtos',
-    getParentRoute: () => AuthenticatedRestauranteRoute,
-  } as any)
-const AuthenticatedRestauranteMesasRoute =
-  AuthenticatedRestauranteMesasRouteImport.update({
-    id: '/mesas',
-    path: '/mesas',
-    getParentRoute: () => AuthenticatedRestauranteRoute,
-  } as any)
-const AuthenticatedRestauranteComandasRoute =
-  AuthenticatedRestauranteComandasRouteImport.update({
-    id: '/comandas',
-    path: '/comandas',
-    getParentRoute: () => AuthenticatedRestauranteRoute,
-  } as any)
-const AuthenticatedRestauranteClientesRoute =
-  AuthenticatedRestauranteClientesRouteImport.update({
-    id: '/clientes',
-    path: '/clientes',
-    getParentRoute: () => AuthenticatedRestauranteRoute,
-  } as any)
-const AuthenticatedRestauranteCaixaRoute =
-  AuthenticatedRestauranteCaixaRouteImport.update({
-    id: '/caixa',
-    path: '/caixa',
-    getParentRoute: () => AuthenticatedRestauranteRoute,
-  } as any)
-const AuthenticatedProducaoTurnosRoute =
-  AuthenticatedProducaoTurnosRouteImport.update({
-    id: '/turnos',
-    path: '/turnos',
-    getParentRoute: () => AuthenticatedProducaoRoute,
-  } as any)
-const AuthenticatedProducaoPlanejamentoRoute =
-  AuthenticatedProducaoPlanejamentoRouteImport.update({
-    id: '/planejamento',
-    path: '/planejamento',
-    getParentRoute: () => AuthenticatedProducaoRoute,
-  } as any)
-const AuthenticatedProducaoDesperdicioRoute =
-  AuthenticatedProducaoDesperdicioRouteImport.update({
-    id: '/desperdicio',
-    path: '/desperdicio',
-    getParentRoute: () => AuthenticatedProducaoRoute,
-  } as any)
-const AuthenticatedProducaoDashboardRoute =
-  AuthenticatedProducaoDashboardRouteImport.update({
-    id: '/dashboard',
-    path: '/dashboard',
-    getParentRoute: () => AuthenticatedProducaoRoute,
-  } as any)
-const AuthenticatedProducaoContratosRoute =
-  AuthenticatedProducaoContratosRouteImport.update({
-    id: '/contratos',
-    path: '/contratos',
-    getParentRoute: () => AuthenticatedProducaoRoute,
-  } as any)
-const AuthenticatedFinanceiroReceberRoute =
-  AuthenticatedFinanceiroReceberRouteImport.update({
-    id: '/receber',
-    path: '/receber',
-    getParentRoute: () => AuthenticatedFinanceiroRoute,
-  } as any)
-const AuthenticatedFinanceiroPagarRoute =
-  AuthenticatedFinanceiroPagarRouteImport.update({
-    id: '/pagar',
-    path: '/pagar',
-    getParentRoute: () => AuthenticatedFinanceiroRoute,
-  } as any)
-const AuthenticatedFinanceiroFluxoRoute =
-  AuthenticatedFinanceiroFluxoRouteImport.update({
-    id: '/fluxo',
-    path: '/fluxo',
-    getParentRoute: () => AuthenticatedFinanceiroRoute,
-  } as any)
-const AuthenticatedFinanceiroDreRoute =
-  AuthenticatedFinanceiroDreRouteImport.update({
-    id: '/dre',
-    path: '/dre',
-    getParentRoute: () => AuthenticatedFinanceiroRoute,
-  } as any)
-const AuthenticatedFinanceiroCategoriasRoute =
-  AuthenticatedFinanceiroCategoriasRouteImport.update({
-    id: '/categorias',
-    path: '/categorias',
-    getParentRoute: () => AuthenticatedFinanceiroRoute,
-  } as any)
-const AuthenticatedEstoqueSaidasRoute =
-  AuthenticatedEstoqueSaidasRouteImport.update({
-    id: '/saidas',
-    path: '/saidas',
-    getParentRoute: () => AuthenticatedEstoqueRoute,
-  } as any)
-const AuthenticatedEstoqueItensRoute =
-  AuthenticatedEstoqueItensRouteImport.update({
-    id: '/itens',
-    path: '/itens',
-    getParentRoute: () => AuthenticatedEstoqueRoute,
-  } as any)
-const AuthenticatedEstoqueFornecedoresRoute =
-  AuthenticatedEstoqueFornecedoresRouteImport.update({
-    id: '/fornecedores',
-    path: '/fornecedores',
-    getParentRoute: () => AuthenticatedEstoqueRoute,
-  } as any)
-const AuthenticatedEstoqueEntradasRoute =
-  AuthenticatedEstoqueEntradasRouteImport.update({
-    id: '/entradas',
-    path: '/entradas',
-    getParentRoute: () => AuthenticatedEstoqueRoute,
-  } as any)
-const AuthenticatedEstoqueDashboardRoute =
-  AuthenticatedEstoqueDashboardRouteImport.update({
-    id: '/dashboard',
-    path: '/dashboard',
-    getParentRoute: () => AuthenticatedEstoqueRoute,
-  } as any)
-const AuthenticatedEstoqueCategoriasRoute =
-  AuthenticatedEstoqueCategoriasRouteImport.update({
-    id: '/categorias',
-    path: '/categorias',
-    getParentRoute: () => AuthenticatedEstoqueRoute,
-  } as any)
-const AuthenticatedEquipeTarefasRoute =
-  AuthenticatedEquipeTarefasRouteImport.update({
-    id: '/tarefas',
-    path: '/tarefas',
-    getParentRoute: () => AuthenticatedEquipeRoute,
-  } as any)
-const AuthenticatedEquipeRotinaRoute =
-  AuthenticatedEquipeRotinaRouteImport.update({
-    id: '/rotina',
-    path: '/rotina',
-    getParentRoute: () => AuthenticatedEquipeRoute,
-  } as any)
-const AuthenticatedEquipeModelosRoute =
-  AuthenticatedEquipeModelosRouteImport.update({
-    id: '/modelos',
-    path: '/modelos',
-    getParentRoute: () => AuthenticatedEquipeRoute,
-  } as any)
-const AuthenticatedEquipeHistoricoRoute =
-  AuthenticatedEquipeHistoricoRouteImport.update({
-    id: '/historico',
-    path: '/historico',
-    getParentRoute: () => AuthenticatedEquipeRoute,
-  } as any)
-const AuthenticatedEquipeGestaoRoute =
-  AuthenticatedEquipeGestaoRouteImport.update({
-    id: '/gestao',
-    path: '/gestao',
-    getParentRoute: () => AuthenticatedEquipeRoute,
-  } as any)
-const AuthenticatedEquipeFuncoesRoute =
-  AuthenticatedEquipeFuncoesRouteImport.update({
-    id: '/funcoes',
-    path: '/funcoes',
-    getParentRoute: () => AuthenticatedEquipeRoute,
-  } as any)
-const AuthenticatedEquipeFuncionariosRoute =
-  AuthenticatedEquipeFuncionariosRouteImport.update({
-    id: '/funcionarios',
-    path: '/funcionarios',
-    getParentRoute: () => AuthenticatedEquipeRoute,
-  } as any)
-const AuthenticatedEquipeDashboardRoute =
-  AuthenticatedEquipeDashboardRouteImport.update({
-    id: '/dashboard',
-    path: '/dashboard',
-    getParentRoute: () => AuthenticatedEquipeRoute,
-  } as any)
-const AuthenticatedConfiguracoesIntegracoesRoute =
-  AuthenticatedConfiguracoesIntegracoesRouteImport.update({
-    id: '/configuracoes/integracoes',
-    path: '/configuracoes/integracoes',
+const AuthenticatedConfiguracoesEmpresaRoute =
+  AuthenticatedConfiguracoesEmpresaRouteImport.update({
+    id: '/configuracoes/empresa',
+    path: '/configuracoes/empresa',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedConfiguracoesFiliaisRoute =
@@ -346,12 +139,219 @@ const AuthenticatedConfiguracoesFiliaisRoute =
     path: '/configuracoes/filiais',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-const AuthenticatedConfiguracoesEmpresaRoute =
-  AuthenticatedConfiguracoesEmpresaRouteImport.update({
-    id: '/configuracoes/empresa',
-    path: '/configuracoes/empresa',
+const AuthenticatedConfiguracoesIntegracoesRoute =
+  AuthenticatedConfiguracoesIntegracoesRouteImport.update({
+    id: '/configuracoes/integracoes',
+    path: '/configuracoes/integracoes',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedEquipeDashboardRoute =
+  AuthenticatedEquipeDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
+const AuthenticatedEquipeFuncionariosRoute =
+  AuthenticatedEquipeFuncionariosRouteImport.update({
+    id: '/funcionarios',
+    path: '/funcionarios',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
+const AuthenticatedEquipeFuncoesRoute =
+  AuthenticatedEquipeFuncoesRouteImport.update({
+    id: '/funcoes',
+    path: '/funcoes',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
+const AuthenticatedEquipeGestaoRoute =
+  AuthenticatedEquipeGestaoRouteImport.update({
+    id: '/gestao',
+    path: '/gestao',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
+const AuthenticatedEquipeHistoricoRoute =
+  AuthenticatedEquipeHistoricoRouteImport.update({
+    id: '/historico',
+    path: '/historico',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
+const AuthenticatedEquipeModelosRoute =
+  AuthenticatedEquipeModelosRouteImport.update({
+    id: '/modelos',
+    path: '/modelos',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
+const AuthenticatedEquipeRotinaRoute =
+  AuthenticatedEquipeRotinaRouteImport.update({
+    id: '/rotina',
+    path: '/rotina',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
+const AuthenticatedEquipeTarefasRoute =
+  AuthenticatedEquipeTarefasRouteImport.update({
+    id: '/tarefas',
+    path: '/tarefas',
+    getParentRoute: () => AuthenticatedEquipeRoute,
+  } as any)
+const AuthenticatedEstoqueCategoriasRoute =
+  AuthenticatedEstoqueCategoriasRouteImport.update({
+    id: '/categorias',
+    path: '/categorias',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueDashboardRoute =
+  AuthenticatedEstoqueDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueEntradasRoute =
+  AuthenticatedEstoqueEntradasRouteImport.update({
+    id: '/entradas',
+    path: '/entradas',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueFornecedoresRoute =
+  AuthenticatedEstoqueFornecedoresRouteImport.update({
+    id: '/fornecedores',
+    path: '/fornecedores',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueItensRoute =
+  AuthenticatedEstoqueItensRouteImport.update({
+    id: '/itens',
+    path: '/itens',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedEstoqueSaidasRoute =
+  AuthenticatedEstoqueSaidasRouteImport.update({
+    id: '/saidas',
+    path: '/saidas',
+    getParentRoute: () => AuthenticatedEstoqueRoute,
+  } as any)
+const AuthenticatedFinanceiroCategoriasRoute =
+  AuthenticatedFinanceiroCategoriasRouteImport.update({
+    id: '/categorias',
+    path: '/categorias',
+    getParentRoute: () => AuthenticatedFinanceiroRoute,
+  } as any)
+const AuthenticatedFinanceiroDreRoute =
+  AuthenticatedFinanceiroDreRouteImport.update({
+    id: '/dre',
+    path: '/dre',
+    getParentRoute: () => AuthenticatedFinanceiroRoute,
+  } as any)
+const AuthenticatedFinanceiroFluxoRoute =
+  AuthenticatedFinanceiroFluxoRouteImport.update({
+    id: '/fluxo',
+    path: '/fluxo',
+    getParentRoute: () => AuthenticatedFinanceiroRoute,
+  } as any)
+const AuthenticatedFinanceiroPagarRoute =
+  AuthenticatedFinanceiroPagarRouteImport.update({
+    id: '/pagar',
+    path: '/pagar',
+    getParentRoute: () => AuthenticatedFinanceiroRoute,
+  } as any)
+const AuthenticatedFinanceiroReceberRoute =
+  AuthenticatedFinanceiroReceberRouteImport.update({
+    id: '/receber',
+    path: '/receber',
+    getParentRoute: () => AuthenticatedFinanceiroRoute,
+  } as any)
+const AuthenticatedProducaoContratosRoute =
+  AuthenticatedProducaoContratosRouteImport.update({
+    id: '/contratos',
+    path: '/contratos',
+    getParentRoute: () => AuthenticatedProducaoRoute,
+  } as any)
+const AuthenticatedProducaoDashboardRoute =
+  AuthenticatedProducaoDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => AuthenticatedProducaoRoute,
+  } as any)
+const AuthenticatedProducaoDesperdicioRoute =
+  AuthenticatedProducaoDesperdicioRouteImport.update({
+    id: '/desperdicio',
+    path: '/desperdicio',
+    getParentRoute: () => AuthenticatedProducaoRoute,
+  } as any)
+const AuthenticatedProducaoPlanejamentoRoute =
+  AuthenticatedProducaoPlanejamentoRouteImport.update({
+    id: '/planejamento',
+    path: '/planejamento',
+    getParentRoute: () => AuthenticatedProducaoRoute,
+  } as any)
+const AuthenticatedProducaoTurnosRoute =
+  AuthenticatedProducaoTurnosRouteImport.update({
+    id: '/turnos',
+    path: '/turnos',
+    getParentRoute: () => AuthenticatedProducaoRoute,
+  } as any)
+const AuthenticatedRestauranteCaixaRoute =
+  AuthenticatedRestauranteCaixaRouteImport.update({
+    id: '/caixa',
+    path: '/caixa',
+    getParentRoute: () => AuthenticatedRestauranteRoute,
+  } as any)
+const AuthenticatedRestauranteClientesRoute =
+  AuthenticatedRestauranteClientesRouteImport.update({
+    id: '/clientes',
+    path: '/clientes',
+    getParentRoute: () => AuthenticatedRestauranteRoute,
+  } as any)
+const AuthenticatedRestauranteComandasRoute =
+  AuthenticatedRestauranteComandasRouteImport.update({
+    id: '/comandas',
+    path: '/comandas',
+    getParentRoute: () => AuthenticatedRestauranteRoute,
+  } as any)
+const AuthenticatedRestauranteMesasRoute =
+  AuthenticatedRestauranteMesasRouteImport.update({
+    id: '/mesas',
+    path: '/mesas',
+    getParentRoute: () => AuthenticatedRestauranteRoute,
+  } as any)
+const AuthenticatedRestauranteProdutosRoute =
+  AuthenticatedRestauranteProdutosRouteImport.update({
+    id: '/produtos',
+    path: '/produtos',
+    getParentRoute: () => AuthenticatedRestauranteRoute,
+  } as any)
+const AuthenticatedRhBeneficiosRoute =
+  AuthenticatedRhBeneficiosRouteImport.update({
+    id: '/beneficios',
+    path: '/beneficios',
+    getParentRoute: () => AuthenticatedRhRoute,
+  } as any)
+const AuthenticatedRhCargosRoute = AuthenticatedRhCargosRouteImport.update({
+  id: '/cargos',
+  path: '/cargos',
+  getParentRoute: () => AuthenticatedRhRoute,
+} as any)
+const AuthenticatedRhDashboardRoute =
+  AuthenticatedRhDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => AuthenticatedRhRoute,
+  } as any)
+const AuthenticatedRhEscalasRoute = AuthenticatedRhEscalasRouteImport.update({
+  id: '/escalas',
+  path: '/escalas',
+  getParentRoute: () => AuthenticatedRhRoute,
+} as any)
+const AuthenticatedRhFuncionariosRoute =
+  AuthenticatedRhFuncionariosRouteImport.update({
+    id: '/funcionarios',
+    path: '/funcionarios',
+    getParentRoute: () => AuthenticatedRhRoute,
+  } as any)
+const AuthenticatedRhPontoRoute = AuthenticatedRhPontoRouteImport.update({
+  id: '/ponto',
+  path: '/ponto',
+  getParentRoute: () => AuthenticatedRhRoute,
+} as any)
 const ApiPublicIfoodWebhookRoute = ApiPublicIfoodWebhookRouteImport.update({
   id: '/api/public/ifood/webhook',
   path: '/api/public/ifood/webhook',
@@ -692,11 +692,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -706,67 +706,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/convite/$token': {
-      id: '/convite/$token'
-      path: '/convite/$token'
-      fullPath: '/convite/$token'
-      preLoaderRoute: typeof ConviteTokenRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/rh': {
-      id: '/_authenticated/rh'
-      path: '/rh'
-      fullPath: '/rh'
-      preLoaderRoute: typeof AuthenticatedRhRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/restaurante': {
-      id: '/_authenticated/restaurante'
-      path: '/restaurante'
-      fullPath: '/restaurante'
-      preLoaderRoute: typeof AuthenticatedRestauranteRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/producao': {
-      id: '/_authenticated/producao'
-      path: '/producao'
-      fullPath: '/producao'
-      preLoaderRoute: typeof AuthenticatedProducaoRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/onboarding': {
-      id: '/_authenticated/onboarding'
-      path: '/onboarding'
-      fullPath: '/onboarding'
-      preLoaderRoute: typeof AuthenticatedOnboardingRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/financeiro': {
-      id: '/_authenticated/financeiro'
-      path: '/financeiro'
-      fullPath: '/financeiro'
-      preLoaderRoute: typeof AuthenticatedFinanceiroRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/fichas': {
-      id: '/_authenticated/fichas'
-      path: '/fichas'
-      fullPath: '/fichas'
-      preLoaderRoute: typeof AuthenticatedFichasRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/estoque': {
-      id: '/_authenticated/estoque'
-      path: '/estoque'
-      fullPath: '/estoque'
-      preLoaderRoute: typeof AuthenticatedEstoqueRouteImport
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/equipe': {
@@ -776,263 +727,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEquipeRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/dashboard': {
-      id: '/_authenticated/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+    '/_authenticated/estoque': {
+      id: '/_authenticated/estoque'
+      path: '/estoque'
+      fullPath: '/estoque'
+      preLoaderRoute: typeof AuthenticatedEstoqueRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/rh/ponto': {
-      id: '/_authenticated/rh/ponto'
-      path: '/ponto'
-      fullPath: '/rh/ponto'
-      preLoaderRoute: typeof AuthenticatedRhPontoRouteImport
-      parentRoute: typeof AuthenticatedRhRoute
+    '/_authenticated/fichas': {
+      id: '/_authenticated/fichas'
+      path: '/fichas'
+      fullPath: '/fichas'
+      preLoaderRoute: typeof AuthenticatedFichasRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/rh/funcionarios': {
-      id: '/_authenticated/rh/funcionarios'
-      path: '/funcionarios'
-      fullPath: '/rh/funcionarios'
-      preLoaderRoute: typeof AuthenticatedRhFuncionariosRouteImport
-      parentRoute: typeof AuthenticatedRhRoute
+    '/_authenticated/financeiro': {
+      id: '/_authenticated/financeiro'
+      path: '/financeiro'
+      fullPath: '/financeiro'
+      preLoaderRoute: typeof AuthenticatedFinanceiroRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/rh/escalas': {
-      id: '/_authenticated/rh/escalas'
-      path: '/escalas'
-      fullPath: '/rh/escalas'
-      preLoaderRoute: typeof AuthenticatedRhEscalasRouteImport
-      parentRoute: typeof AuthenticatedRhRoute
+    '/_authenticated/onboarding': {
+      id: '/_authenticated/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof AuthenticatedOnboardingRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/rh/dashboard': {
-      id: '/_authenticated/rh/dashboard'
-      path: '/dashboard'
-      fullPath: '/rh/dashboard'
-      preLoaderRoute: typeof AuthenticatedRhDashboardRouteImport
-      parentRoute: typeof AuthenticatedRhRoute
+    '/_authenticated/producao': {
+      id: '/_authenticated/producao'
+      path: '/producao'
+      fullPath: '/producao'
+      preLoaderRoute: typeof AuthenticatedProducaoRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/rh/cargos': {
-      id: '/_authenticated/rh/cargos'
-      path: '/cargos'
-      fullPath: '/rh/cargos'
-      preLoaderRoute: typeof AuthenticatedRhCargosRouteImport
-      parentRoute: typeof AuthenticatedRhRoute
+    '/_authenticated/restaurante': {
+      id: '/_authenticated/restaurante'
+      path: '/restaurante'
+      fullPath: '/restaurante'
+      preLoaderRoute: typeof AuthenticatedRestauranteRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/rh/beneficios': {
-      id: '/_authenticated/rh/beneficios'
-      path: '/beneficios'
-      fullPath: '/rh/beneficios'
-      preLoaderRoute: typeof AuthenticatedRhBeneficiosRouteImport
-      parentRoute: typeof AuthenticatedRhRoute
+    '/_authenticated/rh': {
+      id: '/_authenticated/rh'
+      path: '/rh'
+      fullPath: '/rh'
+      preLoaderRoute: typeof AuthenticatedRhRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/restaurante/produtos': {
-      id: '/_authenticated/restaurante/produtos'
-      path: '/produtos'
-      fullPath: '/restaurante/produtos'
-      preLoaderRoute: typeof AuthenticatedRestauranteProdutosRouteImport
-      parentRoute: typeof AuthenticatedRestauranteRoute
+    '/convite/$token': {
+      id: '/convite/$token'
+      path: '/convite/$token'
+      fullPath: '/convite/$token'
+      preLoaderRoute: typeof ConviteTokenRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/restaurante/mesas': {
-      id: '/_authenticated/restaurante/mesas'
-      path: '/mesas'
-      fullPath: '/restaurante/mesas'
-      preLoaderRoute: typeof AuthenticatedRestauranteMesasRouteImport
-      parentRoute: typeof AuthenticatedRestauranteRoute
-    }
-    '/_authenticated/restaurante/comandas': {
-      id: '/_authenticated/restaurante/comandas'
-      path: '/comandas'
-      fullPath: '/restaurante/comandas'
-      preLoaderRoute: typeof AuthenticatedRestauranteComandasRouteImport
-      parentRoute: typeof AuthenticatedRestauranteRoute
-    }
-    '/_authenticated/restaurante/clientes': {
-      id: '/_authenticated/restaurante/clientes'
-      path: '/clientes'
-      fullPath: '/restaurante/clientes'
-      preLoaderRoute: typeof AuthenticatedRestauranteClientesRouteImport
-      parentRoute: typeof AuthenticatedRestauranteRoute
-    }
-    '/_authenticated/restaurante/caixa': {
-      id: '/_authenticated/restaurante/caixa'
-      path: '/caixa'
-      fullPath: '/restaurante/caixa'
-      preLoaderRoute: typeof AuthenticatedRestauranteCaixaRouteImport
-      parentRoute: typeof AuthenticatedRestauranteRoute
-    }
-    '/_authenticated/producao/turnos': {
-      id: '/_authenticated/producao/turnos'
-      path: '/turnos'
-      fullPath: '/producao/turnos'
-      preLoaderRoute: typeof AuthenticatedProducaoTurnosRouteImport
-      parentRoute: typeof AuthenticatedProducaoRoute
-    }
-    '/_authenticated/producao/planejamento': {
-      id: '/_authenticated/producao/planejamento'
-      path: '/planejamento'
-      fullPath: '/producao/planejamento'
-      preLoaderRoute: typeof AuthenticatedProducaoPlanejamentoRouteImport
-      parentRoute: typeof AuthenticatedProducaoRoute
-    }
-    '/_authenticated/producao/desperdicio': {
-      id: '/_authenticated/producao/desperdicio'
-      path: '/desperdicio'
-      fullPath: '/producao/desperdicio'
-      preLoaderRoute: typeof AuthenticatedProducaoDesperdicioRouteImport
-      parentRoute: typeof AuthenticatedProducaoRoute
-    }
-    '/_authenticated/producao/dashboard': {
-      id: '/_authenticated/producao/dashboard'
-      path: '/dashboard'
-      fullPath: '/producao/dashboard'
-      preLoaderRoute: typeof AuthenticatedProducaoDashboardRouteImport
-      parentRoute: typeof AuthenticatedProducaoRoute
-    }
-    '/_authenticated/producao/contratos': {
-      id: '/_authenticated/producao/contratos'
-      path: '/contratos'
-      fullPath: '/producao/contratos'
-      preLoaderRoute: typeof AuthenticatedProducaoContratosRouteImport
-      parentRoute: typeof AuthenticatedProducaoRoute
-    }
-    '/_authenticated/financeiro/receber': {
-      id: '/_authenticated/financeiro/receber'
-      path: '/receber'
-      fullPath: '/financeiro/receber'
-      preLoaderRoute: typeof AuthenticatedFinanceiroReceberRouteImport
-      parentRoute: typeof AuthenticatedFinanceiroRoute
-    }
-    '/_authenticated/financeiro/pagar': {
-      id: '/_authenticated/financeiro/pagar'
-      path: '/pagar'
-      fullPath: '/financeiro/pagar'
-      preLoaderRoute: typeof AuthenticatedFinanceiroPagarRouteImport
-      parentRoute: typeof AuthenticatedFinanceiroRoute
-    }
-    '/_authenticated/financeiro/fluxo': {
-      id: '/_authenticated/financeiro/fluxo'
-      path: '/fluxo'
-      fullPath: '/financeiro/fluxo'
-      preLoaderRoute: typeof AuthenticatedFinanceiroFluxoRouteImport
-      parentRoute: typeof AuthenticatedFinanceiroRoute
-    }
-    '/_authenticated/financeiro/dre': {
-      id: '/_authenticated/financeiro/dre'
-      path: '/dre'
-      fullPath: '/financeiro/dre'
-      preLoaderRoute: typeof AuthenticatedFinanceiroDreRouteImport
-      parentRoute: typeof AuthenticatedFinanceiroRoute
-    }
-    '/_authenticated/financeiro/categorias': {
-      id: '/_authenticated/financeiro/categorias'
-      path: '/categorias'
-      fullPath: '/financeiro/categorias'
-      preLoaderRoute: typeof AuthenticatedFinanceiroCategoriasRouteImport
-      parentRoute: typeof AuthenticatedFinanceiroRoute
-    }
-    '/_authenticated/estoque/saidas': {
-      id: '/_authenticated/estoque/saidas'
-      path: '/saidas'
-      fullPath: '/estoque/saidas'
-      preLoaderRoute: typeof AuthenticatedEstoqueSaidasRouteImport
-      parentRoute: typeof AuthenticatedEstoqueRoute
-    }
-    '/_authenticated/estoque/itens': {
-      id: '/_authenticated/estoque/itens'
-      path: '/itens'
-      fullPath: '/estoque/itens'
-      preLoaderRoute: typeof AuthenticatedEstoqueItensRouteImport
-      parentRoute: typeof AuthenticatedEstoqueRoute
-    }
-    '/_authenticated/estoque/fornecedores': {
-      id: '/_authenticated/estoque/fornecedores'
-      path: '/fornecedores'
-      fullPath: '/estoque/fornecedores'
-      preLoaderRoute: typeof AuthenticatedEstoqueFornecedoresRouteImport
-      parentRoute: typeof AuthenticatedEstoqueRoute
-    }
-    '/_authenticated/estoque/entradas': {
-      id: '/_authenticated/estoque/entradas'
-      path: '/entradas'
-      fullPath: '/estoque/entradas'
-      preLoaderRoute: typeof AuthenticatedEstoqueEntradasRouteImport
-      parentRoute: typeof AuthenticatedEstoqueRoute
-    }
-    '/_authenticated/estoque/dashboard': {
-      id: '/_authenticated/estoque/dashboard'
-      path: '/dashboard'
-      fullPath: '/estoque/dashboard'
-      preLoaderRoute: typeof AuthenticatedEstoqueDashboardRouteImport
-      parentRoute: typeof AuthenticatedEstoqueRoute
-    }
-    '/_authenticated/estoque/categorias': {
-      id: '/_authenticated/estoque/categorias'
-      path: '/categorias'
-      fullPath: '/estoque/categorias'
-      preLoaderRoute: typeof AuthenticatedEstoqueCategoriasRouteImport
-      parentRoute: typeof AuthenticatedEstoqueRoute
-    }
-    '/_authenticated/equipe/tarefas': {
-      id: '/_authenticated/equipe/tarefas'
-      path: '/tarefas'
-      fullPath: '/equipe/tarefas'
-      preLoaderRoute: typeof AuthenticatedEquipeTarefasRouteImport
-      parentRoute: typeof AuthenticatedEquipeRoute
-    }
-    '/_authenticated/equipe/rotina': {
-      id: '/_authenticated/equipe/rotina'
-      path: '/rotina'
-      fullPath: '/equipe/rotina'
-      preLoaderRoute: typeof AuthenticatedEquipeRotinaRouteImport
-      parentRoute: typeof AuthenticatedEquipeRoute
-    }
-    '/_authenticated/equipe/modelos': {
-      id: '/_authenticated/equipe/modelos'
-      path: '/modelos'
-      fullPath: '/equipe/modelos'
-      preLoaderRoute: typeof AuthenticatedEquipeModelosRouteImport
-      parentRoute: typeof AuthenticatedEquipeRoute
-    }
-    '/_authenticated/equipe/historico': {
-      id: '/_authenticated/equipe/historico'
-      path: '/historico'
-      fullPath: '/equipe/historico'
-      preLoaderRoute: typeof AuthenticatedEquipeHistoricoRouteImport
-      parentRoute: typeof AuthenticatedEquipeRoute
-    }
-    '/_authenticated/equipe/gestao': {
-      id: '/_authenticated/equipe/gestao'
-      path: '/gestao'
-      fullPath: '/equipe/gestao'
-      preLoaderRoute: typeof AuthenticatedEquipeGestaoRouteImport
-      parentRoute: typeof AuthenticatedEquipeRoute
-    }
-    '/_authenticated/equipe/funcoes': {
-      id: '/_authenticated/equipe/funcoes'
-      path: '/funcoes'
-      fullPath: '/equipe/funcoes'
-      preLoaderRoute: typeof AuthenticatedEquipeFuncoesRouteImport
-      parentRoute: typeof AuthenticatedEquipeRoute
-    }
-    '/_authenticated/equipe/funcionarios': {
-      id: '/_authenticated/equipe/funcionarios'
-      path: '/funcionarios'
-      fullPath: '/equipe/funcionarios'
-      preLoaderRoute: typeof AuthenticatedEquipeFuncionariosRouteImport
-      parentRoute: typeof AuthenticatedEquipeRoute
-    }
-    '/_authenticated/equipe/dashboard': {
-      id: '/_authenticated/equipe/dashboard'
-      path: '/dashboard'
-      fullPath: '/equipe/dashboard'
-      preLoaderRoute: typeof AuthenticatedEquipeDashboardRouteImport
-      parentRoute: typeof AuthenticatedEquipeRoute
-    }
-    '/_authenticated/configuracoes/integracoes': {
-      id: '/_authenticated/configuracoes/integracoes'
-      path: '/configuracoes/integracoes'
-      fullPath: '/configuracoes/integracoes'
-      preLoaderRoute: typeof AuthenticatedConfiguracoesIntegracoesRouteImport
+    '/_authenticated/configuracoes/empresa': {
+      id: '/_authenticated/configuracoes/empresa'
+      path: '/configuracoes/empresa'
+      fullPath: '/configuracoes/empresa'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesEmpresaRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/configuracoes/filiais': {
@@ -1042,12 +797,257 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedConfiguracoesFiliaisRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/configuracoes/empresa': {
-      id: '/_authenticated/configuracoes/empresa'
-      path: '/configuracoes/empresa'
-      fullPath: '/configuracoes/empresa'
-      preLoaderRoute: typeof AuthenticatedConfiguracoesEmpresaRouteImport
+    '/_authenticated/configuracoes/integracoes': {
+      id: '/_authenticated/configuracoes/integracoes'
+      path: '/configuracoes/integracoes'
+      fullPath: '/configuracoes/integracoes'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesIntegracoesRouteImport
       parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/equipe/dashboard': {
+      id: '/_authenticated/equipe/dashboard'
+      path: '/dashboard'
+      fullPath: '/equipe/dashboard'
+      preLoaderRoute: typeof AuthenticatedEquipeDashboardRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
+    '/_authenticated/equipe/funcionarios': {
+      id: '/_authenticated/equipe/funcionarios'
+      path: '/funcionarios'
+      fullPath: '/equipe/funcionarios'
+      preLoaderRoute: typeof AuthenticatedEquipeFuncionariosRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
+    '/_authenticated/equipe/funcoes': {
+      id: '/_authenticated/equipe/funcoes'
+      path: '/funcoes'
+      fullPath: '/equipe/funcoes'
+      preLoaderRoute: typeof AuthenticatedEquipeFuncoesRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
+    '/_authenticated/equipe/gestao': {
+      id: '/_authenticated/equipe/gestao'
+      path: '/gestao'
+      fullPath: '/equipe/gestao'
+      preLoaderRoute: typeof AuthenticatedEquipeGestaoRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
+    '/_authenticated/equipe/historico': {
+      id: '/_authenticated/equipe/historico'
+      path: '/historico'
+      fullPath: '/equipe/historico'
+      preLoaderRoute: typeof AuthenticatedEquipeHistoricoRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
+    '/_authenticated/equipe/modelos': {
+      id: '/_authenticated/equipe/modelos'
+      path: '/modelos'
+      fullPath: '/equipe/modelos'
+      preLoaderRoute: typeof AuthenticatedEquipeModelosRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
+    '/_authenticated/equipe/rotina': {
+      id: '/_authenticated/equipe/rotina'
+      path: '/rotina'
+      fullPath: '/equipe/rotina'
+      preLoaderRoute: typeof AuthenticatedEquipeRotinaRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
+    '/_authenticated/equipe/tarefas': {
+      id: '/_authenticated/equipe/tarefas'
+      path: '/tarefas'
+      fullPath: '/equipe/tarefas'
+      preLoaderRoute: typeof AuthenticatedEquipeTarefasRouteImport
+      parentRoute: typeof AuthenticatedEquipeRoute
+    }
+    '/_authenticated/estoque/categorias': {
+      id: '/_authenticated/estoque/categorias'
+      path: '/categorias'
+      fullPath: '/estoque/categorias'
+      preLoaderRoute: typeof AuthenticatedEstoqueCategoriasRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/dashboard': {
+      id: '/_authenticated/estoque/dashboard'
+      path: '/dashboard'
+      fullPath: '/estoque/dashboard'
+      preLoaderRoute: typeof AuthenticatedEstoqueDashboardRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/entradas': {
+      id: '/_authenticated/estoque/entradas'
+      path: '/entradas'
+      fullPath: '/estoque/entradas'
+      preLoaderRoute: typeof AuthenticatedEstoqueEntradasRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/fornecedores': {
+      id: '/_authenticated/estoque/fornecedores'
+      path: '/fornecedores'
+      fullPath: '/estoque/fornecedores'
+      preLoaderRoute: typeof AuthenticatedEstoqueFornecedoresRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/itens': {
+      id: '/_authenticated/estoque/itens'
+      path: '/itens'
+      fullPath: '/estoque/itens'
+      preLoaderRoute: typeof AuthenticatedEstoqueItensRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/estoque/saidas': {
+      id: '/_authenticated/estoque/saidas'
+      path: '/saidas'
+      fullPath: '/estoque/saidas'
+      preLoaderRoute: typeof AuthenticatedEstoqueSaidasRouteImport
+      parentRoute: typeof AuthenticatedEstoqueRoute
+    }
+    '/_authenticated/financeiro/categorias': {
+      id: '/_authenticated/financeiro/categorias'
+      path: '/categorias'
+      fullPath: '/financeiro/categorias'
+      preLoaderRoute: typeof AuthenticatedFinanceiroCategoriasRouteImport
+      parentRoute: typeof AuthenticatedFinanceiroRoute
+    }
+    '/_authenticated/financeiro/dre': {
+      id: '/_authenticated/financeiro/dre'
+      path: '/dre'
+      fullPath: '/financeiro/dre'
+      preLoaderRoute: typeof AuthenticatedFinanceiroDreRouteImport
+      parentRoute: typeof AuthenticatedFinanceiroRoute
+    }
+    '/_authenticated/financeiro/fluxo': {
+      id: '/_authenticated/financeiro/fluxo'
+      path: '/fluxo'
+      fullPath: '/financeiro/fluxo'
+      preLoaderRoute: typeof AuthenticatedFinanceiroFluxoRouteImport
+      parentRoute: typeof AuthenticatedFinanceiroRoute
+    }
+    '/_authenticated/financeiro/pagar': {
+      id: '/_authenticated/financeiro/pagar'
+      path: '/pagar'
+      fullPath: '/financeiro/pagar'
+      preLoaderRoute: typeof AuthenticatedFinanceiroPagarRouteImport
+      parentRoute: typeof AuthenticatedFinanceiroRoute
+    }
+    '/_authenticated/financeiro/receber': {
+      id: '/_authenticated/financeiro/receber'
+      path: '/receber'
+      fullPath: '/financeiro/receber'
+      preLoaderRoute: typeof AuthenticatedFinanceiroReceberRouteImport
+      parentRoute: typeof AuthenticatedFinanceiroRoute
+    }
+    '/_authenticated/producao/contratos': {
+      id: '/_authenticated/producao/contratos'
+      path: '/contratos'
+      fullPath: '/producao/contratos'
+      preLoaderRoute: typeof AuthenticatedProducaoContratosRouteImport
+      parentRoute: typeof AuthenticatedProducaoRoute
+    }
+    '/_authenticated/producao/dashboard': {
+      id: '/_authenticated/producao/dashboard'
+      path: '/dashboard'
+      fullPath: '/producao/dashboard'
+      preLoaderRoute: typeof AuthenticatedProducaoDashboardRouteImport
+      parentRoute: typeof AuthenticatedProducaoRoute
+    }
+    '/_authenticated/producao/desperdicio': {
+      id: '/_authenticated/producao/desperdicio'
+      path: '/desperdicio'
+      fullPath: '/producao/desperdicio'
+      preLoaderRoute: typeof AuthenticatedProducaoDesperdicioRouteImport
+      parentRoute: typeof AuthenticatedProducaoRoute
+    }
+    '/_authenticated/producao/planejamento': {
+      id: '/_authenticated/producao/planejamento'
+      path: '/planejamento'
+      fullPath: '/producao/planejamento'
+      preLoaderRoute: typeof AuthenticatedProducaoPlanejamentoRouteImport
+      parentRoute: typeof AuthenticatedProducaoRoute
+    }
+    '/_authenticated/producao/turnos': {
+      id: '/_authenticated/producao/turnos'
+      path: '/turnos'
+      fullPath: '/producao/turnos'
+      preLoaderRoute: typeof AuthenticatedProducaoTurnosRouteImport
+      parentRoute: typeof AuthenticatedProducaoRoute
+    }
+    '/_authenticated/restaurante/caixa': {
+      id: '/_authenticated/restaurante/caixa'
+      path: '/caixa'
+      fullPath: '/restaurante/caixa'
+      preLoaderRoute: typeof AuthenticatedRestauranteCaixaRouteImport
+      parentRoute: typeof AuthenticatedRestauranteRoute
+    }
+    '/_authenticated/restaurante/clientes': {
+      id: '/_authenticated/restaurante/clientes'
+      path: '/clientes'
+      fullPath: '/restaurante/clientes'
+      preLoaderRoute: typeof AuthenticatedRestauranteClientesRouteImport
+      parentRoute: typeof AuthenticatedRestauranteRoute
+    }
+    '/_authenticated/restaurante/comandas': {
+      id: '/_authenticated/restaurante/comandas'
+      path: '/comandas'
+      fullPath: '/restaurante/comandas'
+      preLoaderRoute: typeof AuthenticatedRestauranteComandasRouteImport
+      parentRoute: typeof AuthenticatedRestauranteRoute
+    }
+    '/_authenticated/restaurante/mesas': {
+      id: '/_authenticated/restaurante/mesas'
+      path: '/mesas'
+      fullPath: '/restaurante/mesas'
+      preLoaderRoute: typeof AuthenticatedRestauranteMesasRouteImport
+      parentRoute: typeof AuthenticatedRestauranteRoute
+    }
+    '/_authenticated/restaurante/produtos': {
+      id: '/_authenticated/restaurante/produtos'
+      path: '/produtos'
+      fullPath: '/restaurante/produtos'
+      preLoaderRoute: typeof AuthenticatedRestauranteProdutosRouteImport
+      parentRoute: typeof AuthenticatedRestauranteRoute
+    }
+    '/_authenticated/rh/beneficios': {
+      id: '/_authenticated/rh/beneficios'
+      path: '/beneficios'
+      fullPath: '/rh/beneficios'
+      preLoaderRoute: typeof AuthenticatedRhBeneficiosRouteImport
+      parentRoute: typeof AuthenticatedRhRoute
+    }
+    '/_authenticated/rh/cargos': {
+      id: '/_authenticated/rh/cargos'
+      path: '/cargos'
+      fullPath: '/rh/cargos'
+      preLoaderRoute: typeof AuthenticatedRhCargosRouteImport
+      parentRoute: typeof AuthenticatedRhRoute
+    }
+    '/_authenticated/rh/dashboard': {
+      id: '/_authenticated/rh/dashboard'
+      path: '/dashboard'
+      fullPath: '/rh/dashboard'
+      preLoaderRoute: typeof AuthenticatedRhDashboardRouteImport
+      parentRoute: typeof AuthenticatedRhRoute
+    }
+    '/_authenticated/rh/escalas': {
+      id: '/_authenticated/rh/escalas'
+      path: '/escalas'
+      fullPath: '/rh/escalas'
+      preLoaderRoute: typeof AuthenticatedRhEscalasRouteImport
+      parentRoute: typeof AuthenticatedRhRoute
+    }
+    '/_authenticated/rh/funcionarios': {
+      id: '/_authenticated/rh/funcionarios'
+      path: '/funcionarios'
+      fullPath: '/rh/funcionarios'
+      preLoaderRoute: typeof AuthenticatedRhFuncionariosRouteImport
+      parentRoute: typeof AuthenticatedRhRoute
+    }
+    '/_authenticated/rh/ponto': {
+      id: '/_authenticated/rh/ponto'
+      path: '/ponto'
+      fullPath: '/rh/ponto'
+      preLoaderRoute: typeof AuthenticatedRhPontoRouteImport
+      parentRoute: typeof AuthenticatedRhRoute
     }
     '/api/public/ifood/webhook': {
       id: '/api/public/ifood/webhook'
