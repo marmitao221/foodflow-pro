@@ -65,6 +65,7 @@ function ClosedSessionDialog({ session, onClose }: { session: CashSession; onClo
             {new Date(session.opened_at).toLocaleDateString("pt-BR")}
           </DialogTitle>
         </DialogHeader>
+        <ClosedSessionSaleForm session={session} />
         <CashLedger
           openedAt={session.opened_at}
           openingBalance={Number(session.opening_balance)}
@@ -74,6 +75,165 @@ function ClosedSessionDialog({ session, onClose }: { session: CashSession; onClo
         />
       </DialogContent>
     </Dialog>
+  );
+}
+
+const retroMethods: PaymentMethod[] = [
+  "dinheiro",
+  "pix",
+  "debito",
+  "credito",
+  "ifood_online",
+  "ninetynine_online",
+  "keeta_online",
+  "aiqfome_online",
+];
+
+function ClosedSessionSaleForm({ session }: { session: CashSession }) {
+  const qc = useQueryClient();
+  const { data: companyId } = useMyCompanyId();
+  const [open, setOpen] = useState(false);
+  const [method, setMethod] = useState<PaymentMethod>("dinheiro");
+  const [amount, setAmount] = useState(0);
+  const [desc, setDesc] = useState("");
+
+  const save = useMutation({
+    mutationFn: async () => {
+      if (!companyId) throw new Error("Empresa não encontrada");
+      if (!(amount > 0)) throw new Error("Informe o valor da venda");
+      const when = session.closed_at ?? session.opened_at;
+      const { data: number, error: nErr } = await supabase.rpc("next_order_number", {
+        _company_id: companyId,
+      });
+      if (nErr) throw nErr;
+      const orderId = crypto.randomUUID();
+      const name = desc.trim() || "Venda lançada posteriormente";
+      const { error: oErr } = await supabase.from("orders").insert({
+        id: orderId,
+        company_id: companyId,
+        branch_id: session.branch_id,
+        number: number as number,
+        type: "balcao",
+        status: "aberta",
+        subtotal: amount,
+        total: amount,
+        opened_at: when,
+        notes: "Lançada em caixa fechado",
+      });
+      if (oErr) throw oErr;
+      const { error: iErr } = await supabase.from("order_items").insert({
+        order_id: orderId,
+        company_id: companyId,
+        product_name: name,
+        quantity: 1,
+        unit_price: amount,
+        total: amount,
+        created_at: when,
+      });
+      if (iErr) throw iErr;
+      const { error: pErr } = await supabase.from("order_payments").insert({
+        company_id: companyId,
+        order_id: orderId,
+        session_id: session.id,
+        method,
+        amount,
+        created_at: when,
+      });
+      if (pErr) throw pErr;
+      const { error: cErr } = await supabase
+        .from("orders")
+        .update({ status: "fechada", closed_at: when })
+        .eq("id", orderId);
+      if (cErr) throw cErr;
+
+      const day = when.slice(0, 10);
+      const dayLabel = new Date(when).toLocaleDateString("pt-BR");
+      const cat = await ensureCategory(companyId, "Vendas", "receita");
+      const { error: fErr } = await supabase.from("financial_transactions").insert({
+        company_id: companyId,
+        branch_id: session.branch_id,
+        category_id: cat,
+        description: `Caixa ${dayLabel} — ${paymentMethodLabel[method]} (lançamento posterior: ${name})`,
+        amount,
+        type: "receita",
+        status: "recebido",
+        due_date: day,
+        payment_date: day,
+      } as never);
+      if (fErr) throw fErr;
+
+      await supabase
+        .from("cash_sessions")
+        .update({
+          closing_balance_calculated:
+            Number(session.closing_balance_calculated ?? 0) + amount,
+        })
+        .eq("id", session.id);
+    },
+    onSuccess: () => {
+      toast.success(`Venda de ${formatBRL(amount)} lançada no caixa e no financeiro`);
+      qc.invalidateQueries({ queryKey: ["order_payments", session.id] });
+      qc.invalidateQueries({ queryKey: ["cash_sessions"] });
+      setOpen(false);
+      setAmount(0);
+      setDesc("");
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  return (
+    <div className="flex justify-end">
+      <Button size="sm" onClick={() => setOpen(true)}>
+        <Plus className="mr-1 h-4 w-4" /> Lançar venda neste caixa
+      </Button>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Lançar venda no caixa fechado</DialogTitle>
+          </DialogHeader>
+          <form
+            className="space-y-3"
+            onSubmit={(e) => {
+              e.preventDefault();
+              save.mutate();
+            }}
+          >
+            <div>
+              <Label>Forma de pagamento</Label>
+              <Select value={method} onValueChange={(v) => setMethod(v as PaymentMethod)}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {retroMethods.map((m) => (
+                    <SelectItem key={m} value={m}>
+                      {paymentMethodLabel[m]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Valor (R$)</Label>
+              <DecimalInput decimals={2} value={amount} onValueChange={setAmount} autoFocus />
+            </div>
+            <div>
+              <Label>Descrição (opcional)</Label>
+              <Input
+                value={desc}
+                onChange={(e) => setDesc(e.target.value)}
+                placeholder="Ex.: Marmita G"
+              />
+            </div>
+            <DialogFooter>
+              <Button type="submit" disabled={save.isPending}>
+                Lançar venda
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }
 
