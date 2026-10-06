@@ -443,7 +443,16 @@ function OpenCashCard({
       <p className="text-sm text-muted-foreground">
         Informe o saldo inicial em dinheiro para abrir um novo caixa.
       </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-2xl">
+        <div>
+          <Label>Data do caixa</Label>
+          <Input
+            type="date"
+            value={date}
+            max={new Date().toISOString().slice(0, 10)}
+            onChange={(e) => setDate(e.target.value)}
+          />
+        </div>
         <div>
           <Label>Saldo inicial (R$)</Label>
           <DecimalInput
