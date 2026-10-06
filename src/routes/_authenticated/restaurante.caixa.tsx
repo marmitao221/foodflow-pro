@@ -401,10 +401,15 @@ function OpenCashCard({
 }) {
   const [opening, setOpening] = useState(0);
   const [notes, setNotes] = useState("");
+  const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
 
   const open = useMutation({
     mutationFn: async () => {
       if (!companyId || !userId) throw new Error("Sessão inválida");
+      if (!date) throw new Error("Informe a data do caixa");
+      const today = new Date().toISOString().slice(0, 10);
+      const openedAt =
+        date === today ? new Date() : new Date(`${date}T12:00:00`);
       const id = crypto.randomUUID();
       const { error } = await supabase.from("cash_sessions").insert({
         id,
@@ -414,6 +419,7 @@ function OpenCashCard({
         operator_name: operatorName,
         opening_balance: Number(opening),
         notes: notes || null,
+        opened_at: openedAt.toISOString(),
       });
       if (error) throw error;
       const { data: n } = await supabase.rpc("flush_pending_delivery", { _session_id: id });
@@ -437,7 +443,16 @@ function OpenCashCard({
       <p className="text-sm text-muted-foreground">
         Informe o saldo inicial em dinheiro para abrir um novo caixa.
       </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-2xl">
+        <div>
+          <Label>Data do caixa</Label>
+          <Input
+            type="date"
+            value={date}
+            max={new Date().toISOString().slice(0, 10)}
+            onChange={(e) => setDate(e.target.value)}
+          />
+        </div>
         <div>
           <Label>Saldo inicial (R$)</Label>
           <DecimalInput
@@ -760,7 +775,11 @@ function CloseSessionDialog({
 
   const close = useMutation({
     mutationFn: async () => {
-      const closedAt = new Date();
+      const now = new Date();
+      const openedDay = new Date(session.opened_at).toISOString().slice(0, 10);
+      const today = now.toISOString().slice(0, 10);
+      const closedAt =
+        openedDay === today ? now : new Date(`${openedDay}T23:59:00`);
       const { error } = await supabase
         .from("cash_sessions")
         .update({
