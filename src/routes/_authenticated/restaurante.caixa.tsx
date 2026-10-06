@@ -775,7 +775,11 @@ function CloseSessionDialog({
 
   const close = useMutation({
     mutationFn: async () => {
-      const closedAt = new Date();
+      const now = new Date();
+      const openedDay = new Date(session.opened_at).toISOString().slice(0, 10);
+      const today = now.toISOString().slice(0, 10);
+      const closedAt =
+        openedDay === today ? now : new Date(`${openedDay}T23:59:00`);
       const { error } = await supabase
         .from("cash_sessions")
         .update({
