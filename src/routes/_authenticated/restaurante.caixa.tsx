@@ -401,10 +401,15 @@ function OpenCashCard({
 }) {
   const [opening, setOpening] = useState(0);
   const [notes, setNotes] = useState("");
+  const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
 
   const open = useMutation({
     mutationFn: async () => {
       if (!companyId || !userId) throw new Error("Sessão inválida");
+      if (!date) throw new Error("Informe a data do caixa");
+      const today = new Date().toISOString().slice(0, 10);
+      const openedAt =
+        date === today ? new Date() : new Date(`${date}T12:00:00`);
       const id = crypto.randomUUID();
       const { error } = await supabase.from("cash_sessions").insert({
         id,
@@ -414,6 +419,7 @@ function OpenCashCard({
         operator_name: operatorName,
         opening_balance: Number(opening),
         notes: notes || null,
+        opened_at: openedAt.toISOString(),
       });
       if (error) throw error;
       const { data: n } = await supabase.rpc("flush_pending_delivery", { _session_id: id });
