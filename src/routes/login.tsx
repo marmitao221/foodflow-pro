@@ -14,6 +14,7 @@ import { Logo } from "@/components/Logo";
 
 const searchSchema = z.object({
   mode: z.enum(["signin", "signup"]).optional(),
+  next: z.string().optional(),
 });
 
 export const Route = createFileRoute("/login")({
@@ -24,7 +25,9 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const { user, loading } = useAuth();
-  const { mode: initialMode } = Route.useSearch();
+  const { mode: initialMode, next: rawNext } = Route.useSearch();
+  const next = rawNext && rawNext.startsWith("/") && !rawNext.startsWith("//") ? rawNext : null;
+  const goNext = () => { if (next) window.location.href = next; else navigate({ to: "/dashboard" }); };
   const navigate = useNavigate();
 
   const [mode, setMode] = useState<"signin" | "signup">(initialMode ?? "signin");
@@ -34,7 +37,10 @@ function LoginPage() {
   const [submitting, setSubmitting] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
 
-  if (!loading && user) return <Navigate to="/dashboard" />;
+  if (!loading && user) {
+    if (next) { if (typeof window !== "undefined") window.location.href = next; return null; }
+    return <Navigate to="/dashboard" />;
+  }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -45,7 +51,7 @@ function LoginPage() {
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/dashboard`,
+            emailRedirectTo: `${window.location.origin}${next ?? "/dashboard"}`,
             data: { full_name: name },
           },
         });
@@ -55,7 +61,7 @@ function LoginPage() {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         toast.success("Bem-vindo de volta!");
-        navigate({ to: "/dashboard" });
+        goNext();
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Erro ao autenticar";
@@ -69,7 +75,7 @@ function LoginPage() {
     setGoogleLoading(true);
     try {
       const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
+        redirect_uri: next ? `${window.location.origin}${next}` : window.location.origin,
       });
       if (result.error) {
         toast.error("Erro ao entrar com Google");
@@ -77,7 +83,7 @@ function LoginPage() {
         return;
       }
       if (result.redirected) return;
-      navigate({ to: "/dashboard" });
+      goNext();
     } catch {
       toast.error("Erro ao entrar com Google");
       setGoogleLoading(false);
